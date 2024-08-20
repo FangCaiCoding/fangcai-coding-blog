@@ -13,9 +13,8 @@
     <version>${revision}</version>
     <packaging>pom</packaging>
     <modules>
-        <module>fc-common-auth</module>
         <module>fc-coding-app</module>
-        <module>fc-common-model</module>
+        <module>fc-common</module>
     </modules>
 
     <properties>
@@ -25,20 +24,7 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>fc.common</groupId>
-                <artifactId>fc-common-auth</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>fc.common</groupId>
-                <artifactId>fc-common-model</artifactId>
-                <version>${revision}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+
 
     <build>
         <plugins>
