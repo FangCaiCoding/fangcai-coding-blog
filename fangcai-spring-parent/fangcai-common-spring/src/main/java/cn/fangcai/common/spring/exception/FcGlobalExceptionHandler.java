@@ -1,6 +1,7 @@
 package cn.fangcai.common.spring.exception;
 
 
+import cn.fangcai.common.auth.UserContext;
 import cn.fangcai.common.model.dto.FcResult;
 import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.fangcai.common.model.exception.FcException;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -27,56 +29,23 @@ public class FcGlobalExceptionHandler {
     private final Logger logger = LoggerFactory.getLogger(FcGlobalExceptionHandler.class);
 
 
-    /**
-     * 自定义异常处理
-     *
-     * @param request   request
-     * @param response  response
-     * @param exception exception
-     *
-     * @return cn.cloudlizard.common.core.http.FcResult<?>
-     *
-     * @author wangxin
-     * @date 2022-04-27 1:12 PM
-     */
-    @ExceptionHandler(CloudLizardException.class)
-    public FcResult<?> onCloudLizardException(HttpServletRequest request, HttpServletResponse response,
-                                              CloudLizardException exception) {
-        this.logError("CloudLizardException occur!", request, exception);
-        String msg = this.convertMsgByErrorCode(exception.getStatusCode(), exception.getMessage());
-        return FcResult.ERROR(exception.getStatusCode(), exception.getErrorCode(), msg)
-                .addTraceInfo(TraceIdUtil.getOrInitTraceId());
+    @ExceptionHandler(FcException.class)
+    public FcResult<?> onFcException(HttpServletRequest request, HttpServletResponse response,
+                                     FcException exception) {
+        this.logError(request, exception);
+        return FcResult.ERROR(exception.getHttpStatus(), exception.getErrorCode(),
+                exception.getMessage(), TraceIdUtil.getOrInitTraceId());
     }
 
 
-    /**
-     * 自定义运行时异常处理
-     *
-     * @param request   request
-     * @param response  response
-     * @param exception exception
-     *
-     * @return cn.cloudlizard.common.core.http.FcResult<?>
-     *
-     * @author wangxin
-     * @date 2022-04-27 1:12 PM
-     */
-    @ExceptionHandler(CloudLizardRuntimeException.class)
-    public FcResult<?> onCloudLizardRuntimeException(HttpServletRequest request, HttpServletResponse response,
-                                                     CloudLizardRuntimeException exception) {
-        this.logError("CloudLizardRuntimeException occur!", request, exception);
-        String msg = this.convertMsgByErrorCode(exception.getStatusCode(), exception.getMessage());
-        return FcResult.ERROR(exception.getStatusCode(), exception.getErrorCode(), msg)
-                .addTraceInfo(TraceIdUtil.getOrInitTraceId());
+    @ExceptionHandler(FcBusinessException.class)
+    public FcResult<?> onFcBusinessException(HttpServletRequest request, HttpServletResponse response,
+                                             FcBusinessException exception) {
+        this.logWarn(request, exception);
+        return FcResult.ERROR(exception.getHttpStatus(), exception.getErrorCode(),
+                exception.getMessage(), TraceIdUtil.getOrInitTraceId());
     }
 
-    @ExceptionHandler(CLBusinessException.class)
-    public FcResult<?> onClBusinessException(HttpServletRequest request, HttpServletResponse response,
-                                             CLBusinessException exception) {
-        this.logWarn("CLBusinessException Exception!", request, exception);
-        return FcResult.ERROR(exception.getStatusCode(), exception.getErrorCode(), exception.getMessage())
-                .addTraceInfo(TraceIdUtil.getOrInitTraceId());
-    }
 
     /**
      * 参数验证失败，如参数必传值，未传
@@ -90,7 +59,7 @@ public class FcGlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public FcResult<?> validationBodyException(HttpServletRequest request, MethodArgumentNotValidException exception) {
-        this.logWarn("Bad Request. MethodArgumentNotValidException occur!", request, exception);
+        this.logWarn(request, exception);
         BindingResult result = exception.getBindingResult();
         StringBuilder sb = new StringBuilder("参数错误：[");
 
@@ -101,9 +70,9 @@ public class FcGlobalExceptionHandler {
         }
         sb.deleteCharAt(sb.length() - 1);
         sb.append(']');
-        return FcResult.ERROR(StatusCodeEnum.BAD_REQUEST.getCode(),
-                        CommonErrorCodeEnum.BAD_PARAMETERS.getErrorCode(), sb.toString())
-                .addTraceInfo(TraceIdUtil.getOrInitTraceId());
+        this.logWarn(request, exception);
+        return FcResult.ERROR(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.value() + ""
+                , exception.getMessage(), TraceIdUtil.getOrInitTraceId());
     }
 
     @ExceptionHandler({MissingServletRequestParameterException.class})
@@ -136,7 +105,7 @@ public class FcGlobalExceptionHandler {
     }
 
 
-    private void logError(String errorFlag, HttpServletRequest request, Exception e) {
+    private void logError(HttpServletRequest request, Exception e) {
         Integer statusCode = null;
         String clErrorCode = "";
         if (e instanceof FcException) {
@@ -146,13 +115,14 @@ public class FcGlobalExceptionHandler {
             statusCode = ((FcBusinessException) e).getHttpStatus();
             clErrorCode = ((FcBusinessException) e).getErrorCode();
         }
-        logger.error("ErrorFlag={},path=【{}】,param=【{}】，body=【{}】, userId=【{}】, code = {}, errorCode = {},message = {}", errorFlag,
+        logger.error("ErrorFlag=【{}】,path=【{}】,param=【{}】，body=【{}】, userId=【{}】, code = {}, errorCode = {},message = {}"
+                , e.getClass().getSimpleName(),
                 request.getRequestURI(), SpringMVCUtil.getRequestParam(), SpringMVCUtil.getRequestBody(),
-                UserContext.getUserId(), statusCode, clErrorCode, e.getMessage(), e);
+                UserContext.getAuthInfo().getId(), statusCode, clErrorCode, e.getMessage(), e);
     }
 
 
-    private void logWarn(String errorFlag, HttpServletRequest request, Exception e) {
+    private void logWarn(HttpServletRequest request, Exception e) {
         Integer statusCode = null;
         String clErrorCode = "";
         if (e instanceof FcException) {
@@ -162,8 +132,8 @@ public class FcGlobalExceptionHandler {
             statusCode = ((FcBusinessException) e).getHttpStatus();
             clErrorCode = ((FcBusinessException) e).getErrorCode();
         }
-        logger.warn("ErrorFlag={},path=【{}】,param=【{}】，body=【{}】, userId=【{}】, code = {}, errorCode = {},message = {}", errorFlag,
-                request.getRequestURI(), SpringMVCUtil.getRequestParam(), SpringMVCUtil.getRequestBody(),
-                UserContext.getUserId(), statusCode, clErrorCode, e.getMessage());
+        logger.warn("ErrorFlag=【{}】,path=【{}】,param=【{}】，body=【{}】, userId=【{}】, code = {}, errorCode = {},message = {}",
+                e.getClass().getSimpleName(), request.getRequestURI(), SpringMVCUtil.getRequestParam(),
+                SpringMVCUtil.getRequestBody(), UserContext.getAuthInfo().getId(), statusCode, clErrorCode, e.getMessage());
     }
 }
