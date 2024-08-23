@@ -3,7 +3,7 @@ package cn.fangcai.common.auth.utils;
 
 import cn.fangcai.common.auth.config.AuthProperties;
 import cn.fangcai.common.auth.dto.UserTokenDto;
-import cn.fangcai.common.model.enums.FcErrorCodeEnum;
+import cn.fangcai.common.model.enums.AuthErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcException;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.crypto.SmUtil;
@@ -31,7 +31,7 @@ public class FcJWTUtil {
 
     private final static String JWT_CLAIM_NAME = "UserToken";
     private static final JWTSigner jwtSigner = JWTSignerUtil.hs512(AuthProperties.JWT_SECRET_KEY.getBytes());
-    private static final SM4 sm4 = SmUtil.sm4(AuthProperties.SM4_SECRET_KEY.getBytes());
+    private static final SM4 sm4 = SmUtil.sm4(AuthProperties.JWT_SM4_KEY.getBytes());
 
     /**
      * 使用HS256签名算法和生成的signingKey最终的Token,claims中是有效载荷
@@ -42,7 +42,7 @@ public class FcJWTUtil {
      */
     public static String createToken(UserTokenDto userToken) {
         if (userToken == null) {
-            throw new FcException(FcErrorCodeEnum.JWT_CLAIM_IS_EMPTY);
+            throw new FcException(AuthErrorCodeEnum.JWT_CLAIM_IS_EMPTY);
         }
         String tokenStr = sm4.encryptHex(JSONUtil.toJsonStr(userToken));
         LocalDateTime localDateTime = LocalDateTime.now().plusDays(AuthProperties.JWT_EXP_DAYS);
@@ -67,7 +67,7 @@ public class FcJWTUtil {
     public static UserTokenDto parserToken(String token) {
         boolean verify = JWTUtil.verify(token, jwtSigner);
         if (!verify) {
-            throw new FcException(FcErrorCodeEnum.JWT_TOKEN_ERROR);
+            throw new FcException(AuthErrorCodeEnum.JWT_TOKEN_ERROR);
         }
         String tokenEncryptStr = (String) JWTUtil.parseToken(token).getPayload(JWT_CLAIM_NAME);
         String tokenStr = sm4.decryptStr(JSONUtil.toJsonStr(tokenEncryptStr), CharsetUtil.CHARSET_UTF_8);

@@ -43,7 +43,7 @@
         <dependencies>
             <dependency>
                 <groupId>cn.fangcai.common</groupId>
-                <artifactId>fangcai-common-model</artifactId>
+                <artifactId>fangcai-common-spring</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

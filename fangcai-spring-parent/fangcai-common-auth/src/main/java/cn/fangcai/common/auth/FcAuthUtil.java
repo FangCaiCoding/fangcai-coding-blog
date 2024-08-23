@@ -7,7 +7,7 @@ import cn.hutool.core.lang.UUID;
 /**
  * @author MouFangCai
  * @date 2024/8/22 22:57
- * @description
+ * @description 授权工具类
  */
 public class FcAuthUtil {
 
@@ -20,8 +20,9 @@ public class FcAuthUtil {
         LoginHttpUtil.delLoginSession();
     }
 
-    public static void assertLogin() {
-        LoginHttpUtil.getUserToken();
+    public static void assertIsLogin() {
+        FcAuthContext.initContext();
     }
+
 
 }

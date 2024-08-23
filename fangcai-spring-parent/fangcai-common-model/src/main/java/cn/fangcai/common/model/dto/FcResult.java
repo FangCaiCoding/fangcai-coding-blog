@@ -1,6 +1,7 @@
 package cn.fangcai.common.model.dto;
 
-import cn.fangcai.common.spring.exception.IError;
+import cn.fangcai.common.model.exception.IError;
+import lombok.Data;
 import org.slf4j.helpers.MessageFormatter;
 
 /**
@@ -8,9 +9,10 @@ import org.slf4j.helpers.MessageFormatter;
  * @date 2023/3/21 21:23
  * @description
  */
+@Data
 public class FcResult<T> {
 
-    private String code;
+    private Integer code;
 
     private String errorCode;
 
@@ -22,7 +24,7 @@ public class FcResult<T> {
 
     public FcResult(T data) {
         this.data = data;
-        this.code = "200";
+        this.code = 200;
     }
 
     public FcResult() {
@@ -31,7 +33,27 @@ public class FcResult<T> {
     public FcResult(String errorCode, String message) {
         this.errorCode = errorCode;
         this.message = message;
-        this.code = "500";
+        this.code = 500;
+    }
+
+    public FcResult(Integer code, String errorCode, String message) {
+        this.code = code;
+        this.errorCode = errorCode;
+        this.message = message;
+    }
+
+    public FcResult(String errorCode, String message, String traceInfo) {
+        this.code = 500;
+        this.errorCode = errorCode;
+        this.message = message;
+        this.traceInfo = traceInfo;
+    }
+
+    public FcResult(Integer code, String errorCode, String message, String traceInfo) {
+        this.code = code;
+        this.errorCode = errorCode;
+        this.message = message;
+        this.traceInfo = traceInfo;
     }
 
     public static <T> FcResult<T> SUCCESS(T data) {
@@ -42,60 +64,37 @@ public class FcResult<T> {
         return new FcResult<>(errorCode, message);
     }
 
+    public static <T> FcResult<T> ERROR(Integer code, String errorCode, String message) {
+        return new FcResult<>(code, errorCode, message);
+    }
+
+    public static <T> FcResult<T> ERROR(String errorCode, String message, String traceInfo) {
+        return new FcResult<>(errorCode, message, traceInfo);
+    }
+
+    public static <T> FcResult<T> ERROR(Integer code, String errorCode, String message, String traceInfo) {
+        return new FcResult<>(code, errorCode, message, traceInfo);
+    }
+
     public static <T> FcResult<T> ERROR(IError errorCode) {
         FcResult<T> fcResult = new FcResult<T>();
         fcResult.setErrorCode(errorCode.getErrorCode());
         fcResult.setMessage(errorCode.getMsg());
-        fcResult.setCode(errorCode.getHttpStatus().toString());
+        fcResult.setCode(errorCode.getHttpStatus());
         return fcResult;
     }
+
 
 
     public static <T> FcResult<T> ERROR(IError errorCode, Object... arguments) {
         FcResult<T> fcResult = new FcResult<T>();
         fcResult.setErrorCode(errorCode.getErrorCode());
         fcResult.setMessage(MessageFormatter.basicArrayFormat(errorCode.getMsg(), arguments));
-        fcResult.setCode(errorCode.getHttpStatus().toString());
+        fcResult.setCode(errorCode.getHttpStatus());
         return fcResult;
     }
-
-    public String getTraceInfo() {
-        return traceInfo;
-    }
-
-    public void setTraceInfo(String traceInfo) {
-        this.traceInfo = traceInfo;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
+    public FcResult<T> addTraceInfo(String traceInfo) {
+        this.setTraceInfo(traceInfo);
+        return this;
     }
 }

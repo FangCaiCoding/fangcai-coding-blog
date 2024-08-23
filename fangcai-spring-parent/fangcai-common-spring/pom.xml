@@ -19,6 +19,7 @@
             <artifactId>fangcai-common-auth</artifactId>
         </dependency>
 
+
     </dependencies>
 
 </project>

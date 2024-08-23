@@ -1,12 +1,16 @@
-package cn.fangcai.common.spring.utils;
+package cn.fangcai.common.auth.utils;
 
 
+import cn.fangcai.common.auth.config.AuthProperties;
+import cn.fangcai.common.model.enums.AuthErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcException;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.PatternPool;
+import cn.hutool.core.net.Ipv4Util;
+import cn.hutool.core.util.StrUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.util.ContentCachingRequestWrapper;
@@ -20,23 +24,19 @@ import java.util.regex.Matcher;
  * @date 2024/8/22 23:09
  * @description
  */
+@Slf4j
 public class SpringMVCUtil {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(SpringMVCUtil.class);
 
     /**
      * 获取当前会话的 request
      *
      * @return javax.servlet.http.HttpServletRequest
-     *
-     * @author wangxin
-     * @date 2022-03-24 3:07 PM
      */
     public static HttpServletRequest getRequest() {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (servletRequestAttributes == null) {
-            throw new FcException(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                    "Non-web context cannot get Request");
+            throw new FcException(AuthErrorCodeEnum.INTERNAL_SERVER_ERROR, "Non-web context can‘t get Request");
         }
         return servletRequestAttributes.getRequest();
     }
@@ -45,18 +45,15 @@ public class SpringMVCUtil {
      * 获取当前会话的 response
      *
      * @return javax.servlet.http.HttpServletResponse
-     *
-     * @author wangxin
-     * @date 2022-03-24 3:07 PM
      */
     public static HttpServletResponse getResponse() {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (servletRequestAttributes == null) {
-            throw new CloudLizardRuntimeException(StatusCodeEnum.INTERNAL_ERROR,
-                    "Non-web context cannot get Response");
+            throw new FcException(AuthErrorCodeEnum.INTERNAL_SERVER_ERROR, "Non-web context can‘t get Response");
         }
         return servletRequestAttributes.getResponse();
     }
+
 
     /**
      * 判断当前是否处于 Web 上下文中
@@ -95,13 +92,11 @@ public class SpringMVCUtil {
 
         try {
             /**
-             * apisix 默认携带真实ip的header
+             * 考虑一些网关  默认携带真实ip的header
              *   第一个 是原始的访问 IP  第二个 是 代理的 转发的 IP
              *  header=[x-original-forwarded-for],value= 113.204.230.202, 172.20.2.0
              */
-            AppConfig appConfig = SpringContextUtil.INSTANCE.getBean(AppConfig.class);
-            assert appConfig != null;
-            ipAddress = request.getHeader(appConfig.getClientIpHeader());
+            ipAddress = request.getHeader(AuthProperties.CLIENT_IP_HEADER);
             if (StrUtil.isBlank(ipAddress)) {
                 return ipAddress;
             }
@@ -112,7 +107,7 @@ public class SpringMVCUtil {
                 ipAddress = "127.0.0.1";
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("getClientIp Error!", e);
         }
         return ipAddress;
     }

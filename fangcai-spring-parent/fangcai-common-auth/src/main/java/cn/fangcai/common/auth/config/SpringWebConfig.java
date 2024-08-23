@@ -1,7 +1,7 @@
 package cn.fangcai.common.auth.config;
 
 
-import cn.fangcai.common.auth.interceptor.LoginInterceptor;
+import cn.fangcai.common.auth.interceptor.AuthInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -27,14 +27,14 @@ public class SpringWebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        LoginInterceptor loginInterceptor = this.applicationContext.getBean(LoginInterceptor.class);
+        AuthInterceptor authInterceptor = this.applicationContext.getBean(AuthInterceptor.class);
         // 排除swagger 拦截路径
         String[] excludePatterns = new String[]{"/swagger-resources/**", "/webjars/**", "/v2/**", "/v3/**", "/swagger-ui.html/**",
                 "/api", "/api-docs", "/api-docs/**", "/doc.html", "/doc.html/**", "/swagger-ui/**"};
 
         List<String> swaggerExclude = Arrays.asList(excludePatterns);
         // 登录检查
-        registry.addInterceptor(loginInterceptor)
+        registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/error")
                 .excludePathPatterns(swaggerExclude);

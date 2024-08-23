@@ -1,4 +1,6 @@
-package cn.fangcai.common.model.enums;
+package cn.fangcai.blog.consts;
+
+import cn.hutool.core.lang.RegexPool;
 
 /**
  * 系统用户相关常量
@@ -15,6 +17,9 @@ public interface UserConst {
 
     String LOGIN_NAME_REGEX = "^[^\\u4e00-\\u9fa5]+$";
 
-    String LOGIN_NAME_ERROR_MSG = "账户由字母、数字或特殊字符组成";
+    String LOGIN_NAME_ERROR_MSG = "账户只能由字母、数字或特殊字符组成";
 
+    String EMAIL_REGEX = RegexPool.EMAIL;
+
+    String ILLEGAL_PARAM_MSG = "非法参数！请正确输入！";
 }

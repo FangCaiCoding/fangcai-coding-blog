@@ -8,7 +8,7 @@ import org.slf4j.helpers.MessageFormatter;
  * @date 2023/3/21 23:29
  * @description 未知异常
  */
-public class FcException extends Exception implements IError {
+public class FcException extends RuntimeException implements IError {
     protected Integer httpStatus;
     protected String errorCode;
 

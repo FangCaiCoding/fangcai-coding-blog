@@ -3,7 +3,7 @@ package cn.fangcai.common.auth.utils;
 
 import cn.fangcai.common.auth.config.AuthProperties;
 import cn.fangcai.common.auth.dto.UserTokenDto;
-import cn.fangcai.common.model.enums.FcErrorCodeEnum;
+import cn.fangcai.common.model.enums.AuthErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcException;
 import cn.hutool.core.util.StrUtil;
 import jakarta.servlet.http.Cookie;
@@ -20,32 +20,37 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoginHttpUtil {
 
+    private static final HttpServletRequest request =SpringMVCUtil.getRequest();
+
+    private static final HttpServletResponse response =SpringMVCUtil.getResponse();
+
 
     public static void setLoginSession(UserTokenDto userTokenDto) {
-        setLoginCookie(userTokenDto, null, null);
+        setLoginCookie(userTokenDto);
     }
 
     public static UserTokenDto getUserToken() {
-        String token = getCookie(null, AuthProperties.COOKIE_TOKEN_NAME);
+        String token = getCookie(AuthProperties.TOKEN_NAME);
         if (StrUtil.isBlank(token)) {
-            throw new FcException(FcErrorCodeEnum.USER_NOT_LOGIN);
+            throw new FcException(AuthErrorCodeEnum.USER_NOT_LOGIN);
         }
        return FcJWTUtil.parserToken(token);
     }
 
 
     public static void delLoginSession() {
-        deleteLoginCookie(null, null);
+        deleteLoginCookie();
     }
 
 
-    private static void setLoginCookie(UserTokenDto tokenDto, HttpServletRequest request, HttpServletResponse response) {
+    private static void setLoginCookie(UserTokenDto tokenDto) {
         String token = FcJWTUtil.createToken(tokenDto);
-        createCookie(AuthProperties.COOKIE_TOKEN_NAME, token, AuthProperties.COOKIE_MAX_AGE, request, response);
+        createCookie(AuthProperties.TOKEN_NAME, token, AuthProperties.COOKIE_MAX_AGE);
     }
 
 
-    private static String getCookie(HttpServletRequest request, String key) {
+    private static String getCookie(String key) {
+        HttpServletRequest request = SpringMVCUtil.getRequest();
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
             return "";
@@ -59,15 +64,13 @@ public class LoginHttpUtil {
     }
 
 
-    private static void deleteLoginCookie(HttpServletRequest request, HttpServletResponse response) {
-        int delCount = deleteCookieByName(AuthProperties.COOKIE_TOKEN_NAME, request, response);
+    private static void deleteLoginCookie() {
+       deleteCookieByName(AuthProperties.TOKEN_NAME);
     }
 
     private static Cookie createCookie(String cookieName,
                                        String token,
-                                       Integer maxAge,
-                                       HttpServletRequest request,
-                                       HttpServletResponse response) {
+                                       Integer maxAge) {
         Cookie cookie = new Cookie(cookieName, token);
         cookie.setMaxAge(maxAge == null ? AuthProperties.COOKIE_MAX_AGE : maxAge);
 
@@ -93,7 +96,7 @@ public class LoginHttpUtil {
         return cookie;
     }
 
-    private static int deleteCookieByName(String cookieName, HttpServletRequest request, HttpServletResponse response) {
+    private static int deleteCookieByName(String cookieName) {
         int delCount = 0;
         String host = request.getServerName();
         log.debug("logout------------host:" + host);

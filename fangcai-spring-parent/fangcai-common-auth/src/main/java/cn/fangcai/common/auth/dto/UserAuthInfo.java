@@ -1,7 +1,9 @@
 package cn.fangcai.common.auth.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -11,18 +13,13 @@ import java.util.List;
  * @description
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Schema(description = "用户上下文信息")
-public class UserAuthInfo<T> {
+public class UserAuthInfo {
 
     @Schema(description = "用户ID")
-    private T id;
+    private Object id;
 
-    @Schema(description = "登录名")
-    private String loginName;
 
-    @Schema(description = "昵称")
-    private String nickName;
-
-    @Schema(description = "权限code集合")
-    private List<String> authCodeList;
 }
