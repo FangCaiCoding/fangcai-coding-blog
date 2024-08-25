@@ -1,12 +1,11 @@
 package cn.fangcai.common.spring.exception;
 
 
-import cn.fangcai.common.auth.FcAuthContext;
+import cn.fangcai.common.auth.utils.SpringMVCUtil;
 import cn.fangcai.common.model.dto.FcResult;
 import cn.fangcai.common.model.enums.AuthErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.fangcai.common.model.exception.FcException;
-import cn.fangcai.common.auth.utils.SpringMVCUtil;
 import cn.fangcai.common.spring.utils.TraceIdUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -87,10 +86,10 @@ public class FcGlobalExceptionHandler {
             statusCode = ((FcBusinessException) e).getHttpStatus();
             clErrorCode = ((FcBusinessException) e).getErrorCode();
         }
-        logger.error("ErrorFlag=【{}】,path=【{}】,param=【{}】，body=【{}】, userId=【{}】, code = {}, errorCode = {},message = {}"
+        logger.error("ErrorFlag=【{}】,path=【{}】,param=【{}】，body=【{}】, code = {}, errorCode = {},message = {}"
                 , e.getClass().getSimpleName(),
-                request.getRequestURI(), SpringMVCUtil.getRequestParam(), SpringMVCUtil.getRequestBody(),
-                FcAuthContext.getAuthInfo().getId(), statusCode, clErrorCode, e.getMessage(), e);
+                request.getRequestURI(), SpringMVCUtil.getRequestParam(), SpringMVCUtil.getRequestBody()
+                , statusCode, clErrorCode, e.getMessage(), e);
     }
 
 
@@ -104,8 +103,8 @@ public class FcGlobalExceptionHandler {
             statusCode = ((FcBusinessException) e).getHttpStatus();
             clErrorCode = ((FcBusinessException) e).getErrorCode();
         }
-        logger.warn("ErrorFlag=【{}】,path=【{}】,param=【{}】，body=【{}】, userId=【{}】, code = {}, errorCode = {},message = {}",
+        logger.warn("ErrorFlag=【{}】,path=【{}】,param=【{}】，body=【{}】, code = {}, errorCode = {},message = {}",
                 e.getClass().getSimpleName(), request.getRequestURI(), SpringMVCUtil.getRequestParam(),
-                SpringMVCUtil.getRequestBody(), FcAuthContext.getAuthInfo().getId(), statusCode, clErrorCode, e.getMessage());
+                SpringMVCUtil.getRequestBody(), statusCode, clErrorCode, e.getMessage());
     }
 }

@@ -93,7 +93,7 @@ public class AuthProperties {
     }
 
     @Value("${fangcai.auth.token_name:FC_USER_TOKEN}")
-    public static void setTokenName(String tokenName) {
+    public void setTokenName(String tokenName) {
         TOKEN_NAME = tokenName;
     }
 

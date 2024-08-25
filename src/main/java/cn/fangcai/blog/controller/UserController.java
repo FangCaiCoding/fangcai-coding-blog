@@ -10,6 +10,7 @@ import cn.fangcai.common.auth.FcAuthUtil;
 import cn.fangcai.common.auth.ano.FcNotCheckLogin;
 import cn.fangcai.common.model.dto.FcResult;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +25,14 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/user")
+@Tag(name = "用户管理")
 public class UserController {
 
     @Autowired
     private IUserService userService;
 
 
-    @Operation(description = "用户注册")
+    @Operation(summary = "用户注册")
     @PostMapping("register")
     @FcNotCheckLogin
     private FcResult<UserRes> registerAndLogin(@RequestBody @Validated UserEmailRegisterReq registerReq) {
@@ -40,7 +42,7 @@ public class UserController {
         return FcResult.SUCCESS(userRes);
     }
 
-    @Operation(description = "登录-通过账号")
+    @Operation(summary =  "登录-通过账号")
     @PostMapping("loginByName")
     @FcNotCheckLogin
     private FcResult<UserRes> loginByName(@RequestBody @Validated UserLoginReq loginReq) {
@@ -50,14 +52,14 @@ public class UserController {
     }
 
 
-    @Operation(description = "获取当前登录者用户信息")
+    @Operation(summary =  "获取当前登录者用户信息")
     @GetMapping("getUser")
     private FcResult<UserRes> getUser() {
         return FcResult.SUCCESS(userService.getById(FcAuthContext.getUserIdAsInt()));
     }
 
 
-    @Operation(description = "退出登录")
+    @Operation(summary =  "退出登录")
     @PutMapping("logout")
     private FcResult<Boolean> logout() {
         FcAuthUtil.logout();

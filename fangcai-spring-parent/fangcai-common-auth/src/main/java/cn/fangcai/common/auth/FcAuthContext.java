@@ -5,7 +5,7 @@ import cn.fangcai.common.auth.dto.UserTokenDto;
 import cn.fangcai.common.auth.service.IAuthService;
 import cn.fangcai.common.auth.utils.LoginHttpUtil;
 import cn.fangcai.common.model.enums.AuthErrorCodeEnum;
-import cn.fangcai.common.model.exception.FcException;
+import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.hutool.extra.spring.SpringUtil;
 
 /**
@@ -22,7 +22,7 @@ public class FcAuthContext {
         IAuthService authService = SpringUtil.getBean(IAuthService.class);
         Object authInfo = authService.getById(userToken.getUserId());
         if (authInfo == null) {
-            throw new FcException(AuthErrorCodeEnum.AUTH_INFO_INIT_FAIL);
+            throw new FcBusinessException(AuthErrorCodeEnum.AUTH_INFO_INIT_FAIL);
         }
         USER_INFO.set(authInfo);
     }
@@ -31,7 +31,7 @@ public class FcAuthContext {
     public static <T extends UserAuthInfo> T getAuthInfo() {
         Object authInfo = USER_INFO.get();
         if (authInfo == null) {
-            throw new FcException(AuthErrorCodeEnum.USER_CONTEXT_IS_NULL);
+            throw new FcBusinessException(AuthErrorCodeEnum.USER_CONTEXT_IS_NULL);
         }
         return (T) authInfo;
     }

@@ -4,7 +4,7 @@ package cn.fangcai.common.auth.utils;
 import cn.fangcai.common.auth.config.AuthProperties;
 import cn.fangcai.common.auth.dto.UserTokenDto;
 import cn.fangcai.common.model.enums.AuthErrorCodeEnum;
-import cn.fangcai.common.model.exception.FcException;
+import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.hutool.core.util.StrUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,11 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoginHttpUtil {
 
-    private static final HttpServletRequest request =SpringMVCUtil.getRequest();
-
-    private static final HttpServletResponse response =SpringMVCUtil.getResponse();
-
-
     public static void setLoginSession(UserTokenDto userTokenDto) {
         setLoginCookie(userTokenDto);
     }
@@ -32,14 +27,14 @@ public class LoginHttpUtil {
     public static UserTokenDto getUserToken() {
         String token = getCookie(AuthProperties.TOKEN_NAME);
         if (StrUtil.isBlank(token)) {
-            throw new FcException(AuthErrorCodeEnum.USER_NOT_LOGIN);
+            throw new FcBusinessException(AuthErrorCodeEnum.USER_NOT_LOGIN);
         }
-       return FcJWTUtil.parserToken(token);
+        return FcJWTUtil.parserToken(token);
     }
 
 
     public static void delLoginSession() {
-        deleteLoginCookie();
+        deleteCookieByName(AuthProperties.TOKEN_NAME);
     }
 
 
@@ -64,13 +59,12 @@ public class LoginHttpUtil {
     }
 
 
-    private static void deleteLoginCookie() {
-       deleteCookieByName(AuthProperties.TOKEN_NAME);
-    }
-
     private static Cookie createCookie(String cookieName,
                                        String token,
                                        Integer maxAge) {
+        HttpServletRequest request = SpringMVCUtil.getRequest();
+        HttpServletResponse response = SpringMVCUtil.getResponse();
+
         Cookie cookie = new Cookie(cookieName, token);
         cookie.setMaxAge(maxAge == null ? AuthProperties.COOKIE_MAX_AGE : maxAge);
 
@@ -97,6 +91,8 @@ public class LoginHttpUtil {
     }
 
     private static int deleteCookieByName(String cookieName) {
+        HttpServletRequest request = SpringMVCUtil.getRequest();
+        HttpServletResponse response = SpringMVCUtil.getResponse();
         int delCount = 0;
         String host = request.getServerName();
         log.debug("logout------------host:" + host);

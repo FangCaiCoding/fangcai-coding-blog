@@ -29,7 +29,6 @@
         <module>fangcai-common-auth</module>
         <module>fangcai-common-model</module>
         <module>fangcai-common-spring</module>
-        <module>fangcai-common-model</module>
     </modules>
 
     <dependencies>

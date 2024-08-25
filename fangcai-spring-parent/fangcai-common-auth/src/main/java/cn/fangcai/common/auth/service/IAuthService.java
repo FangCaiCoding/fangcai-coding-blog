@@ -2,7 +2,6 @@ package cn.fangcai.common.auth.service;
 
 import cn.fangcai.common.auth.dto.UserAuthInfo;
 
-import java.util.List;
 import java.util.Set;
 
 /**

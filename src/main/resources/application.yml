@@ -2,3 +2,8 @@ server:
   servlet:
     context-path: /api
   port: 7000
+spring:
+  application:
+    name: fangcai-coding-blog
+  profiles:
+    active: dev

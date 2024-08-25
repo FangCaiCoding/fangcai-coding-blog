@@ -34,6 +34,15 @@ public class AuthInterceptor implements HandlerInterceptor {
         return true;
     }
 
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        try {
+            HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
+        } finally {
+            FcAuthContext.clearContext();
+        }
+    }
+
     private void assertAuthCode(HandlerMethod handlerMethod) {
         FcCheckAuth authCheck = handlerMethod.getBeanType().getAnnotation(FcCheckAuth.class);
         // 获取方法上的注解，方法优先级高于类
@@ -62,10 +71,6 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (fcNotCheckLogin != null) {
             return;
         }
-        try {
-            FcAuthUtil.assertIsLogin();
-        } finally {
-            FcAuthContext.clearContext();
-        }
+        FcAuthUtil.assertIsLogin();
     }
 }
