@@ -9,6 +9,8 @@ import cn.fangcai.common.auth.FcAuthContext;
 import cn.fangcai.common.auth.FcAuthUtil;
 import cn.fangcai.common.auth.ano.FcNotCheckLogin;
 import cn.fangcai.common.model.dto.FcResult;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,7 @@ public class UserController {
     private IUserService userService;
 
 
+    @ApiOperationSupport(order = 10)
     @Operation(summary = "用户注册")
     @PostMapping("register")
     @FcNotCheckLogin
@@ -42,7 +45,9 @@ public class UserController {
         return FcResult.SUCCESS(userRes);
     }
 
-    @Operation(summary =  "登录-通过账号")
+
+    @ApiOperationSupport(order = 20)
+    @Operation(summary = "登录-通过账号")
     @PostMapping("loginByName")
     @FcNotCheckLogin
     private FcResult<UserRes> loginByName(@RequestBody @Validated UserLoginReq loginReq) {
@@ -52,14 +57,15 @@ public class UserController {
     }
 
 
-    @Operation(summary =  "获取当前登录者用户信息")
+    @ApiOperationSupport(order = 30)
+    @Operation(summary = "获取当前登录者用户信息")
     @GetMapping("getUser")
     private FcResult<UserRes> getUser() {
         return FcResult.SUCCESS(userService.getById(FcAuthContext.getUserIdAsInt()));
     }
 
-
-    @Operation(summary =  "退出登录")
+    @ApiOperationSupport(order = 40)
+    @Operation(summary = "退出登录")
     @PutMapping("logout")
     private FcResult<Boolean> logout() {
         FcAuthUtil.logout();

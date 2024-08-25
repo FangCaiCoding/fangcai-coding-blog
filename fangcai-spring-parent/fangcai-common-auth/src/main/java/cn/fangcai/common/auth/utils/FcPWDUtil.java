@@ -1,7 +1,8 @@
 package cn.fangcai.common.auth.utils;
 
 import cn.fangcai.common.auth.config.AuthProperties;
-import cn.fangcai.common.model.enums.AuthErrorCodeEnum;
+import cn.fangcai.common.auth.enums.AuthErrorCodeEnum;
+import cn.fangcai.common.model.enums.FcErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcException;
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.RandomUtil;
@@ -31,7 +32,7 @@ public class FcPWDUtil {
      */
     public static String encrypt(String userId, String pwd) {
         if (StrUtil.isBlank(userId) || StrUtil.isBlank(pwd)) {
-            throw new FcException(AuthErrorCodeEnum.BAD_REQUEST, "UserId Or Pwd is Blank");
+            throw new FcException(FcErrorCodeEnum.BAD_REQUEST, "UserId Or Pwd is Blank");
         }
         int sm3Ct = RandomUtil.randomInt(10, 50);
         String salt = RandomUtil.randomString(8);
@@ -50,11 +51,11 @@ public class FcPWDUtil {
      */
     public static Boolean checkPwd(String userId, String pwd, String encryptPwd) {
         if (StrUtil.isBlank(userId) || StrUtil.isBlank(pwd) || StrUtil.isBlank(encryptPwd)) {
-            throw new FcException(AuthErrorCodeEnum.BAD_REQUEST, "UserId Or Pwd Or EncryptPwd is Blank");
+            throw new FcException(FcErrorCodeEnum.BAD_REQUEST, "UserId Or Pwd Or EncryptPwd is Blank");
         }
         String[] split = encryptPwd.split(SPLIT);
         if (split.length != 3) {
-            throw new FcException(AuthErrorCodeEnum.BAD_REQUEST, "EncryptPwd Format Error");
+            throw new FcException(FcErrorCodeEnum.BAD_REQUEST, "EncryptPwd Format Error");
         }
         String salt = HexUtil.decodeHexStr(split[0]);
         int sm3Ct = Integer.parseInt(HexUtil.decodeHexStr(split[1]));

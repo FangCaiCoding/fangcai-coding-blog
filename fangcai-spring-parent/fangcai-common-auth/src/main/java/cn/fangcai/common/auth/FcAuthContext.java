@@ -4,7 +4,7 @@ import cn.fangcai.common.auth.dto.UserAuthInfo;
 import cn.fangcai.common.auth.dto.UserTokenDto;
 import cn.fangcai.common.auth.service.IAuthService;
 import cn.fangcai.common.auth.utils.LoginHttpUtil;
-import cn.fangcai.common.model.enums.AuthErrorCodeEnum;
+import cn.fangcai.common.auth.enums.AuthErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.hutool.extra.spring.SpringUtil;
 

@@ -92,7 +92,7 @@ public class UserServiceImpl implements IUserService {
 
 
     @Component
-    public static class UserRepository extends ServiceImpl<UserMapper, User> {
+    static class UserRepository extends ServiceImpl<UserMapper, User> {
 
     }
 }

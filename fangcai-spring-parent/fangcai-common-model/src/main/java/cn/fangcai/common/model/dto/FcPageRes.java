@@ -1,5 +1,7 @@
 package cn.fangcai.common.model.dto;
 
+import lombok.Data;
+
 import java.util.List;
 
 /**
@@ -7,6 +9,7 @@ import java.util.List;
  * @date 2023/3/21 21:32
  * @description
  */
+@Data
 public class FcPageRes<T> {
 
     private Integer page;
@@ -33,35 +36,14 @@ public class FcPageRes<T> {
         this.records = records;
     }
 
-    public Integer getPage() {
-        return page;
-    }
-
-    public void setPage(Integer page) {
-        this.page = page;
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public Long getTotal() {
-        return total;
-    }
-
-    public void setTotal(Long total) {
+    public FcPageRes<T> total(Long total) {
         this.total = total;
+        return this;
     }
 
-    public List<T> getRecords() {
-        return records;
-    }
-
-    public void setRecords(List<T> records) {
+    public FcPageRes<T> records(List<T> records) {
         this.records = records;
+        return this;
     }
+
 }

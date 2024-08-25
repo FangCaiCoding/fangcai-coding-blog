@@ -2,7 +2,8 @@ package cn.fangcai.common.auth.utils;
 
 
 import cn.fangcai.common.auth.config.AuthProperties;
-import cn.fangcai.common.model.enums.AuthErrorCodeEnum;
+import cn.fangcai.common.auth.enums.AuthErrorCodeEnum;
+import cn.fangcai.common.model.enums.FcErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcException;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.PatternPool;
@@ -36,7 +37,7 @@ public class SpringMVCUtil {
     public static HttpServletRequest getRequest() {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (servletRequestAttributes == null) {
-            throw new FcException(AuthErrorCodeEnum.INTERNAL_SERVER_ERROR, "Non-web context can‘t get Request");
+            throw new FcException(FcErrorCodeEnum.INTERNAL_SERVER_ERROR, "Non-web context can‘t get Request");
         }
         return servletRequestAttributes.getRequest();
     }
@@ -49,7 +50,7 @@ public class SpringMVCUtil {
     public static HttpServletResponse getResponse() {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (servletRequestAttributes == null) {
-            throw new FcException(AuthErrorCodeEnum.INTERNAL_SERVER_ERROR, "Non-web context can‘t get Response");
+            throw new FcException(FcErrorCodeEnum.INTERNAL_SERVER_ERROR, "Non-web context can‘t get Response");
         }
         return servletRequestAttributes.getResponse();
     }

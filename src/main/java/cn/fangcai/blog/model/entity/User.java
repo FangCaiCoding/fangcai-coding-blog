@@ -8,9 +8,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 /**
  * <p>
  * 用户表
@@ -22,10 +19,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Schema(description = "用户表")
-public class User extends BaseEntity implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class User extends BaseEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;

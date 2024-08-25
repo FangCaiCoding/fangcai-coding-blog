@@ -1,4 +1,4 @@
-package cn.fangcai.common.model.enums;
+package cn.fangcai.common.auth.enums;
 
 
 import cn.fangcai.common.model.exception.IError;
@@ -11,18 +11,6 @@ import org.springframework.http.HttpStatus;
  * @description
  */
 public enum AuthErrorCodeEnum implements IError {
-
-
-    /**
-     * 0xx 系列：内部异常
-     */
-
-    UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "000", "服务器异常！请稍后再试！"),
-
-    BAD_REQUEST(HttpStatus.BAD_REQUEST.value(), "001", "参数错误：{}"),
-
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "041", "内部服务异常：{}"),
-
 
 
 

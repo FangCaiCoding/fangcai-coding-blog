@@ -13,11 +13,11 @@ import lombok.Data;
 @Data
 public class PageReq {
 
-    @Schema(description = "页码", maximum = "500", minimum = "1")
-    @Max(value = 500L, message = "页码不能超过500")
+    @Schema(description = "页码", maximum = "100", minimum = "1")
+    @Max(value = 1000L, message = "页码不能超过1000")
     private Integer page = 1;
 
     @Schema(description = "页面大小", maximum = "1000", minimum = "1")
-    @Max(value = 1000L, message = "页面大小不能超过100")
+    @Max(value = 1000L, message = "页面大小不能超过1000")
     private Integer pageSize = 10;
 }

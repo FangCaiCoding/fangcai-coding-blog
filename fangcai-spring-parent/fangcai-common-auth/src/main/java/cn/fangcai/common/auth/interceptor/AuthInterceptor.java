@@ -6,7 +6,7 @@ import cn.fangcai.common.auth.FcAuthUtil;
 import cn.fangcai.common.auth.ano.FcCheckAuth;
 import cn.fangcai.common.auth.ano.FcNotCheckLogin;
 import cn.fangcai.common.auth.service.IAuthService;
-import cn.fangcai.common.model.enums.AuthErrorCodeEnum;
+import cn.fangcai.common.auth.enums.AuthErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcBusinessException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

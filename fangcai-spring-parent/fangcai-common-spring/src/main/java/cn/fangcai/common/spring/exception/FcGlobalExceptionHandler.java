@@ -3,7 +3,8 @@ package cn.fangcai.common.spring.exception;
 
 import cn.fangcai.common.auth.utils.SpringMVCUtil;
 import cn.fangcai.common.model.dto.FcResult;
-import cn.fangcai.common.model.enums.AuthErrorCodeEnum;
+import cn.fangcai.common.auth.enums.AuthErrorCodeEnum;
+import cn.fangcai.common.model.enums.FcErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.fangcai.common.model.exception.FcException;
 import cn.fangcai.common.spring.utils.TraceIdUtil;
@@ -71,7 +72,7 @@ public class FcGlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public FcResult<?> onException(HttpServletRequest request, Exception exception) {
         this.logError(request, exception);
-        return FcResult.ERROR(AuthErrorCodeEnum.UNKNOWN_ERROR)
+        return FcResult.ERROR(FcErrorCodeEnum.UNKNOWN_ERROR)
                 .addTraceInfo(TraceIdUtil.getOrInitTraceId());
     }
 

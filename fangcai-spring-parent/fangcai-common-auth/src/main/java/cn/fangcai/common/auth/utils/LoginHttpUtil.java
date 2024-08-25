@@ -3,7 +3,7 @@ package cn.fangcai.common.auth.utils;
 
 import cn.fangcai.common.auth.config.AuthProperties;
 import cn.fangcai.common.auth.dto.UserTokenDto;
-import cn.fangcai.common.model.enums.AuthErrorCodeEnum;
+import cn.fangcai.common.auth.enums.AuthErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.hutool.core.util.StrUtil;
 import jakarta.servlet.http.Cookie;

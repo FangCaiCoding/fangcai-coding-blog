@@ -23,6 +23,12 @@ public enum BlogErrorCodeEnum implements IError {
 
     USER_UN_ENABLED(HttpStatus.OK.value(), "220", "用户已被禁用！请联系站长解封！"),
 
+
+    /**
+     * 3xx 系列：文章相关
+     */
+
+    ARTICLE_UN_PUBLISHED(HttpStatus.FORBIDDEN.value(), "300", "非法请求，不存在的文章！"),
     ;
 
     BlogErrorCodeEnum(Integer statusCode, String errorCode, String msg) {
