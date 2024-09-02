@@ -37,7 +37,7 @@ public class ArticlePublicController {
     @GetMapping("/{id}")
     public FcResult<ArticleDetailRes> getDetail(@PathVariable Integer id) {
         ArticleDetailRes detail = articleService.getDetail(id);
-        if (!ArticleStatusEnum.PUBLISHED.getCode().equals(detail.getStatus())) {
+        if (detail != null && !ArticleStatusEnum.PUBLISHED.getCode().equals(detail.getStatus())) {
             throw new FcBusinessException(BlogErrorCodeEnum.ARTICLE_UN_PUBLISHED);
         }
         return FcResult.SUCCESS(detail);
