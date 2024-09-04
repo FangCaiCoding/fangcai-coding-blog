@@ -43,6 +43,7 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public Integer addArticle(ArticleSaveReq saveReq) {
         Article article = ArticleConverter.INSTANCE.toArticle(saveReq);
+        article.setId(null);
         articleRepository.save(article);
         articleDetailRepository.save(ArticleConverter.INSTANCE.toArticleDetail(article, saveReq));
         return article.getId();

@@ -3,6 +3,13 @@ spring:
     url: jdbc:mysql://47.92.25.139:3306/${fangcai.db.name}?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&serverTimezone=GMT%2B8
     username: ${fangcai.db.user}
     password: ${fangcai.db.pwd}
+    hikari:
+      max-lifetime: 5000
+      connection-timeout: 30000
+      maximum-pool-size: 20
+      minimum-idle: 10
+      idle-timeout: 5000
+
 
 logging:
   level:
