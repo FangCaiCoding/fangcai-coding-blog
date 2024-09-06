@@ -6,8 +6,8 @@ spring:
     hikari:
       max-lifetime: 5000
       connection-timeout: 30000
-      maximum-pool-size: 20
-      minimum-idle: 10
+      maximum-pool-size: 1
+      minimum-idle: 1
       idle-timeout: 5000
 
 
