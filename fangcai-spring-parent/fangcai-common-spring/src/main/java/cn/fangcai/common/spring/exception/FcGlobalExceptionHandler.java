@@ -9,8 +9,10 @@ import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.fangcai.common.model.exception.FcException;
 import cn.fangcai.common.spring.utils.TraceIdUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -27,11 +29,13 @@ import java.util.List;
 public class FcGlobalExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(FcGlobalExceptionHandler.class);
-
+    @Autowired
+    private HttpServletResponse response;
 
     @ExceptionHandler(FcException.class)
     public FcResult<?> onFcException(HttpServletRequest request, FcException exception) {
         this.logError(request, exception);
+        response.setStatus(exception.getHttpStatus());
         return FcResult.ERROR(exception.getHttpStatus(), exception.getErrorCode(),
                 exception.getMessage(), TraceIdUtil.getOrInitTraceId());
     }
@@ -40,6 +44,7 @@ public class FcGlobalExceptionHandler {
     @ExceptionHandler(FcBusinessException.class)
     public FcResult<?> onFcBusinessException(HttpServletRequest request, FcBusinessException exception) {
         this.logWarn(request, exception);
+        response.setStatus(exception.getHttpStatus());
         return FcResult.ERROR(exception.getHttpStatus(), exception.getErrorCode(),
                 exception.getMessage(), TraceIdUtil.getOrInitTraceId());
     }
@@ -59,12 +64,14 @@ public class FcGlobalExceptionHandler {
         errorMsg.deleteCharAt(errorMsg.length() - 1);
         errorMsg.append(']');
         this.logWarn(request, exception);
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
         return FcResult.ERROR(HttpStatus.BAD_REQUEST.value() + "", errorMsg.toString(), TraceIdUtil.getOrInitTraceId());
     }
 
     @ExceptionHandler({MissingServletRequestParameterException.class})
     public FcResult<?> onMissingServletRequestParameterException(HttpServletRequest request, Exception exception) {
         this.logWarn(request, exception);
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
         return FcResult.ERROR(HttpStatus.BAD_REQUEST.value() + "", exception.getMessage(), TraceIdUtil.getOrInitTraceId());
     }
 
@@ -72,6 +79,7 @@ public class FcGlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public FcResult<?> onException(HttpServletRequest request, Exception exception) {
         this.logError(request, exception);
+        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         return FcResult.ERROR(FcErrorCodeEnum.UNKNOWN_ERROR)
                 .addTraceInfo(TraceIdUtil.getOrInitTraceId());
     }
