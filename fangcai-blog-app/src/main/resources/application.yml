@@ -5,3 +5,5 @@ server:
 spring:
   profiles:
     active: dev
+  application:
+    name: fangcai-blog-app

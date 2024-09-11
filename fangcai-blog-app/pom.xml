@@ -10,7 +10,6 @@
     </parent>
     <groupId>cn.fangcai.blog</groupId>
     <artifactId>fangcai-blog-app</artifactId>
-    <version>1.1.240819</version>
 
     <properties>
         <java.version>21</java.version>
@@ -25,6 +24,7 @@
         <dependency>
             <groupId>cn.fangcai.common</groupId>
             <artifactId>fangcai-common-spring</artifactId>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -53,16 +53,28 @@
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
         </dependency>
-
-
     </dependencies>
+
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>cn.fangcai.blog.AppApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>
+                                repackage
+                            </goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
+
 </project>

@@ -11,8 +11,6 @@
 
     <artifactId>fangcai-common-spring</artifactId>
 
-
-
     <dependencies>
         <dependency>
             <groupId>cn.fangcai.common</groupId>

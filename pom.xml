@@ -3,9 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>cn.fangcai.common</groupId>
-        <artifactId>fangcai-spring-parent</artifactId>
-        <version>1.1.240819</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>cn.fangcai.coding</groupId>
@@ -15,10 +16,10 @@
 
     <modules>
         <module>fangcai-blog-app</module>
+        <module>fangcai-spring-parent</module>
     </modules>
-
     <properties>
-        <revision>1.1.240819</revision>
+        <revision>1.0.20240911</revision>
     </properties>
 
 </project>
