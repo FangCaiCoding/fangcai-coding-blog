@@ -4,16 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>cn.fangcai.common</groupId>
-        <artifactId>fangcai-spring-parent</artifactId>
-        <version>1.1.240819</version>
+        <groupId>cn.fangcai.coding</groupId>
+        <artifactId>fangcai-coding-blog</artifactId>
+        <version>${revision}</version>
     </parent>
     <groupId>cn.fangcai.blog</groupId>
     <artifactId>fangcai-blog-app</artifactId>
     <version>1.1.240819</version>
 
     <properties>
-        <revision>1.1.240819</revision>
         <java.version>21</java.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
