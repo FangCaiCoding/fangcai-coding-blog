@@ -1,4 +1,5 @@
 import {createRouter, createWebHistory} from "vue-router"
+import app from "../App.vue";
 
 const routes = [
     {
@@ -32,5 +33,4 @@ const indexRouter = createRouter({
     history: createWebHistory(),
     routes
 })
-
 export default indexRouter

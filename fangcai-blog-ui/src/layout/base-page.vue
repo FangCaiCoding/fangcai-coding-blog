@@ -61,8 +61,8 @@
   <el-dialog v-model="showLoginDialog" title="用户登录" width="400px" :close-on-click-modal="false">
     <el-form v-model="loginForm" label-width="80px">
       <!-- 用户名 -->
-      <el-form-item  label="用户名" prop="用户名" v-model="loginForm.loginName">
-        <el-input  v-model="loginForm.loginName" placeholder="请输入用户名"></el-input>
+      <el-form-item label="用户名" prop="用户名" v-model="loginForm.loginName">
+        <el-input v-model="loginForm.loginName" placeholder="请输入用户名"></el-input>
       </el-form-item>
 
       <!-- 密码 -->
@@ -145,6 +145,16 @@ const selectNavigate = (key) => {
   activeIndex.value = key;
   router.push(key);
 };
+
+
+var _hmt = _hmt || [];
+(function () {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?64bba930890796ffe9fe2404271386d0";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+
 </script>
 
 <style scoped>
