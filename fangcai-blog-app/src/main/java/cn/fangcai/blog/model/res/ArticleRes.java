@@ -26,6 +26,10 @@ public class ArticleRes {
     @Schema(description = "文章头图")
     private String picture;
 
+    @Schema(description = "状态：0-未发布，1-已发布")
+    private Byte status;
+
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;

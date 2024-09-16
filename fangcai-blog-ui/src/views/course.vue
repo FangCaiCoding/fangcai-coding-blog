@@ -7,7 +7,6 @@
 </template>
 
 <script setup>
-import BasePage from "../layout/base-page.vue";
 
 </script>
 

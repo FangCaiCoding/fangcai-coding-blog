@@ -7,3 +7,8 @@ spring:
     active: dev
   application:
     name: fangcai-blog-app
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false

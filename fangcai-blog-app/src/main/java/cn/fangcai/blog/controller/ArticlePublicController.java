@@ -3,8 +3,11 @@ package cn.fangcai.blog.controller;
 import cn.fangcai.blog.consts.ArticleStatusEnum;
 import cn.fangcai.blog.consts.BlogErrorCodeEnum;
 import cn.fangcai.blog.model.req.ArticlePageReq;
+import cn.fangcai.blog.model.req.CoursePageReq;
 import cn.fangcai.blog.model.res.ArticleDetailRes;
 import cn.fangcai.blog.model.res.ArticleRes;
+import cn.fangcai.blog.model.res.CourseRes;
+import cn.fangcai.blog.service.IArticleCourseService;
 import cn.fangcai.blog.service.IArticleService;
 import cn.fangcai.common.auth.ano.FcNotCheckLogin;
 import cn.fangcai.common.model.dto.FcPageRes;
@@ -32,6 +35,8 @@ public class ArticlePublicController {
 
     @Autowired
     private IArticleService articleService;
+    @Autowired
+    private IArticleCourseService articleCourseService;
 
     @Operation(summary = "获取文章详情")
     @GetMapping("/{id}")
@@ -48,6 +53,20 @@ public class ArticlePublicController {
     public FcResult<FcPageRes<ArticleRes>> pageArticle(@RequestBody @Validated ArticlePageReq pageReq) {
         pageReq.setStatus(ArticleStatusEnum.PUBLISHED.getCode());
         return FcResult.SUCCESS(articleService.pageArticle(pageReq));
+    }
+
+
+    @Operation(summary = "获取文章教程")
+    @GetMapping("/course/{id}")
+    public FcResult<CourseRes> getById(@PathVariable Integer id) {
+        return FcResult.SUCCESS(articleCourseService.getById(id));
+    }
+
+    @Operation(summary = "分页查询教程")
+    @PostMapping("/course/page")
+    public FcResult<FcPageRes<CourseRes>> pageArticleCourse(@RequestBody @Validated CoursePageReq pageReq) {
+        pageReq.setStatus(ArticleStatusEnum.PUBLISHED.getCode());
+        return FcResult.SUCCESS(articleCourseService.pageCourse(pageReq));
     }
 
 }

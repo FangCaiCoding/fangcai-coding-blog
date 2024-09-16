@@ -74,7 +74,8 @@ public class ArticleServiceImpl implements IArticleService {
         Page<Article> page = articleRepository.lambdaQuery()
                 .like(StrUtil.isNotBlank(pageReq.getTitle()), Article::getTitle, pageReq.getTitle())
                 .eq(!Objects.isNull(pageReq.getStatus()), Article::getStatus, pageReq.getStatus())
-                .orderByDesc(Article::getOrderNum, BaseEntity::getCreateTime, Article::getId)
+                .orderByAsc(Article::getOrderNum)
+                .orderByDesc(BaseEntity::getCreateTime, Article::getId)
                 .page(new Page<>(pageReq.getPage(), pageReq.getPageSize()));
         return new FcPageRes<ArticleRes>(pageReq)
                 .total(page.getTotal())

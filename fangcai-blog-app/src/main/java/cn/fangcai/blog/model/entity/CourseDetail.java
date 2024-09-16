@@ -12,41 +12,34 @@ import lombok.Setter;
 
 /**
  * <p>
- * 文章表
+ * 文章教程-详情
  * </p>
  *
  * @author MouFangCai
- * @since 2024-08-25
+ * @since 2024-09-16
  */
 @Getter
 @Setter
-@TableName("article")
-@Schema(name = "Article", description = "文章表")
-public class Article extends BaseEntity {
+@TableName("course_detail")
+@Schema(name = "CourseDetail", description = "文章教程-详情")
+public class CourseDetail extends BaseEntity {
+
 
     @Schema(description = "主键ID")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @Schema(description = "用户ID")
-    @TableField("user_id")
-    private Integer userId;
+    @Schema(description = "文章教程ID")
+    @TableField("course_id")
+    private Integer courseId;
 
-    @Schema(description = "文章标题")
-    @TableField("title")
-    private String title;
+    @Schema(description = "文章ID")
+    @TableField("article_id")
+    private Integer articleId;
 
-    @Schema(description = "文章头图")
-    @TableField("picture")
-    private String picture;
-
-    @Schema(description = "文章摘要")
-    @TableField("summary")
-    private String summary;
-
-    @Schema(description = "状态：0-未发布，1-已发布")
-    @TableField("status")
-    private Byte status;
+    @Schema(description = "文章别名")
+    @TableField("article_alias")
+    private String articleAlias;
 
     @Schema(description = "顺序号,升序排序")
     @TableField("order_num")

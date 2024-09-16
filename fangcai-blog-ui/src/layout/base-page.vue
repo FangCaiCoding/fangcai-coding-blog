@@ -6,6 +6,20 @@
       <div class="header-left" @click="selectNavigate('/')">
         <img src="../assets/logo.jpg" alt="网站Logo" class="header-logo"/>
         <h1 class="header-title">方才coding</h1>
+        <el-menu
+            :default-active="activeIndex"
+            class="el-menu-demo"
+            mode="horizontal"
+            :ellipsis="false"
+            @select="handleSelect"
+        >
+          <el-menu-item index="0">
+            <el-icon :color="activeIndex === '0' ? 'red' : ''">
+              <HomeFilled/>
+            </el-icon>
+          </el-menu-item>
+          <el-menu-item index="1">Processing Center</el-menu-item>
+        </el-menu>
       </div>
       <!-- 中央 副标题 -->
       <div class="header-center">
@@ -61,8 +75,8 @@
   <el-dialog v-model="showLoginDialog" title="用户登录" width="400px" :close-on-click-modal="false">
     <el-form v-model="loginForm" label-width="80px">
       <!-- 用户名 -->
-      <el-form-item  label="用户名" prop="用户名" v-model="loginForm.loginName">
-        <el-input  v-model="loginForm.loginName" placeholder="请输入用户名"></el-input>
+      <el-form-item label="用户名" prop="用户名" v-model="loginForm.loginName">
+        <el-input v-model="loginForm.loginName" placeholder="请输入用户名"></el-input>
       </el-form-item>
 
       <!-- 密码 -->
@@ -76,15 +90,15 @@
       <el-button type="primary" @click="login">登录</el-button>
     </div>
   </el-dialog>
+
 </template>
 
 <script setup>
-import {reactive, ref} from "vue";
+import {defineProps, reactive, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
 import {UserFilled} from "@element-plus/icons-vue";
 import apiService from "../api/apiService.js";
-import {defineProps} from 'vue';
 import {useUserStore} from "@/stores/UserContext.js";
 
 // 定义props
@@ -111,7 +125,8 @@ const route = useRoute();
 const activeIndex = ref(route.path);
 
 // 登录弹窗
-const showLoginDialog = ref(false); // 控制登录弹窗显示
+const showLoginDialog = ref(false);
+
 const loginForm = reactive({
   loginName: "",
   password: "",
@@ -128,6 +143,7 @@ const handleAvatarClick = () => {
   }
   // 登录状态下可以进行其他用户操作
 };
+
 
 // 登录逻辑
 const login = async () => {
@@ -265,23 +281,6 @@ const selectNavigate = (key) => {
 
 .dialog-footer {
   padding: 20px 0 10px;
-}
-
-.el-dialog__header {
-  text-align: center;
-}
-
-.el-form-item {
-  margin-bottom: 20px;
-}
-
-.el-input {
-  width: 100%;
-}
-
-.el-button {
-  width: 100%;
-  height: 40px;
 }
 
 /* 打字机效果 */

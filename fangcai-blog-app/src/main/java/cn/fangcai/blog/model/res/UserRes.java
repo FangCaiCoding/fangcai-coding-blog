@@ -38,10 +38,8 @@ public class UserRes {
     private Boolean enabled;
 
     @Schema(description = "创建时间")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime createTime;
 
     @Schema(description = "更新时间")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime updateTime;
 }

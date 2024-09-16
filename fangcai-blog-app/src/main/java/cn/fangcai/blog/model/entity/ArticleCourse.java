@@ -12,17 +12,17 @@ import lombok.Setter;
 
 /**
  * <p>
- * 文章表
+ * 文章教程
  * </p>
  *
  * @author MouFangCai
- * @since 2024-08-25
+ * @since 2024-09-16
  */
 @Getter
 @Setter
-@TableName("article")
-@Schema(name = "Article", description = "文章表")
-public class Article extends BaseEntity {
+@TableName("article_course")
+@Schema(name = "ArticleCourse", description = "文章教程")
+public class ArticleCourse extends BaseEntity {
 
     @Schema(description = "主键ID")
     @TableId(value = "id", type = IdType.AUTO)
@@ -32,15 +32,15 @@ public class Article extends BaseEntity {
     @TableField("user_id")
     private Integer userId;
 
-    @Schema(description = "文章标题")
+    @Schema(description = "教程名")
     @TableField("title")
     private String title;
 
-    @Schema(description = "文章头图")
+    @Schema(description = "教程头图")
     @TableField("picture")
     private String picture;
 
-    @Schema(description = "文章摘要")
+    @Schema(description = "教程摘要")
     @TableField("summary")
     private String summary;
 

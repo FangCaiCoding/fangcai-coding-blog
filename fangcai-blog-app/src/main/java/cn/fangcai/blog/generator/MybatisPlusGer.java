@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author MouFangCai
@@ -13,17 +15,19 @@ import java.nio.file.Paths;
  */
 public class MybatisPlusGer {
 
-    private static final String dbUrl = "jdbc:mysql://xxxxx:xxx/xxx";
+    private static final String dbUrl = "jdbc:mysql://47.92.25.139:3306/dev_tohero_blog";
 
-    private static final String userName = "DbUserName";
-    private static final String password = "DbUserPwd";
+    private static final String userName = "dev_tohero_blog";
+    private static final String password = "jwrM3Dp7wAWfnFtM";
+
+    private static final List<String> tables = Arrays.asList("article_course", "course_detail");
 
     public static void main(String[] args) {
         FastAutoGenerator.create(dbUrl + "?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&serverTimezone=GMT%2B8",
                         userName, password)
                 .globalConfig(builder -> builder
                         .author("MouFangCai")
-                        .outputDir(Paths.get(System.getProperty("user.dir")) + "/src/main/java")
+                        .outputDir(Paths.get(System.getProperty("user.dir")) + "/fangcai-blog-app/src/main/java")
                         .commentDate("yyyy-MM-dd")
                         .enableSpringdoc()
                 )
@@ -42,7 +46,7 @@ public class MybatisPlusGer {
                         .enableTableFieldAnnotation()
                         .enableActiveRecord()
                 )
-                .strategyConfig(builder -> builder.addInclude("article", "article_detail"))
+                .strategyConfig(builder -> builder.addInclude(tables))
                 .templateEngine(new FreemarkerTemplateEngine())
                 .execute();
     }
