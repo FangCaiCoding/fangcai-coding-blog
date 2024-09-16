@@ -31,8 +31,6 @@
         <p class="layout-container" v-if="loading">加载中，请不要着急哟！</p>
         <p class="layout-container flashing-text" v-if="noMore">
           作者还在努力更新中！记得关注微信公众号，接收实时的更新推送！</p>
-
-
       </div>
     </template>
   </base-page>
@@ -42,9 +40,9 @@
 
 <script setup>
 import {onMounted, ref} from 'vue'
-import apiService from "../api/apiService.js";
 import {useRouter} from 'vue-router'
 import {ElMessage} from "element-plus";
+import apiService from "@/api/apiService.js";
 
 const router = useRouter()
 // 定义响应式数据
@@ -52,7 +50,6 @@ const articles = ref([
   {
     id: 1,
     title: "",
-    content: "",
     createTime: "",
     category: "",
     readCt: 100,
@@ -159,22 +156,6 @@ const viewArticle = (id) => {
   color: #999;
 }
 
-.flashing-text {
-  animation: color-flash 1.5s infinite; /* 定义动画时间与循环次数 */
-}
-
-/* 颜色闪动的动画 */
-@keyframes color-flash {
-  0% {
-    color: #ff0000; /* 红色 */
-  }
-  50% {
-    color: #00ff00; /* 绿色 */
-  }
-  100% {
-    color: #ff0000; /* 回到红色 */
-  }
-}
 
 @media (max-width: 768px) {
   .article-title {

@@ -3,17 +3,23 @@ import app from "../App.vue";
 
 const routes = [
     {
-        path: '/',
-        name: 'home',
-        component: () => import('@/views/home.vue')
-    },
-    {
         path: '/test',
         name: 'test',
         component: () => import('@/views/test.vue')
     },
     {
-        path: '/course',
+        path: '/',
+        name: 'home',
+        component: () => import('@/views/home.vue')
+    },
+
+    {
+        path: '/courses',
+        name: 'courses',
+        component: () => import('@/views/course-list.vue')
+    },
+    {
+        path: '/course/:id',
         name: 'course',
         component: () => import('@/views/course.vue')
     },

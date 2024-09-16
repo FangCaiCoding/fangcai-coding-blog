@@ -6,11 +6,13 @@ import router from './router'
 import ElementPlus from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import './components/css/home.css';
+import './components/css/loading.css';
 import BackToTop from "./components/vue/backToTop.vue";
 import {createPinia} from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import baiduAnalytics from './components/js/baiduAnalytics';
 import BasePage from "./layout/base-page.vue";
+
 
 const app = createApp(App)
 console.debug(import.meta.env.VITE_API_URL)
@@ -28,7 +30,6 @@ app.use(ElementPlus, {locale: zhCn})
 
 // 使用插件时传递 router 实例
 app.use(baiduAnalytics, { router });
-
 // 确保在插件注册之后监听路由变化
 app.use(router);
 

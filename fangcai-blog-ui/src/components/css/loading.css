@@ -1,0 +1,17 @@
+
+.flashing-text {
+    animation: color-flash 1.5s infinite; /* 定义动画时间与循环次数 */
+}
+
+/* 颜色闪动的动画 */
+@keyframes color-flash {
+    0% {
+        color: #ff0000; /* 红色 */
+    }
+    50% {
+        color: #00ff00; /* 绿色 */
+    }
+    100% {
+        color: #ff8721;
+    }
+}

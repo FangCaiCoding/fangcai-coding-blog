@@ -17,12 +17,19 @@ const getArticle = (id) => {
     return axiosInst.get("/article/" + id);
 }
 
-const addArticle = (articleSaveReq ={}) => {
+const addArticle = (articleSaveReq = {}) => {
     return axiosInst.post("/article", articleSaveReq);
 }
-const editArticle = (articleSaveReq ={}) => {
+const editArticle = (articleSaveReq = {}) => {
     return axiosInst.put("/article", articleSaveReq);
 }
+
+
+// 教程相关api
+const pagePublicCourse = (pageReq ={}) => {
+    return axiosInst.post("/article/public/course/page",pageReq);
+}
+
 
 export default {
     loginByName,
@@ -31,4 +38,5 @@ export default {
     editArticle,
     addArticle,
     getArticle,
+    pagePublicCourse,
 }

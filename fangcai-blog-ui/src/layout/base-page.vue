@@ -16,7 +16,7 @@
           style="padding-left: 20px; --el-menu-active-color: #ff8721;"
       >
         <el-menu-item index="/">首页</el-menu-item>
-        <el-menu-item index="/course">教程</el-menu-item>
+        <el-menu-item index="/courses">教程</el-menu-item>
       </el-menu>
 
       <!-- 中央 副标题 -->
@@ -161,15 +161,6 @@ const selectNavigate = (key) => {
   activeIndex.value = key;
   router.push(key);
 };
-
-
-var _hmt = _hmt || [];
-(function () {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?64bba930890796ffe9fe2404271386d0";
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-})();
 
 </script>
 
