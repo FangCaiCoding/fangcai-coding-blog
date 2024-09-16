@@ -2,20 +2,20 @@ import {createApp} from 'vue'
 import App from './App.vue'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-import indexRouter from './router'
+import router from './router'
 import ElementPlus from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import './components/css/home.css';
 import BackToTop from "./components/vue/backToTop.vue";
 import {createPinia} from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import baiduAnalytics from './components/js/baiduAnalytics';
 
 const app = createApp(App)
 console.debug(import.meta.env.VITE_API_URL)
 const pinia = createPinia()
 //将插件添加到 pinia 实例上
 pinia.use(piniaPluginPersistedstate)
-app.use(indexRouter)
 app.use(pinia)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
@@ -23,5 +23,12 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 // 注册全局组件
 app.component('BackToTop', BackToTop);
 app.use(ElementPlus, {locale: zhCn})
-app.mount('#app')
 
+// 使用插件时传递 router 实例
+app.use(baiduAnalytics, { router });
+
+app.use(router);
+// 确保在插件注册之后监听路由变化
+app.use(router);
+
+app.mount('#app')
