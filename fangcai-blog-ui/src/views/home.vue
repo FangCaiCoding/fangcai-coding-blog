@@ -1,6 +1,5 @@
 <template>
 
-
   <base-page>
     <template v-slot:main-content>
       <div class="content-class" v-infinite-scroll="loadMoreArticles" :infinite-scroll-disabled="articleScrollDisabled"
@@ -43,7 +42,6 @@
 
 <script setup>
 import {onMounted, ref} from 'vue'
-import BasePage from "../layout/base-page.vue";
 import apiService from "../api/apiService.js";
 import {useRouter} from 'vue-router'
 import {ElMessage} from "element-plus";

@@ -10,6 +10,7 @@ import BackToTop from "./components/vue/backToTop.vue";
 import {createPinia} from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import baiduAnalytics from './components/js/baiduAnalytics';
+import BasePage from "./layout/base-page.vue";
 
 const app = createApp(App)
 console.debug(import.meta.env.VITE_API_URL)
@@ -22,13 +23,14 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 // 注册全局组件
 app.component('BackToTop', BackToTop);
+app.component('BasePage', BasePage);
 app.use(ElementPlus, {locale: zhCn})
 
 // 使用插件时传递 router 实例
 app.use(baiduAnalytics, { router });
 
-app.use(router);
 // 确保在插件注册之后监听路由变化
 app.use(router);
 
 app.mount('#app')
+

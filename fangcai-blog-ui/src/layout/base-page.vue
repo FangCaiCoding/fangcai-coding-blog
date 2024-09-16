@@ -6,25 +6,24 @@
       <div class="header-left" @click="selectNavigate('/')">
         <img src="../assets/logo.jpg" alt="网站Logo" class="header-logo"/>
         <h1 class="header-title">方才coding</h1>
-        <el-menu
-            :default-active="activeIndex"
-            class="el-menu-demo"
-            mode="horizontal"
-            :ellipsis="false"
-            @select="handleSelect"
-        >
-          <el-menu-item index="0">
-            <el-icon :color="activeIndex === '0' ? 'red' : ''">
-              <HomeFilled/>
-            </el-icon>
-          </el-menu-item>
-          <el-menu-item index="1">Processing Center</el-menu-item>
-        </el-menu>
       </div>
+
+      <el-menu
+          :default-active="activeIndex"
+          mode="horizontal"
+          :ellipsis="false"
+          @select="selectNavigate"
+          style="padding-left: 20px; --el-menu-active-color: #ff8721;"
+      >
+        <el-menu-item index="/">首页</el-menu-item>
+        <el-menu-item index="/course">教程</el-menu-item>
+      </el-menu>
+
       <!-- 中央 副标题 -->
       <div class="header-center">
         <p class="header-subtitle">From Zero To Hero！积跬步以至千里！</p>
       </div>
+
       <!-- 右侧 用户信息 -->
       <div class="header-right">
         <el-avatar
@@ -158,6 +157,7 @@ const login = async () => {
 
 // 导航栏选择逻辑
 const selectNavigate = (key) => {
+  console.debug(key)
   activeIndex.value = key;
   router.push(key);
 };
@@ -218,7 +218,7 @@ var _hmt = _hmt || [];
 
 .header-center {
   flex: 1;
-  text-align: center;
+  padding-left: 100px;
 }
 
 .header-subtitle {
@@ -230,8 +230,29 @@ var _hmt = _hmt || [];
   white-space: nowrap; /* 防止换行 */
   overflow: hidden;
   border-right: 2px solid #666; /* 打字效果光标 */
-  animation: typing 3s steps(26, end), blink-caret 0.75s step-end infinite; /* 打字机动画 */
+  animation: typing 2.5s steps(20, end), blink-caret 0.85s step-end infinite; /* 打字机动画 */
   animation-fill-mode: forwards; /* 动画完成后保持最终状态 */
+}
+
+/* 打字机效果 */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 288px;
+  }
+}
+
+/* 光标闪烁效果 */
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  60% {
+    border-color: #666;
+  }
 }
 
 .sidebar-fixed {
@@ -293,30 +314,10 @@ var _hmt = _hmt || [];
   padding: 20px 0 10px;
 }
 
-/* 打字机效果 */
-@keyframes typing {
-  from {
-    width: 0;
-  }
-  to {
-    width: 27%;
-  }
-}
 
-/* 光标闪烁效果 */
-@keyframes blink-caret {
-  from,
-  to {
-    border-color: transparent;
-  }
-  50% {
-    border-color: #666;
-  }
-}
 
 .header-right {
   display: flex;
-  align-items: center;
 }
 
 .user-avatar {
