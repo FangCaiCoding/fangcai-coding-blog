@@ -14,7 +14,7 @@ import cn.fangcai.common.model.dto.FcPageRes;
  * @author MouFangCai
  * @since 2024-09-16
  */
-public interface IArticleCourseService {
+public interface ICourseService {
 
 
     Integer addCourse(CourseSaveReq saveReq);

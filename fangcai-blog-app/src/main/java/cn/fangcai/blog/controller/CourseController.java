@@ -5,7 +5,7 @@ import cn.fangcai.blog.model.req.CourseDetailSaveReq;
 import cn.fangcai.blog.model.req.CoursePageReq;
 import cn.fangcai.blog.model.req.CourseSaveReq;
 import cn.fangcai.blog.model.res.CourseRes;
-import cn.fangcai.blog.service.IArticleCourseService;
+import cn.fangcai.blog.service.ICourseService;
 import cn.fangcai.common.auth.FcAuthContext;
 import cn.fangcai.common.model.dto.FcPageRes;
 import cn.fangcai.common.model.dto.FcResult;
@@ -28,10 +28,10 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @Tag(name = "文章教程管理")
 @RequestMapping("/article/course")
-public class ArticleCourseController {
+public class CourseController {
 
     @Autowired
-    private IArticleCourseService courseService;
+    private ICourseService courseService;
 
     @Operation(summary = "新增文章教程")
     @PostMapping

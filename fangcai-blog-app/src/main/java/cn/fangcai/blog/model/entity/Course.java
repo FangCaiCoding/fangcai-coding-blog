@@ -20,9 +20,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("article_course")
-@Schema(name = "ArticleCourse", description = "文章教程")
-public class ArticleCourse extends BaseEntity {
+@TableName("course")
+@Schema(name = "Course", description = "文章教程")
+public class Course extends BaseEntity {
 
     @Schema(description = "主键ID")
     @TableId(value = "id", type = IdType.AUTO)

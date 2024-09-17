@@ -1,6 +1,6 @@
 package cn.fangcai.blog.mapper;
 
-import cn.fangcai.blog.model.entity.ArticleCourse;
+import cn.fangcai.blog.model.entity.Course;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author MouFangCai
  * @since 2024-09-16
  */
-public interface ArticleCourseMapper extends BaseMapper<ArticleCourse> {
+public interface CourseMapper extends BaseMapper<Course> {
 
 }

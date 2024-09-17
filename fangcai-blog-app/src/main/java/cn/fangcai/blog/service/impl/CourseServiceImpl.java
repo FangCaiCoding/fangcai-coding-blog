@@ -1,16 +1,16 @@
 package cn.fangcai.blog.service.impl;
 
-import cn.fangcai.blog.mapper.ArticleCourseMapper;
+import cn.fangcai.blog.mapper.CourseMapper;
 import cn.fangcai.blog.mapper.CourseDetailMapper;
-import cn.fangcai.blog.mapstruct.ArticleCourseConverter;
-import cn.fangcai.blog.model.entity.ArticleCourse;
+import cn.fangcai.blog.mapstruct.CourseConverter;
+import cn.fangcai.blog.model.entity.Course;
 import cn.fangcai.blog.model.entity.CourseDetail;
 import cn.fangcai.blog.model.req.CourseDetailSaveReq;
 import cn.fangcai.blog.model.req.CoursePageReq;
 import cn.fangcai.blog.model.req.CourseSaveReq;
 import cn.fangcai.blog.model.res.CourseDetailRes;
 import cn.fangcai.blog.model.res.CourseRes;
-import cn.fangcai.blog.service.IArticleCourseService;
+import cn.fangcai.blog.service.ICourseService;
 import cn.fangcai.common.model.dto.FcPageRes;
 import cn.fangcai.common.model.enums.FcErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcBusinessException;
@@ -34,10 +34,10 @@ import java.util.stream.Collectors;
  * @since 2024-09-16
  */
 @Service
-public class ArticleCourseServiceImpl implements IArticleCourseService {
+public class CourseServiceImpl implements ICourseService {
 
     @Autowired
-    private ArticleCourseRepository courseRepository;
+    private CourseRepository courseRepository;
 
     @Autowired
     private CourseDetailRepository courseDetailRepository;
@@ -45,27 +45,27 @@ public class ArticleCourseServiceImpl implements IArticleCourseService {
 
     @Override
     public Integer addCourse(CourseSaveReq saveReq) {
-        ArticleCourse articleCourse = ArticleCourseConverter.INSTANCE.toArticleCourse(saveReq);
-        courseRepository.save(articleCourse);
-        return articleCourse.getId();
+        Course Course = CourseConverter.INSTANCE.toCourse(saveReq);
+        courseRepository.save(Course);
+        return Course.getId();
     }
 
     @Override
     public Integer editCourse(CourseSaveReq editReq) {
-        ArticleCourse oldCourse = courseRepository.getById(editReq.getId());
+        Course oldCourse = courseRepository.getById(editReq.getId());
         if (oldCourse == null) {
             throw new FcBusinessException(FcErrorCodeEnum.BAD_REQUEST, "文章教程不存在");
         }
         // TODO : by mfc on 2024/8/25 暂时不做用户限制
-        ArticleCourse articleCourse = ArticleCourseConverter.INSTANCE.toArticleCourse(editReq);
-        courseRepository.updateById(articleCourse);
-        return articleCourse.getId();
+        Course Course = CourseConverter.INSTANCE.toCourse(editReq);
+        courseRepository.updateById(Course);
+        return Course.getId();
     }
 
     @Override
     public CourseRes getById(Integer id) {
-        ArticleCourse articleCourse = courseRepository.getById(id);
-        CourseRes courseRes = ArticleCourseConverter.INSTANCE.toCourseRes(articleCourse);
+        Course Course = courseRepository.getById(id);
+        CourseRes courseRes = CourseConverter.INSTANCE.toCourseRes(Course);
         if (courseRes == null) {
             return null;
         }
@@ -73,7 +73,7 @@ public class ArticleCourseServiceImpl implements IArticleCourseService {
                 .eq(CourseDetail::getCourseId, courseRes.getId())
                 .list()
                 .stream()
-                .map(ArticleCourseConverter.INSTANCE::toCourseDetailRes)
+                .map(CourseConverter.INSTANCE::toCourseDetailRes)
                 .collect(Collectors.toList());
         courseRes.setDetails(details);
         return courseRes;
@@ -81,16 +81,16 @@ public class ArticleCourseServiceImpl implements IArticleCourseService {
 
     @Override
     public FcPageRes<CourseRes> pageCourse(CoursePageReq pageReq) {
-        Page<ArticleCourse> page = courseRepository.lambdaQuery()
-                .eq(Objects.nonNull(pageReq.getStatus()), ArticleCourse::getStatus, pageReq.getStatus())
-                .like(StrUtil.isNotBlank(pageReq.getTitle()), ArticleCourse::getTitle, pageReq.getTitle())
-                .orderByAsc(ArticleCourse::getOrderNum)
-                .orderByDesc(ArticleCourse::getId)
+        Page<Course> page = courseRepository.lambdaQuery()
+                .eq(Objects.nonNull(pageReq.getStatus()), Course::getStatus, pageReq.getStatus())
+                .like(StrUtil.isNotBlank(pageReq.getTitle()), Course::getTitle, pageReq.getTitle())
+                .orderByAsc(Course::getOrderNum)
+                .orderByDesc(Course::getId)
                 .page(new Page<>(pageReq.getPage(), pageReq.getPageSize()));
 
         return new FcPageRes<CourseRes>(pageReq)
                 .total(page.getTotal())
-                .records(ArticleCourseConverter.INSTANCE.toCourseResList(page.getRecords()));
+                .records(CourseConverter.INSTANCE.toCourseResList(page.getRecords()));
     }
 
     @Override
@@ -101,21 +101,21 @@ public class ArticleCourseServiceImpl implements IArticleCourseService {
     @Override
     public Boolean uptOrderNum(Integer id, Integer orderNum) {
         return courseRepository.lambdaUpdate()
-                .set(ArticleCourse::getOrderNum, orderNum)
-                .eq(ArticleCourse::getId, id)
+                .set(Course::getOrderNum, orderNum)
+                .eq(Course::getId, id)
                 .update();
     }
 
     @Override
     public Integer addCourseDetail(CourseDetailSaveReq saveReq) {
-        CourseDetail courseDetail = ArticleCourseConverter.INSTANCE.toCourseDetail(saveReq);
+        CourseDetail courseDetail = CourseConverter.INSTANCE.toCourseDetail(saveReq);
         courseDetailRepository.save(courseDetail);
         return courseDetail.getId();
     }
 
     @Override
     public Integer editCourseDetail(CourseDetailSaveReq editReq) {
-        CourseDetail courseDetail = ArticleCourseConverter.INSTANCE.toCourseDetail(editReq);
+        CourseDetail courseDetail = CourseConverter.INSTANCE.toCourseDetail(editReq);
         courseDetailRepository.updateById(courseDetail);
         return courseDetail.getId();
     }
@@ -127,7 +127,7 @@ public class ArticleCourseServiceImpl implements IArticleCourseService {
 
 
     @Component
-    static class ArticleCourseRepository extends ServiceImpl<ArticleCourseMapper, ArticleCourse> {
+    static class CourseRepository extends ServiceImpl<CourseMapper, Course> {
 
     }
 

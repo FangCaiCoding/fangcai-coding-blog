@@ -6,7 +6,7 @@
 alter  table article modify   `order_num` int(11) unsigned NOT NULL DEFAULT '999' COMMENT '顺序号,升序排序';
 
 -- dev_tohero_blog.article definition
-CREATE TABLE `article_course` (
+CREATE TABLE `course` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `user_id` int(11) unsigned NOT NULL COMMENT '用户ID',
   `title` varchar(128) NOT NULL DEFAULT '' COMMENT '教程名',

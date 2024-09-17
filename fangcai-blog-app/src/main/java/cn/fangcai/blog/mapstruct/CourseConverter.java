@@ -1,6 +1,6 @@
 package cn.fangcai.blog.mapstruct;
 
-import cn.fangcai.blog.model.entity.ArticleCourse;
+import cn.fangcai.blog.model.entity.Course;
 import cn.fangcai.blog.model.entity.CourseDetail;
 import cn.fangcai.blog.model.req.CourseDetailSaveReq;
 import cn.fangcai.blog.model.req.CourseSaveReq;
@@ -17,17 +17,17 @@ import java.util.List;
  * @description
  */
 @Mapper
-public interface ArticleCourseConverter {
-    ArticleCourseConverter INSTANCE = Mappers.getMapper(ArticleCourseConverter.class);
+public interface CourseConverter {
+    CourseConverter INSTANCE = Mappers.getMapper(CourseConverter.class);
 
 
-    ArticleCourse toArticleCourse(CourseSaveReq saveReq);
+    Course toCourse(CourseSaveReq saveReq);
 
-    CourseRes toCourseRes(ArticleCourse articleCourse);
+    CourseRes toCourseRes(Course Course);
 
     CourseDetailRes toCourseDetailRes(CourseDetail courseDetail);
 
-    List<CourseRes> toCourseResList(List<ArticleCourse> records);
+    List<CourseRes> toCourseResList(List<Course> records);
 
     CourseDetail toCourseDetail(CourseDetailSaveReq saveReq);
 }
