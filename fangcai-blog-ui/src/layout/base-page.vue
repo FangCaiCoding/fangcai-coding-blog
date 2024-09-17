@@ -41,19 +41,25 @@
     <div class="layout-content-container">
       <el-row :gutter="10" :justify="'center'">
         <!--        存在侧边栏时，sm =19-->
-        <el-col :xs="24" :sm="showSidebar ? 19 : 24">
+        <el-col :xs="0" :sm="showLeftSidebar ? 4 : 0">
+          <!-- 第二板块：动态内容 -->
+          <div class="left-sidebar-dynamic">
+            <slot name="left-sidebar-dynamic"></slot>
+          </div>
+        </el-col>
+        <el-col :xs="24" :sm="showRightSidebar && showLeftSidebar ? 15 :
+         showRightSidebar || showLeftSidebar? 19:24">
           <slot name="main-content"></slot>
         </el-col>
-
-        <el-col :xs="0" :sm="showSidebar?5:0">
+        <el-col :xs="0" :sm="showRightSidebar?5:0">
           <!-- 第一板块：固定内容 -->
-          <div class="sidebar-fixed">
+          <div class="right-sidebar-fixed">
             <h4 class="title-class">{{ fixedTitle }}</h4>
             <img :src="qrCodeUrl" alt="QR Code" class="qr-code"/>
           </div>
           <!-- 第二板块：动态内容 -->
-          <div class="sidebar-dynamic">
-            <slot name="sidebar-dynamic"></slot>
+          <div class="right-sidebar-dynamic">
+            <slot name="right-sidebar-dynamic"></slot>
           </div>
         </el-col>
       </el-row>
@@ -102,9 +108,13 @@ import {useUserStore} from "@/stores/UserContext.js";
 
 // 定义props
 const sidebarProps = defineProps({
-  showSidebar: {
+  showRightSidebar: {
     type: Boolean,
     default: true
+  },
+  showLeftSidebar: {
+    type: Boolean,
+    default: false
   },
   fixedTitle: {
     type: String,
@@ -246,7 +256,12 @@ const selectNavigate = (key) => {
   }
 }
 
-.sidebar-fixed {
+.main-content {
+  border: 1px solid #e0e0e0; /* 为区块分隔增加边框 */
+  border-radius: 10px;
+}
+
+.right-sidebar-fixed {
   position: sticky;
   top: 65px;
   max-height: 250px;
@@ -259,7 +274,7 @@ const selectNavigate = (key) => {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 添加阴影进行分隔 */
 }
 
-.sidebar-fixed h4 {
+.right-sidebar-fixed h4 {
   font-size: 16px;
   margin: 0;
 }
@@ -268,7 +283,15 @@ const selectNavigate = (key) => {
   width: 90%;
 }
 
-.sidebar-dynamic {
+.left-sidebar-dynamic {
+  margin: 10px auto;
+  padding: 10px 10px;
+  position: sticky;
+  top: 65px;
+  border-radius: 10px;
+}
+
+.right-sidebar-dynamic {
   margin: 10px auto;
   padding: 0 10px;
   position: sticky;
@@ -306,7 +329,6 @@ const selectNavigate = (key) => {
 }
 
 
-
 .header-right {
   display: flex;
 }
@@ -339,7 +361,12 @@ const selectNavigate = (key) => {
 
 /* 响应式调整 */
 @media (max-height: 879px) {
-  .sidebar-dynamic {
+  .right-sidebar-fixed {
+    position: relative;
+    top: 0;
+  }
+
+  .right-sidebar-dynamic {
     position: sticky;
     top: 65px;
   }

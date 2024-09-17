@@ -1,9 +1,7 @@
 <template>
 
-  <base-page :show-sidebar="false">
+  <base-page :showRightSidebar="false">
     <template v-slot:main-content>
-      <el-row :gutter="10" :justify="'center'">
-        <el-col :xs="24" :sm="24">
           <MdEditor v-model="article.contentMd"
                     :theme="mdDto.theme"
                     :pageFullscreen="mdDto.pageFullscreen"
@@ -12,8 +10,6 @@
                     style="height: 750px"
                     @save="openDialog"
           />
-        </el-col>
-      </el-row>
     </template>
   </base-page>
 

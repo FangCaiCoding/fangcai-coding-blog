@@ -5,8 +5,8 @@
       <div class="content-class" v-infinite-scroll="loadMoreArticles" :infinite-scroll-disabled="articleScrollDisabled"
            infinite-scroll-distance="1">
         <el-row :gutter="20">
-          <el-col v-for="article in articles" :key="article.id" class="article-item">
-            <el-card class="article-details" shadow="hover" @click="viewArticle(article.id)"
+          <el-col v-for="article in articles" :key="article.id" class="home-el-col">
+            <el-card class="list-card" shadow="hover" @click="viewArticle(article.id)"
                      :body-style="{ padding: '20px' }">
               <h3 class="article-title">{{ article.title }}</h3>
               <p class="article-summary">{{ article.summary }}</p>
@@ -114,20 +114,7 @@ const viewArticle = (id) => {
 
 <style scoped>
 
-.article-item {
-  cursor: pointer;
-}
 
-.article-details {
-  display: flex;
-  flex-direction: column;
-}
-
-.article-details:hover {
-  .article-title{
-    color: #ff8721;
-  }
-}
 
 .author-name {
   font-weight: bold;

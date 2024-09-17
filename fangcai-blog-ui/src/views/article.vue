@@ -1,6 +1,6 @@
 <template>
 
-  <base-page>
+  <BasePage>
     <template v-slot:main-content>
       <!-- 标题栏和文章内容 -->
       <el-card class="layout-content-container">
@@ -25,13 +25,13 @@
         </div>
       </el-card>
     </template>
-    <template v-slot:sidebar-dynamic>
+    <template v-slot:right-sidebar-dynamic>
       <div class="catalog-head" >
         <span style="color: goldenrod">文章目录：</span>
         <MdCatalog class="catalog" :editorId="id" :scrollElement="scrollElement"  />
       </div>
     </template>
-  </base-page>
+  </BasePage>
 </template>
 
 

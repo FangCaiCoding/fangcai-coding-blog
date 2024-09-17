@@ -20,6 +20,7 @@
     max-width: 1290px; /* 固定最大宽度 */
     width: 100%; /* 默认宽度100%，配合max-width使内容自适应 */
     margin-top: 5px;
+    border-radius: 10px;
 }
 
 .page-content{
@@ -29,4 +30,19 @@
 
 .base-color{
     color: #ff8721;
+}
+
+.home-el-col{
+    cursor: pointer;
+}
+
+.list-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.list-card:hover {
+    .article-title{
+        color: #ff8721;
+    }
 }

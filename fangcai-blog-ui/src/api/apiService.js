@@ -26,8 +26,12 @@ const editArticle = (articleSaveReq = {}) => {
 
 
 // 教程相关api
-const pagePublicCourse = (pageReq ={}) => {
-    return axiosInst.post("/article/public/course/page",pageReq);
+const pagePublicCourse = (pageReq = {}) => {
+    return axiosInst.post("/article/public/course/page", pageReq);
+}
+
+const getPublicCourse = (id) => {
+    return axiosInst.get("/article/public/course/" + id);
 }
 
 
@@ -39,4 +43,5 @@ export default {
     addArticle,
     getArticle,
     pagePublicCourse,
+    getPublicCourse,
 }

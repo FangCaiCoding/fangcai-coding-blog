@@ -4,13 +4,12 @@
       <div class="content-class" v-infinite-scroll="loadMoreCourses" :infinite-scroll-disabled="listScrollDisabled"
            infinite-scroll-distance="1">
         <el-row :gutter="20">
-          <el-col v-for="course in courses" :key="course.id" class="article-item">
-            <el-card class="article-details" shadow="hover" @click="viewCourse(course.id)"
+          <el-col v-for="course in courses" :key="course.id" class="home-el-col">
+            <el-card class="list-card" shadow="hover" @click="viewCourse(course.id)"
                      :body-style="{ padding: '20px' }">
               <h3 class="article-title">{{ course.title }}</h3>
               <p class="article-summary">{{ course.summary }}</p>
               <div class="article-meta">
-                <span class="author-name">{{ course.author }}</span>
                 <el-icon>
                   <View/>
                 </el-icon>
@@ -19,7 +18,6 @@
                   <Comment/>
                 </el-icon>
                 {{ course.commentCt }}
-
               </div>
             </el-card>
           </el-col>
