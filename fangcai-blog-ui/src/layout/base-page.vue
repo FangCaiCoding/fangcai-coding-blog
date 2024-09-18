@@ -343,10 +343,10 @@ const selectNavigate = (key) => {
 /* 响应式调整 */
 @media (max-width: 768px) {
   .header-wrapper {
-    margin-top: 10px;
-    flex-direction: column;
-    text-align: center;
-    height: 120px;
+    height: 60px;
+    background-color: white;
+    display: flex;
+    justify-content: center; /* 或者使用 space-around, space-evenly，根据需求选择 */
   }
 
   .header-center {
@@ -354,8 +354,8 @@ const selectNavigate = (key) => {
   }
 
   .page-content {
-    padding-top: 130px;
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
   }
 }
 
