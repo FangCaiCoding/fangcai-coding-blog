@@ -1,14 +1,8 @@
 package cn.fangcai.blog.model.res;
 
-import cn.fangcai.common.model.valider.EditGroup;
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.validator.constraints.Length;
-
-import java.time.LocalDateTime;
 
 /**
  * @author MouFangCai

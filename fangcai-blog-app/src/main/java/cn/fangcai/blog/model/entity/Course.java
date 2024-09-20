@@ -52,4 +52,8 @@ public class Course extends BaseEntity {
     @TableField("order_num")
     private Integer orderNum;
 
+    @Schema(description = "阅读数")
+    @TableField("read_ct")
+    private Integer readCt;
+
 }

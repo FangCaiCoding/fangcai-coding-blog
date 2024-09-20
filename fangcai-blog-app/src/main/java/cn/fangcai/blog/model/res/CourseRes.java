@@ -1,6 +1,7 @@
 package cn.fangcai.blog.model.res;
 
 import cn.fangcai.blog.model.dto.CourseDto;
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,6 +24,9 @@ public class CourseRes extends CourseDto {
 
     @Schema(description = "顺序号,升序排序")
     private Integer orderNum;
+
+    @Schema(description = "阅读数")
+    private Integer readCt;
 
     @Schema(description = "教程详情")
     private List<CourseDetailRes> details;

@@ -3,6 +3,7 @@ package cn.fangcai.blog.service.impl;
 import cn.fangcai.blog.mapper.CourseMapper;
 import cn.fangcai.blog.mapper.CourseDetailMapper;
 import cn.fangcai.blog.mapstruct.CourseConverter;
+import cn.fangcai.blog.model.entity.Article;
 import cn.fangcai.blog.model.entity.Course;
 import cn.fangcai.blog.model.entity.CourseDetail;
 import cn.fangcai.blog.model.req.CourseDetailSaveReq;
@@ -77,6 +78,14 @@ public class CourseServiceImpl implements ICourseService {
                 .collect(Collectors.toList());
         courseRes.setDetails(details);
         return courseRes;
+    }
+
+    @Override
+    public Boolean incrReadCt(Integer id) {
+        return courseRepository.lambdaUpdate()
+                .setSql("read_ct = read_ct + 1")
+                .eq(Course::getId, id)
+                .update();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package cn.fangcai.blog.model.res;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -28,6 +29,9 @@ public class ArticleRes {
 
     @Schema(description = "状态：0-未发布，1-已发布")
     private Byte status;
+
+    @Schema(description = "阅读数")
+    private Integer readCt;
 
 
     private LocalDateTime createTime;

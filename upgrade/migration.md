@@ -1,4 +1,12 @@
 # 升级记录
+## 1.0.20240920
+1. 增加文章&专栏阅读数；
+
+```sql
+alter table article add column  `read_ct` int(11) unsigned NOT null default 0 COMMENT '阅读数';
+alter table course add column  `read_ct` int(11) unsigned NOT null default 0 COMMENT '阅读数';
+```
+
 ## 1.0.20240916
 1. 专栏管理；
 

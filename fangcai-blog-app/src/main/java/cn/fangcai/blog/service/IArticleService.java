@@ -22,6 +22,8 @@ public interface IArticleService {
 
     ArticleDetailRes getDetail(Integer id);
 
+    Boolean incrReadCt(Integer id);
+
     FcPageRes<ArticleRes> pageArticle(ArticlePageReq pageReq);
 
     Boolean delArticle(Integer id);

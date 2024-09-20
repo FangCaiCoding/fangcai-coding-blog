@@ -23,6 +23,7 @@ public interface ICourseService {
 
     CourseRes getById(Integer id);
 
+    Boolean incrReadCt(Integer id);
 
     FcPageRes<CourseRes> pageCourse(CoursePageReq pageReq);
 

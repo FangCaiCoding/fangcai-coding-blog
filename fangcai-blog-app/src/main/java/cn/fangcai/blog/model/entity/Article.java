@@ -44,6 +44,10 @@ public class Article extends BaseEntity {
     @TableField("summary")
     private String summary;
 
+    @Schema(description = "阅读数")
+    @TableField("read_ct")
+    private Integer readCt;
+
     @Schema(description = "状态：0-未发布，1-已发布")
     @TableField("status")
     private Byte status;
