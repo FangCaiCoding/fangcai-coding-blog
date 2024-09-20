@@ -8,10 +8,10 @@
           <el-col v-for="article in articles" :key="article.id" class="home-el-col">
             <el-card class="list-card" shadow="hover" @click="viewArticle(article.id)"
                      :body-style="{ padding: '20px' }">
-              <h3 class="article-title">{{ article.title }}</h3>
-              <p class="article-summary">{{ article.summary }}</p>
-              <div class="article-meta">
-                <span class="author-name">{{ article.author }}</span>
+              <h3 class="item-title">{{ article.title }}</h3>
+              <p class="item-summary">{{ article.summary }}</p>
+              <div class="item-meta">
+                发布于 {{ article.createTime }}
                 <el-icon>
                   <View/>
                 </el-icon>
@@ -19,11 +19,7 @@
                 <el-icon>
                   <Comment/>
                 </el-icon>
-                {{ article.commentCt }}
-                <el-icon>
-                  <Star/>
-                </el-icon>
-                {{ article.likeCt }}
+                666
               </div>
             </el-card>
           </el-col>
@@ -114,44 +110,5 @@ const viewArticle = (id) => {
 
 <style scoped>
 
-
-
-.author-name {
-  font-weight: bold;
-}
-
-.article-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 0 0 5px;
-  padding-left: 10px;
-  padding-bottom: 10px;
-}
-
-
-.article-summary {
-  margin: 5px 0 20px 10px;
-  color: #666;
-  font-size: 14px;
-}
-
-.article-meta {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  font-size: 12px;
-  color: #999;
-}
-
-
-@media (max-width: 768px) {
-  .article-title {
-    font-size: 16px;
-  }
-
-  .article-meta {
-    font-size: 10px;
-  }
-}
 
 </style>

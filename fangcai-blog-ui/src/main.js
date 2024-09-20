@@ -7,6 +7,8 @@ import ElementPlus from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import './components/css/home.css';
 import './components/css/loading.css';
+import './components/css/list-item.css'
+import './components/css/article.css'
 import BackToTop from "./components/vue/backToTop.vue";
 import {createPinia} from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'

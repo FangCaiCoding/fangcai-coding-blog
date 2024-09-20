@@ -35,14 +35,3 @@
 .home-el-col{
     cursor: pointer;
 }
-
-.list-card {
-    display: flex;
-    flex-direction: column;
-}
-
-.list-card:hover {
-    .article-title{
-        color: #ff8721;
-    }
-}

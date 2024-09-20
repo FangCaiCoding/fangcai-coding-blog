@@ -17,16 +17,12 @@
         <!-- 标题栏 -->
         <h1 class="article-title">{{ article.title }}</h1>
         <div class="article-meta">
-          <span class="meta-item">{{ article.author }}</span>
-          <span class="meta-item">{{ article.createTime }}/</span>
-          <span class="meta-item">{{ article.readCount }} 阅读/</span>
-          <span class="meta-item">{{ article.likes }} 收藏/</span>
-          <span class="meta-item">{{ wordCount }} 字/</span>
+          <span class="meta-item">发布于 {{ article.createTime }}</span>
+          <span class="meta-item"> 阅读：{{ article.readCt }}</span>
+          <span class="meta-item"> 字数：{{ wordCount }}</span>
           <span class="meta-item">
-            <strong>预计阅读：</strong>{{ readingTime }} 分钟
+            <strong> 预计阅读：</strong>{{ readingTime }} 分钟
           </span>
-          <span class="edit-button" @click="editArticle(route.params.id)" v-if="userStore.isLogin()">
-            <strong>编辑</strong></span>
         </div>
 
         <!-- 文章内容 -->
@@ -132,52 +128,7 @@ onMounted(async () => {
   cursor: pointer;
 }
 
-.selected-article {
-  color: #ff8721;
-}
-
 .course-article:hover {
   color: #ff8721;
-}
-
-
-.article-title {
-  text-align: center;
-  font-size: 28px;
-  margin-bottom: 30px;
-}
-
-.article-meta {
-  flex-wrap: wrap;
-  font-size: 14px;
-  color: #666;
-}
-
-.article-content {
-  min-height: 600px;
-}
-
-.meta-item {
-  margin-right: 5px;
-}
-
-.edit-button {
-  padding: 0 10px; /* 编辑按钮的左右内边距 */
-  cursor: pointer; /* 鼠标悬停时显示为手型 */
-  white-space: nowrap; /* 防止文本换行 */
-}
-
-.edit-button:hover {
-  color: #ff8721;
-}
-
-.catalog-head {
-  margin-top: 20px;
-  overflow-x: auto;
-}
-
-.catalog {
-  margin: 10px;
-  max-height: 450px;
 }
 </style>

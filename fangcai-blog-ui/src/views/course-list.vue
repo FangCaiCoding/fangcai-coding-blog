@@ -7,9 +7,10 @@
           <el-col v-for="course in courses" :key="course.id" class="home-el-col">
             <el-card class="list-card" shadow="hover" @click="viewCourse(course.id)"
                      :body-style="{ padding: '20px' }">
-              <h3 class="article-title">{{ course.title }}</h3>
-              <p class="article-summary">{{ course.summary }}</p>
-              <div class="article-meta">
+              <h3 class="item-title">{{ course.title }}</h3>
+              <p class="item-summary">{{ course.summary }}</p>
+              <div class="item-meta">
+                发布于 {{ course.createTime }}
                 <el-icon>
                   <View/>
                 </el-icon>
@@ -17,7 +18,7 @@
                 <el-icon>
                   <Comment/>
                 </el-icon>
-                {{ course.commentCt }}
+                666
               </div>
             </el-card>
           </el-col>

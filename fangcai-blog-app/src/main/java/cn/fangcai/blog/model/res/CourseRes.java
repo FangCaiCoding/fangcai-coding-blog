@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -27,6 +28,11 @@ public class CourseRes extends CourseDto {
 
     @Schema(description = "阅读数")
     private Integer readCt;
+
+    private LocalDateTime createTime;
+
+    private LocalDateTime updateTime;
+
 
     @Schema(description = "教程详情")
     private List<CourseDetailRes> details;
