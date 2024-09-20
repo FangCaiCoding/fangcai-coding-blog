@@ -32,6 +32,11 @@ const routes = [
         path: '/editArticle',
         name: 'editArticle',
         component: () => import('@/views/edit-article.vue')
+    },
+    // 添加以下配置来处理所有不存在的路径
+    {
+        path: '/:pathMatch(.*)*',  // 捕获所有未定义的路由
+        redirect: '/',         // 重定向到首页或你指定的页面
     }
 ]
 
