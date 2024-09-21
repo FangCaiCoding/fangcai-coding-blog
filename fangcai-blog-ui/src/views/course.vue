@@ -4,10 +4,10 @@
     <template v-slot:left-sidebar-dynamic>
       <span style="color: goldenrod">教程目录：</span>
       <p :class="[ 'course-article', { 'selected-article': courseArticle.articleId === selectedArticleId } ]"
-         v-for="courseArticle in courseDetail.details"
+         v-for="(courseArticle,index) in courseDetail.details"
          :key="courseArticle.id"
          @click="getArticle(courseArticle.articleId)">
-        {{ courseArticle.articleAlias }}
+        {{index+1}}. {{ courseArticle.articleAlias }}
       </p>
     </template>
 
