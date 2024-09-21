@@ -23,6 +23,8 @@
           <span class="meta-item">
             <strong> 预计阅读：</strong>{{ readingTime }} 分钟
           </span>
+          <span class="edit-button" @click="editArticle(article.id)" v-if="userStore.isLogin()">
+            <strong>编辑</strong></span>
         </div>
 
         <!-- 文章内容 -->
@@ -107,6 +109,12 @@ const getArticle = async (articleId) => {
   })
 }
 
+const editArticle = (id) => {
+  console.debug(`编辑文章详情：${id}`);
+  // 使用 vue-router 文章编辑页
+  router.push({name: 'editArticle', query: {id: id}})
+}
+
 onMounted(async () => {
   await apiService.getPublicCourse(route.params.id).then(res => {
     Object.assign(courseDetail, res)
@@ -126,6 +134,9 @@ onMounted(async () => {
 
 .course-article {
   cursor: pointer;
+}
+.selected-article {
+  color: #ff8721;
 }
 
 .course-article:hover {
