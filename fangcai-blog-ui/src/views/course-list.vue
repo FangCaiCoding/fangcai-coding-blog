@@ -108,7 +108,6 @@ const viewCourse = (id) => {
 
 </script>
 
-
 <style scoped>
 
 </style>

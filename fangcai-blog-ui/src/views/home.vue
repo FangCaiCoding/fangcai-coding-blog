@@ -1,6 +1,5 @@
 <template>
-
-  <base-page>
+  <BasePage>
     <template v-slot:main-content>
       <div class="content-class" v-infinite-scroll="loadMoreArticles" :infinite-scroll-disabled="articleScrollDisabled"
            infinite-scroll-distance="1">
@@ -29,10 +28,8 @@
           作者还在努力更新中！记得关注微信公众号，接收实时的更新推送！</p>
       </div>
     </template>
-  </base-page>
-
+  </BasePage>
 </template>
-
 
 <script setup>
 import {onMounted, ref} from 'vue'
@@ -49,7 +46,6 @@ const articles = ref([
     createTime: "",
     category: "",
     readCt: 100,
-    likeCt: 10,
     commentCt: 5
   }
 ]);  // 存储文章列表
