@@ -72,8 +72,11 @@
         target="_blank"
         rel="noopener noreferrer"
     >
-      渝ICP备2023005465号-1
-    </a></p>
+      [渝ICP备2023005465号-1]
+    </a>
+      <a href="https://beian.mps.gov.cn/#/query/webSearch?code=50022702001130" rel="noreferrer" target="_blank">
+        [渝公网安备50022702001130]</a>
+    </p>
   </footer>
 
   <!-- 登录弹窗 -->
