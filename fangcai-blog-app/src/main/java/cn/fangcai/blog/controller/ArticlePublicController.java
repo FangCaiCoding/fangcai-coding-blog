@@ -41,7 +41,7 @@ public class ArticlePublicController {
     @Operation(summary = "获取文章详情")
     @GetMapping("/{id}")
     public FcResult<ArticleDetailRes> getDetail(@PathVariable Integer id) {
-        ArticleDetailRes detail = articleService.getDetail(id);
+        ArticleDetailRes detail = articleService.getDetail(id,true);
         if (detail != null && !ArticleStatusEnum.PUBLISHED.getCode().equals(detail.getStatus())) {
             throw new FcBusinessException(BlogErrorCodeEnum.ARTICLE_UN_PUBLISHED);
         }

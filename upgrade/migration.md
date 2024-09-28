@@ -5,21 +5,22 @@
 
 ```sql
 
-CREATE TABLE `article_template`
-(
-    `id`          int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-    `user_id`     int(11) unsigned NOT NULL COMMENT '用户ID',
-    `title`       varchar(128)     NOT NULL DEFAULT '' COMMENT '标题',
-    `content_md`  longtext COMMENT '文章内容 markdown 格式',
-    `content`     longtext COMMENT '文章内容',
-    `create_time` datetime                  DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time` datetime                  DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    `is_deleted`  tinyint(1)       NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
-    PRIMARY KEY (`id`),
-    KEY `idx_title` (`title`)
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 46
-  DEFAULT CHARSET = utf8mb4 COMMENT ='文章通用内容模板表';
+CREATE TABLE `article_template` (
+                                    `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+                                    `user_id` int(11) unsigned NOT NULL COMMENT '用户ID',
+                                    `title` varchar(128) NOT NULL DEFAULT '' COMMENT '标题',
+                                    `header_content_md` longtext COMMENT '头 内容 markdown 格式',
+                                    `footer_content_md` longtext COMMENT '尾 内容 markdown 格式',
+                                    `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                                    `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                                    `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
+                                    PRIMARY KEY (`id`),
+                                    KEY `idx_title` (`title`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COMMENT='文章通用内容模板表';
+
+
+alter table article_detail  add  `template_id` int(10) unsigned default NULL COMMENT '开头 模板id' after `article_id`;
+
 ```
 
 ## 1.0.20240920

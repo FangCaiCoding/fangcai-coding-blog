@@ -46,7 +46,7 @@ public class ArticleController {
     @Operation(summary = "获取文章详情")
     @GetMapping("/{id}")
     public FcResult<ArticleDetailRes> getDetail(@PathVariable Integer id) {
-        return FcResult.SUCCESS(articleService.getDetail(id));
+        return FcResult.SUCCESS(articleService.getDetail(id,false));
     }
 
 

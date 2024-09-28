@@ -20,7 +20,7 @@ public interface IArticleService {
 
     Integer editArticle(ArticleSaveReq saveReq);
 
-    ArticleDetailRes getDetail(Integer id);
+    ArticleDetailRes getDetail(Integer id,Boolean needTemplate);
 
     Boolean incrReadCt(Integer id);
 

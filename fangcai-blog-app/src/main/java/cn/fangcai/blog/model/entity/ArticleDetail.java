@@ -28,6 +28,10 @@ public class ArticleDetail extends BaseEntity {
     @TableId(value = "article_id", type = IdType.INPUT)
     private Integer articleId;
 
+    @Schema(description = " 模板id")
+    @TableField(value = "template_id")
+    private Integer templateId;
+
     @Schema(description = "文章内容 markdown 格式")
     @TableField("content_md")
     private String contentMd;

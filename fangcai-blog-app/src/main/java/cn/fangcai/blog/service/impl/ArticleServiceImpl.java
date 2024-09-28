@@ -2,9 +2,11 @@ package cn.fangcai.blog.service.impl;
 
 import cn.fangcai.blog.mapper.ArticleDetailMapper;
 import cn.fangcai.blog.mapper.ArticleMapper;
+import cn.fangcai.blog.mapper.ArticleTemplateMapper;
 import cn.fangcai.blog.mapstruct.ArticleConverter;
 import cn.fangcai.blog.model.entity.Article;
 import cn.fangcai.blog.model.entity.ArticleDetail;
+import cn.fangcai.blog.model.entity.ArticleTemplate;
 import cn.fangcai.blog.model.entity.base.BaseEntity;
 import cn.fangcai.blog.model.req.ArticlePageReq;
 import cn.fangcai.blog.model.req.ArticleSaveReq;
@@ -18,7 +20,6 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,8 @@ public class ArticleServiceImpl implements IArticleService {
 
     @Autowired
     private ArticleDetailRepository articleDetailRepository;
+    @Autowired
+    private ArticleTemplateRepository teamRepository;
 
     @Override
     public Integer addArticle(ArticleSaveReq saveReq) {
@@ -64,9 +67,17 @@ public class ArticleServiceImpl implements IArticleService {
     }
 
     @Override
-    public ArticleDetailRes getDetail(Integer id) {
+    public ArticleDetailRes getDetail(Integer id, Boolean needTemplate) {
         Article article = articleRepository.getById(id);
         ArticleDetail articleDetail = articleDetailRepository.getById(id);
+        if (needTemplate && articleDetail != null && articleDetail.getTemplateId() != null) {
+            ArticleTemplate template = teamRepository.getById(articleDetail.getTemplateId());
+            if (template != null) {
+                articleDetail.setContentMd(template.getHeaderContentMd()
+                        + articleDetail.getContentMd()
+                        + template.getFooterContentMd());
+            }
+        }
         return ArticleConverter.INSTANCE.toArticleDetailRes(article, articleDetail);
     }
 
@@ -113,6 +124,12 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public Boolean uptOrderNum(Integer id, Integer targetId) {
         return null;
+    }
+
+
+    @Component
+    static class ArticleTemplateRepository extends ServiceImpl<ArticleTemplateMapper, ArticleTemplate> {
+
     }
 
 

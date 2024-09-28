@@ -36,12 +36,13 @@ public class ArticleTemplate extends BaseEntity {
     @TableField("title")
     private String title;
 
-    @Schema(description = "文章内容 markdown 格式")
-    @TableField("content_md")
-    private String contentMd;
+    @Schema(description = "头 文章内容 markdown 格式")
+    @TableField("header_content_md")
+    private String headerContentMd;
 
-    @Schema(description = "文章内容")
-    @TableField("content")
-    private String content;
+    @Schema(description = "尾  文章内容 markdown 格式")
+    @TableField("footer_content_md")
+    private String footerContentMd;
+
 
 }
