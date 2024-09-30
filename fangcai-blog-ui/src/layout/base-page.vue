@@ -33,6 +33,7 @@
             placeholder="搜索"
             :suffix-icon="Search"
             @click="openSearch"
+
         />
         <el-avatar
             :icon="UserFilled"
@@ -109,7 +110,7 @@
         {{ index + 1 }}. {{ item.title }}</p>
     </div>
     <div v-else>
-      <p>没有搜索结果...</p>
+      <p style="padding-left: 15px">没有搜索结果...</p>
     </div>
   </el-dialog>
 
