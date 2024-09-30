@@ -26,10 +26,18 @@
 
       <!-- 右侧 用户信息 -->
       <div class="header-right">
+        <el-input
+            class="right-item"
+            style="width: 150px"
+            size="default"
+            placeholder="搜索"
+            :suffix-icon="Search"
+            @click="openSearch"
+        />
         <el-avatar
             :icon="UserFilled"
             :src="userStore.userContext.avatar"
-            class="user-avatar"
+            class="right-item user-avatar"
             @click="handleAvatarClick"
         >
         </el-avatar>
@@ -79,6 +87,33 @@
     </p>
   </footer>
 
+
+  <!--  搜索对话框-->
+  <el-dialog v-model="showSearchDialog" width="500px" top="10vh" :show-close="false">
+    <el-input
+        class="search-input"
+        clearable
+        v-model="searchStr"
+        placeholder="请输入搜索内容"
+        ref="searchInput"
+        :prefix-icon="Search"
+        @input="performSearch"
+        style="margin-bottom: 10px;"
+    />
+    <div v-if="searchResults.length">
+      <p v-for="(item, index) in searchResults"
+         :key="index"
+         class="search-result"
+         @click="viewArticle(item.id)"
+      >
+        {{ index + 1 }}. {{ item.title }}</p>
+    </div>
+    <div v-else>
+      <p>没有搜索结果...</p>
+    </div>
+  </el-dialog>
+
+
   <!-- 登录弹窗 -->
   <el-dialog v-model="showLoginDialog" title="用户登录" width="400px" :close-on-click-modal="false">
     <el-form v-model="loginForm" label-width="80px">
@@ -102,10 +137,10 @@
 </template>
 
 <script setup>
-import {defineProps, reactive, ref} from "vue";
+import {defineProps, nextTick, reactive, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
-import {UserFilled} from "@element-plus/icons-vue";
+import {Search, UserFilled} from "@element-plus/icons-vue";
 import apiService from "../api/apiService.js";
 import {useUserStore} from "@/stores/UserContext.js";
 
@@ -121,7 +156,7 @@ const sidebarProps = defineProps({
   },
   fixedTitle: {
     type: String,
-    default: '作者微信公众号'
+    default: '扫码关注，领取资料'
   },
   qrCodeUrl: {
     type: String,
@@ -156,6 +191,40 @@ const handleAvatarClick = () => {
   // 登录状态下可以进行其他用户操作
 };
 
+const showSearchDialog = ref(false);
+const searchStr = ref('');
+const searchResults = ref([]);
+
+const openSearch = () => {
+  showSearchDialog.value = true;
+  nextTick(() => {
+    const searchInput = document.querySelector('.search-input_inner');
+    if (searchInput) {
+      searchInput.focus(); // 聚焦到输入框
+    }
+  });
+};
+const performSearch = async () => {
+  const trimmedQuery = searchStr.value.trim();
+  if (!trimmedQuery) {
+    searchResults.value = [];
+    return;
+  }
+  const pagePublicArticle = await apiService.pagePublicArticle({
+    page: 1,
+    pageSize: 50,
+    title: trimmedQuery
+  });
+  searchResults.value = pagePublicArticle.records;
+};
+
+const viewArticle = (id) => {
+  showSearchDialog.value=false
+  // 跳转到文章详情页逻辑
+  console.log(`查看文章详情：${id}`);
+  // 使用 vue-router 跳转到文章详情页
+  router.push({name: 'article', params: {id: id}})
+}
 
 // 登录逻辑
 const login = async () => {
@@ -334,6 +403,11 @@ const selectNavigate = (key) => {
 
 .header-right {
   display: flex;
+  align-items: center;
+}
+
+.right-item {
+  margin-left: 20px;
 }
 
 .user-avatar {
@@ -342,6 +416,21 @@ const selectNavigate = (key) => {
   height: 40px;
 }
 
+.search-input {
+  height: 40px;
+  font-size: 18px;
+}
+
+.search-result {
+  margin-top: 10px;
+  padding-left: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.search-result:hover {
+  color: #ff8721;
+}
 
 /* 响应式调整 */
 @media (max-width: 768px) {

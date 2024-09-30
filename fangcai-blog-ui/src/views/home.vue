@@ -98,7 +98,6 @@ const viewArticle = (id) => {
   console.log(`查看文章详情：${id}`);
   // 使用 vue-router 跳转到文章详情页
   router.push({name: 'article', params: {id: id}})
-
 }
 
 

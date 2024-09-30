@@ -24,9 +24,9 @@
       </el-card>
     </template>
     <template v-slot:right-sidebar-dynamic>
-      <div class="catalog-head" >
+      <div class="catalog-head">
         <span style="color: goldenrod">文章目录：</span>
-        <MdCatalog class="catalog" :editorId="id" :scrollElement="scrollElement"  />
+        <MdCatalog class="catalog" :editorId="id" :scrollElement="scrollElement"/>
       </div>
     </template>
   </BasePage>
@@ -34,12 +34,12 @@
 
 
 <script setup>
-import {ref, computed, onMounted} from 'vue';
+import {computed, onMounted, onUpdated, ref} from 'vue';
 import {useRoute} from "vue-router";
 import BasePage from "../layout/base-page.vue";
 import apiService from "../api/apiService.js";
 import router from "../router/index.js";
-import {MdPreview, MdCatalog} from 'md-editor-v3';
+import {MdCatalog, MdPreview} from 'md-editor-v3';
 import 'md-editor-v3/lib/preview.css';
 import {useUserStore} from "@/stores/UserContext.js";
 
@@ -70,14 +70,21 @@ const readingTime = computed(() => {
   return Math.ceil(wordCount.value / 2000);
 });
 
+onUpdated(async () => {
+  await getArticle(route.params.id);
+})
+
 onMounted(async () => {
-  // 这里可以进行数据请求，加载文章详情
-  article.value = await apiService.getPublicArticle(route.params.id);
+  await getArticle(route.params.id);
+});
+
+const getArticle = async (id) => {
+  article.value = await apiService.getPublicArticle(id);
   if (article.value == null) {
     article.value = {}
     await router.push('/');
   }
-});
+}
 
 const editArticle = (id) => {
   console.debug(`编辑文章详情：${id}`);
