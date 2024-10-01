@@ -1,13 +1,31 @@
 
 .list-card {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    height: 150px;
+
 }
 
 .list-card:hover {
     .item-title {
         color: #ff8721;
     }
+}
+
+.list-card {
+    display: flex;
+    align-items: center; /* 图片和内容顶部对齐 */
+}
+
+.item-img {
+    width: 100px; /* 固定宽度 */
+    height: 120px;
+    object-fit: scale-down; /*保持原有尺寸比例。 */
+    border-radius: 5px; /* 图片圆角处理 */
+}
+
+.item-content {
+    flex-direction: column;
 }
 
 .item-title {
@@ -18,9 +36,16 @@
     padding-bottom: 10px;
 }
 
-
 .item-summary {
     margin: 5px 0 20px 10px;
+    height: 38px;
+    padding-right: 15px;
+    overflow: hidden;
+    line-height: 1.5;
+    display: -webkit-box; /* 使用弹性盒子模型 */
+    -webkit-line-clamp: 2; /* 限制显示2行 */
+    -webkit-box-orient: vertical; /* 垂直布局 */
+    text-overflow: ellipsis; /* 超出显示省略号 */
     color: #666;
     font-size: 14px;
 }

@@ -5,20 +5,22 @@
            infinite-scroll-distance="1">
         <el-row :gutter="20">
           <el-col v-for="course in courses" :key="course.id" class="home-el-col">
-            <el-card class="list-card" shadow="hover" @click="viewCourse(course.id)"
-                     :body-style="{ padding: '20px' }">
-              <h3 class="item-title">{{ course.title }}</h3>
-              <p class="item-summary">{{ course.summary }}</p>
-              <div class="item-meta">
-                发布于 {{ course.createTime }}
-                <el-icon>
-                  <View/>
-                </el-icon>
-                {{ course.readCt }}
-                <el-icon>
-                  <Comment/>
-                </el-icon>
-                666
+            <el-card class="list-card" shadow="hover" @click="viewCourse(course.id)" :body-style="{ padding: '20px', display: 'flex' }">
+              <img :src="course.picture" class="item-img"   alt=""/>
+              <div class="item-content">
+                <h3 class="item-title">{{ course.title }}</h3>
+                <p class="item-summary">{{ course.summary }}</p>
+                <div class="item-meta">
+                  发布于 {{ course.createTime }}
+                  <el-icon>
+                    <View/>
+                  </el-icon>
+                  {{ course.readCt }}
+                  <el-icon>
+                    <Comment/>
+                  </el-icon>
+                  666
+                </div>
               </div>
             </el-card>
           </el-col>
