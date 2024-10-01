@@ -18,7 +18,7 @@ public interface IArticleService {
 
     Integer addArticle(ArticleSaveReq saveReq);
 
-    Integer editArticle(ArticleSaveReq saveReq);
+    Integer editArticle(ArticleSaveReq editReq);
 
     ArticleDetailRes getDetail(Integer id,Boolean needTemplate);
 

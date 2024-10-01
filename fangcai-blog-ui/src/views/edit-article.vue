@@ -1,27 +1,36 @@
 <template>
 
-  <base-page :showRightSidebar="false">
+  <BasePage :showRightSidebar="false">
     <template v-slot:main-content>
-          <MdEditor v-model="article.contentMd"
-                    :theme="mdDto.theme"
-                    :pageFullscreen="mdDto.pageFullscreen"
-                    :preview="mdDto.preview"
-                    @onHtmlChanged="onHtmlChanged"
-                    style="height: 750px"
-                    @save="openDialog"
-          />
+      <MdEditor v-model="article.contentMd"
+                :theme="mdDto.theme"
+                :pageFullscreen="mdDto.pageFullscreen"
+                :preview="mdDto.preview"
+                @onHtmlChanged="onHtmlChanged"
+                style="height: 750px"
+                @save="openDialog"
+      />
     </template>
-  </base-page>
+  </BasePage>
 
   <!-- 弹出表单 -->
-  <el-dialog v-model="dialogVisible" title="编辑文章" width="600px">
+  <el-dialog v-model="dialogVisible" title="编辑文章" width="600px" label-width="100px">
     <el-form :model="article">
-      <el-form-item label="文章标题" :label-width="formLabelWidth">
+      <el-form-item label="文章标题" >
         <el-input v-model="article.title"></el-input>
       </el-form-item>
-      <el-form-item label="文章摘要" :label-width="formLabelWidth">
+      <el-form-item label="文章摘要" >
         <el-input type="textarea" v-model="article.summary" :rows="5"></el-input>
         <el-button type="text" @click="extractSummary">从内容提取摘要</el-button>
+      </el-form-item>
+      <el-form-item label="是否发布">
+        <el-select v-model="article.status" placeholder="请选择状态">
+          <el-option label="不发布" :value="0"></el-option>
+          <el-option label="发布" :value="1"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="展示顺序">
+        <el-input-number v-model="article.orderNum" :min="1"></el-input-number>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -35,12 +44,12 @@
 
 <script setup>
 import {onMounted, reactive, ref} from 'vue';
-import {MdCatalog, MdEditor, MdPreview} from 'md-editor-v3';
+import {MdEditor} from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
-import BasePage from "../layout/base-page.vue";
 import {ElMessage} from 'element-plus';
 import apiService from "../api/apiService.js";
 import {useRoute} from "vue-router";
+import BasePage from "@/layout/base-page.vue";
 
 const route = useRoute();
 const dialogVisible = ref(false);
@@ -57,19 +66,13 @@ const article = reactive({
   title: '',
   summary: '',
   content: '',
+  status: 0,
+  orderNum: 999,
   contentMd: '',
   createTime: '',
   updateTime: '',
 })
 
-onMounted(async () => {
-  if (route.query.id === undefined) {
-    return;
-  }
-  // 这里可以进行数据请求，加载文章详情
-  const newArticle = await apiService.getArticle(route.query.id);
-  Object.assign(article, newArticle);  // 逐个更新 article 对象的属性
-});
 
 // 打开弹窗
 const openDialog = () => {
@@ -84,6 +87,7 @@ const extractSummary = () => {
 
 // 保存文章
 const saveArticle = async () => {
+  article.editContent = true;
   if (article.id > 0) {
     article.id = await apiService.editArticle(article);
   } else {
@@ -99,6 +103,15 @@ const saveArticle = async () => {
 const onHtmlChanged = (htmlContent) => {
   article.content = htmlContent
 };
+
+onMounted(async () => {
+  if (route.query.id === undefined || route.query.id === null) {
+    return;
+  }
+  // 这里可以进行数据请求，加载文章详情
+  const newArticle = await apiService.getArticle(route.query.id);
+  Object.assign(article, newArticle);  // 逐个更新 article 对象的属性
+});
 
 </script>
 

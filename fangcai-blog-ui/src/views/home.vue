@@ -44,11 +44,11 @@ const articles = ref([
     id: 1,
     title: "",
     createTime: "",
-    category: "",
     readCt: 100,
     commentCt: 5
   }
-]);  // 存储文章列表
+]);
+
 const loading = ref(false);  // 标记是否正在加载
 const noMore = ref(false);
 const isInitArticleList = ref(false);

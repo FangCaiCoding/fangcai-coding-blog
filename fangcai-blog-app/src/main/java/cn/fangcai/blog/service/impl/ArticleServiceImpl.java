@@ -54,15 +54,17 @@ public class ArticleServiceImpl implements IArticleService {
     }
 
     @Override
-    public Integer editArticle(ArticleSaveReq saveReq) {
-        Article oldArticle = articleRepository.getById(saveReq.getId());
+    public Integer editArticle(ArticleSaveReq editReq) {
+        Article oldArticle = articleRepository.getById(editReq.getId());
         if (oldArticle == null) {
             throw new FcBusinessException(FcErrorCodeEnum.BAD_REQUEST, "文章不存在");
         }
         // TODO : by mfc on 2024/8/25 暂时不做用户限制
-        Article article = ArticleConverter.INSTANCE.toArticle(saveReq);
+        Article article = ArticleConverter.INSTANCE.toArticle(editReq);
         articleRepository.updateById(article);
-        articleDetailRepository.updateById(ArticleConverter.INSTANCE.toArticleDetail(article, saveReq));
+        if (editReq.getEditContent()) {
+            articleDetailRepository.updateById(ArticleConverter.INSTANCE.toArticleDetail(article, editReq));
+        }
         return article.getId();
     }
 

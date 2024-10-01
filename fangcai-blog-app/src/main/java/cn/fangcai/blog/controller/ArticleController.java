@@ -39,8 +39,8 @@ public class ArticleController {
 
     @Operation(summary = "编辑文章")
     @PutMapping
-    public FcResult<Integer> editArticle(@RequestBody @Validated ArticleSaveReq saveReq) {
-        return FcResult.SUCCESS(articleService.editArticle(saveReq));
+    public FcResult<Integer> editArticle(@RequestBody @Validated ArticleSaveReq editReq) {
+        return FcResult.SUCCESS(articleService.editArticle(editReq));
     }
 
     @Operation(summary = "获取文章详情")

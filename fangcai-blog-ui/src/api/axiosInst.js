@@ -88,7 +88,7 @@ axiosInst.interceptors.response.use(
             // 请求已经发出，但是服务器响应一个状态码非 2xx 的范围
             switch (error.response.status) {
                 case 401:
-                    // todo 遗漏的问题，js中更新 store后，vue无法响应，需要刷新页面才能响应
+                    // todo 遗留问题，js中更新 store后，vue无法响应，需要刷新页面才能响应
                     message = '未登录，请先登录！系统将在2秒后跳转至首页！'
                     userStore.$reset()
                     // 2秒后跳转到首页

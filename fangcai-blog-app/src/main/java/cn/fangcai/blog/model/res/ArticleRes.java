@@ -33,6 +33,8 @@ public class ArticleRes {
     @Schema(description = "阅读数")
     private Integer readCt;
 
+    @Schema(description = "顺序号,升序排序")
+    private Integer orderNum;
 
     private LocalDateTime createTime;
 

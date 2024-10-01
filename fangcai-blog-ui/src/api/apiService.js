@@ -13,17 +13,6 @@ const getPublicArticle = (id) => {
     return axiosInst.get("/article/public/" + id);
 }
 
-const getArticle = (id) => {
-    return axiosInst.get("/article/" + id);
-}
-
-const addArticle = (articleSaveReq = {}) => {
-    return axiosInst.post("/article", articleSaveReq);
-}
-const editArticle = (articleSaveReq = {}) => {
-    return axiosInst.put("/article", articleSaveReq);
-}
-
 
 // 教程相关api
 const pagePublicCourse = (pageReq = {}) => {
@@ -35,6 +24,33 @@ const getPublicCourse = (id) => {
 }
 
 
+/**
+ * 后端管理相关
+ */
+
+const pageArticle = (pageReq = {}) => {
+    return axiosInst.post("/article/page", pageReq);
+}
+
+const getArticle = (id) => {
+    return axiosInst.get("/article/" + id);
+}
+
+const addArticle = (articleSaveReq = {}) => {
+    return axiosInst.post("/article", articleSaveReq);
+}
+const editArticle = (articleSaveReq = {}) => {
+    return axiosInst.put("/article", articleSaveReq);
+}
+
+const deleteArticle = (id) => {
+    return axiosInst.del("/article/" + id);
+}
+
+const uptArticleStatus = (id, status) => {
+    return axiosInst.put("/article/status/" + id + "/" + status);
+}
+
 export default {
     loginByName,
     pagePublicArticle,
@@ -44,4 +60,7 @@ export default {
     getArticle,
     pagePublicCourse,
     getPublicCourse,
+    pageArticle,
+    deleteArticle,
+    uptArticleStatus,
 }

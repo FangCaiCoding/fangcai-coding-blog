@@ -26,15 +26,16 @@
 
       <!-- 右侧 用户信息 -->
       <div class="header-right">
-        <el-input
-            class="right-item"
-            style="width: 150px"
-            size="default"
-            placeholder="搜索"
-            :suffix-icon="Search"
-            @click="openSearch"
+        <div class="right-item" @click="openSearch">
+          <el-input
+              style="width: 150px"
+              size="default"
+              placeholder="搜索"
+              :suffix-icon="Search"
+              @click="openSearch"
+          />
+        </div>
 
-        />
         <el-avatar
             :icon="UserFilled"
             :src="userStore.userContext.avatar"
@@ -49,17 +50,19 @@
   <aside class="layout-container page-content">
     <div class="layout-content-container">
       <el-row :gutter="10" :justify="'center'">
-        <!--        存在侧边栏时，sm =19-->
+        <!-- 左侧边栏-->
         <el-col :xs="0" :sm="showLeftSidebar ? 4 : 0">
           <!-- 第二板块：动态内容 -->
           <div class="left-sidebar-dynamic">
             <slot name="left-sidebar-dynamic"></slot>
           </div>
         </el-col>
+        <!-- 主要内容-->
         <el-col :xs="24" :sm="showRightSidebar && showLeftSidebar ? 15 :
          showRightSidebar || showLeftSidebar? 19:24">
           <slot name="main-content"></slot>
         </el-col>
+        <!--右侧边栏-->
         <el-col :xs="0" :sm="showRightSidebar?5:0">
           <!-- 第一板块：固定内容 -->
           <div class="right-sidebar-fixed">
@@ -71,6 +74,7 @@
             <slot name="right-sidebar-dynamic"></slot>
           </div>
         </el-col>
+
       </el-row>
     </div>
   </aside>
