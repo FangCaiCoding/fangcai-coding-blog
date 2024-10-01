@@ -76,16 +76,16 @@ async function loadMoreCourses() {
       page: currentPage.value,
       pageSize: pageSize,
     });
-
-    console.debug("pagePublicCourse result:{}", pagePublicCourse)
+    noMore.value = true;
     if (pagePublicCourse && pagePublicCourse.records.length > 0) {
       // 将新加载的文章添加到文章列表中
       courses.value.push(...pagePublicCourse.records);
       currentPage.value += 1;
-    } else {
-      // 如果没有更多文章了，禁用滚动加载
+      noMore.value = pagePublicCourse.total <= currentPage.value * pageSize;
+    }
+    // 如果没有更多文章了，禁用滚动加载
+    if (noMore.value) {
       listScrollDisabled.value = true;
-      noMore.value = true;
     }
   } catch (e) {
     ElMessage.error("教程列表加载失败，请刷新后再试！");

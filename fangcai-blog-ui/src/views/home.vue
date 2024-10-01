@@ -1,7 +1,7 @@
 <template>
   <BasePage>
     <template v-slot:main-content>
-      <div class="content-class" v-infinite-scroll="loadMoreArticles" :infinite-scroll-disabled="articleScrollDisabled"
+      <div class="content-class" v-infinite-scroll="loadMoreArticles" :infinite-scroll-disabled="listScrollDisabled"
            infinite-scroll-distance="1">
         <el-row :gutter="20">
           <el-col v-for="article in articles" :key="article.id" class="home-el-col">
@@ -52,7 +52,7 @@ const articles = ref([
 const loading = ref(false);  // 标记是否正在加载
 const noMore = ref(false);
 const isInitArticleList = ref(false);
-const articleScrollDisabled = ref(false);  // 标记是否禁用滚动加载
+const listScrollDisabled = ref(false);  // 标记是否禁用滚动加载
 const currentPage = ref(1);  // 当前加载的页码
 const pageSize = 20;  // 每页加载的文章数量
 
@@ -67,24 +67,26 @@ async function loadMoreArticles() {
     articles.value = []
   }
   // 如果加载被禁用或已经在加载中，直接返回
-  if (articleScrollDisabled.value || loading.value) return;
+  if (listScrollDisabled.value || loading.value) return;
   loading.value = true;  // 设置加载状态为true
   try {
     const pagePublicArticle = await apiService.pagePublicArticle({
       page: currentPage.value,
       pageSize: pageSize,
     });
-    console.debug("pagePublicArticle result:{}", pagePublicArticle)
+    noMore.value = true;
     if (pagePublicArticle && pagePublicArticle.records.length > 0) {
       articles.value.push(...pagePublicArticle.records);  // 将新加载的文章添加到文章列表中
+      noMore.value = pagePublicArticle.total <= currentPage.value * pageSize;
       currentPage.value += 1;  // 页码递增，准备加载下一页
-    } else {
-      articleScrollDisabled.value = true;  // 如果没有更多文章了，禁用滚动加载
-      noMore.value = true;
+    }
+    // 如果没有更多文章了，禁用滚动加载
+    if (noMore.value) {
+      listScrollDisabled.value = true;
     }
   } catch (e) {
     ElMessage.error("文章列表加载失败，请刷新后再试！");
-    articleScrollDisabled.value = true;
+    listScrollDisabled.value = true;
     noMore.value = true;
   } finally {
     isInitArticleList.value = true;
