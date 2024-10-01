@@ -90,13 +90,14 @@
 
 
   <!--  搜索对话框-->
-  <el-dialog v-model="showSearchDialog" width="500px" top="10vh" :show-close="false">
+  <el-dialog v-model="showSearchDialog" width="500px" top="10vh" :show-close="false" @opened="openSearch">
+    <!--     使用 ref 绑定 el-input -->
     <el-input
+        ref="searchInput"
         class="search-input"
         clearable
         v-model="searchStr"
         placeholder="请输入搜索内容"
-        ref="searchInput"
         :prefix-icon="Search"
         @input="performSearch"
         style="margin-bottom: 10px;"
@@ -195,16 +196,17 @@ const handleAvatarClick = () => {
 const showSearchDialog = ref(false);
 const searchStr = ref('');
 const searchResults = ref([]);
+const searchInput = ref(null);
 
 const openSearch = () => {
   showSearchDialog.value = true;
+  // 保证在对话框完全打开后聚焦，在 DOM 更新完成后执行的代码
   nextTick(() => {
-    const searchInput = document.querySelector('.search-input_inner');
-    if (searchInput) {
-      searchInput.focus(); // 聚焦到输入框
-    }
+    // 通过 ref 直接调用 el-input 实例的方法
+    searchInput.value.focus();
   });
 };
+
 const performSearch = async () => {
   const trimmedQuery = searchStr.value.trim();
   if (!trimmedQuery) {
@@ -220,7 +222,7 @@ const performSearch = async () => {
 };
 
 const viewArticle = (id) => {
-  showSearchDialog.value=false
+  showSearchDialog.value = false
   // 跳转到文章详情页逻辑
   console.log(`查看文章详情：${id}`);
   // 使用 vue-router 跳转到文章详情页
