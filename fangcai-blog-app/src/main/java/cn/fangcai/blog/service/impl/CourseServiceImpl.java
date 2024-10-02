@@ -1,16 +1,17 @@
 package cn.fangcai.blog.service.impl;
 
-import cn.fangcai.blog.mapper.CourseMapper;
 import cn.fangcai.blog.mapper.CourseDetailMapper;
+import cn.fangcai.blog.mapper.CourseMapper;
 import cn.fangcai.blog.mapstruct.CourseConverter;
-import cn.fangcai.blog.model.entity.Article;
 import cn.fangcai.blog.model.entity.Course;
 import cn.fangcai.blog.model.entity.CourseDetail;
 import cn.fangcai.blog.model.req.CourseDetailSaveReq;
 import cn.fangcai.blog.model.req.CoursePageReq;
 import cn.fangcai.blog.model.req.CourseSaveReq;
+import cn.fangcai.blog.model.res.ArticleRes;
 import cn.fangcai.blog.model.res.CourseDetailRes;
 import cn.fangcai.blog.model.res.CourseRes;
+import cn.fangcai.blog.service.IArticleService;
 import cn.fangcai.blog.service.ICourseService;
 import cn.fangcai.common.model.dto.FcPageRes;
 import cn.fangcai.common.model.enums.FcErrorCodeEnum;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -42,6 +44,8 @@ public class CourseServiceImpl implements ICourseService {
 
     @Autowired
     private CourseDetailRepository courseDetailRepository;
+    @Autowired
+    private IArticleService articleService;
 
 
     @Override
@@ -76,6 +80,11 @@ public class CourseServiceImpl implements ICourseService {
                 .stream()
                 .map(CourseConverter.INSTANCE::toCourseDetailRes)
                 .collect(Collectors.toList());
+        List<Integer> articleIdList = details.stream().map(CourseDetailRes::getArticleId).toList();
+        Map<Integer, String> articleMap = articleService.listByIds(articleIdList)
+                .stream()
+                .collect(Collectors.toMap(ArticleRes::getId, ArticleRes::getTitle));
+        details.forEach(detail -> detail.setArticleTitle(articleMap.get(detail.getArticleId())));
         courseRes.setDetails(details);
         return courseRes;
     }

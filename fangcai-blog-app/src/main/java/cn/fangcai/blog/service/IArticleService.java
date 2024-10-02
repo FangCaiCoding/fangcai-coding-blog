@@ -6,6 +6,9 @@ import cn.fangcai.blog.model.res.ArticleDetailRes;
 import cn.fangcai.blog.model.res.ArticleRes;
 import cn.fangcai.common.model.dto.FcPageRes;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * <p>
  * 文章表 服务类
@@ -38,4 +41,5 @@ public interface IArticleService {
     Boolean uptOrderNum(Integer id, Integer targetId);
 
 
+    List<ArticleRes> listByIds(List<Integer> articleIdList);
 }

@@ -39,6 +39,11 @@ const routes = [
         name: 'adminArticle',
         component: () => import('@/views/admin/bank-article.vue')
     },
+    {
+        path: '/admin/course',
+        name: 'adminCourse',
+        component: () => import('@/views/admin/bank-course.vue')
+    },
 
     // 添加以下配置来处理所有不存在的路径
     {

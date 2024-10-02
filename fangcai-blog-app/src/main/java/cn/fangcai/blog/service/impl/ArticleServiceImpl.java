@@ -16,6 +16,7 @@ import cn.fangcai.blog.service.IArticleService;
 import cn.fangcai.common.model.dto.FcPageRes;
 import cn.fangcai.common.model.enums.FcErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcBusinessException;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -143,6 +145,15 @@ public class ArticleServiceImpl implements IArticleService {
         return null;
     }
 
+
+    @Override
+    public List<ArticleRes> listByIds(List<Integer> articleIdList) {
+        if (CollUtil.isEmpty(articleIdList)) {
+            return new ArrayList<>();
+        }
+        List<Article> articleList = articleRepository.listByIds(articleIdList);
+        return ArticleConverter.INSTANCE.articleListToResList(articleList);
+    }
 
     @Component
     static class ArticleTemplateRepository extends ServiceImpl<ArticleTemplateMapper, ArticleTemplate> {

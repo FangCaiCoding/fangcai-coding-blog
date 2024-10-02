@@ -20,12 +20,6 @@ import java.util.List;
 public class CourseRes extends CourseDto {
 
 
-    @Schema(description = "状态：0-未发布，1-已发布")
-    private Byte status;
-
-    @Schema(description = "顺序号,升序排序")
-    private Integer orderNum;
-
     @Schema(description = "阅读数")
     private Integer readCt;
 

@@ -101,8 +101,6 @@ async function loadMoreCourses() {
 }
 
 const viewCourse = (id) => {
-  // 跳转到文章详情页逻辑
-  console.log(`查看教程详情：${id}`);
   // 使用 vue-router 跳转到文章详情页
   router.push({name: 'course', params: {id: id}})
 }

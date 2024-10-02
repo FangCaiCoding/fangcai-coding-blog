@@ -32,6 +32,13 @@ public class CourseDto {
     @Schema(description = "教程头图")
     private String picture;
 
+    @Schema(description = "状态：0-未发布，1-已发布")
+    private Byte status;
+
+    @Schema(description = "顺序号,升序排序")
+    private Integer orderNum;
+
+
     @Schema(description = "用户ID", hidden = true)
     private Integer userId;
 }

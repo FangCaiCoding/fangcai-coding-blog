@@ -55,6 +55,24 @@ const  initArticleOrderNum=() => {
     return axiosInst.put("/article/initOrderNum");
 }
 
+const pageCourse=(pageReq={})=>{
+    return axiosInst.post("/course/page",pageReq);
+}
+
+const addCourse = (courseSaveReq = {}) => {
+    return axiosInst.post("/course", courseSaveReq);
+}
+const editCourse = (courseSaveReq = {}) => {
+    return axiosInst.put("/course", courseSaveReq);
+}
+const deleteCourse = (id) => {
+    return axiosInst.del("/course/" + id);
+}
+
+const getCourse = (id) => {
+    return axiosInst.get("/course/" + id);
+}
+
 export default {
     loginByName,
     pagePublicArticle,
@@ -68,4 +86,9 @@ export default {
     deleteArticle,
     uptArticleStatus,
     initArticleOrderNum,
+    pageCourse,
+    addCourse,
+    editCourse,
+    deleteCourse,
+    getCourse
 }

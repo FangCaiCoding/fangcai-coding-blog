@@ -13,7 +13,6 @@ import cn.fangcai.common.model.valider.EditGroup;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,9 +24,9 @@ import org.springframework.web.bind.annotation.*;
  * @author MouFangCai
  * @since 2024-09-16
  */
-@Controller
+@RestController
 @Tag(name = "文章教程管理")
-@RequestMapping("/article/course")
+@RequestMapping("/course")
 public class CourseController {
 
     @Autowired
@@ -90,7 +89,7 @@ public class CourseController {
         return FcResult.SUCCESS(courseService.editCourseDetail(editReq));
     }
 
-    @Operation(summary = "删除文章教程")
+    @Operation(summary = "删除教程中的文章")
     @DeleteMapping("/detail/{detailId}")
     public FcResult<Boolean> delCourseDetail(@PathVariable Integer detailId) {
         return FcResult.SUCCESS(courseService.delCourseDetail(detailId));

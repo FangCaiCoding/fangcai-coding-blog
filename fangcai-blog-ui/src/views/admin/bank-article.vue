@@ -39,7 +39,7 @@
                 style="width: 100%"
                 :border="true"
                 size="large">
-        <el-table-column fixed align="center" prop="title" label="标题" width="350">
+        <el-table-column fixed align="center" prop="title" label="文章标题" width="350">
           <template #default="scope">
             <el-link type="primary" :underline="false" @click="viewArticle(scope.row.id)" target="_blank">
               {{ scope.row.title }}
@@ -88,6 +88,7 @@
       :model-value="drawerVisible"
       direction="rtl"
       :show-close="false"
+      :destroy-on-close="true"
       @close="drawerVisible = false"
       size="40%">
     <el-form :model="article" ref="editForm" label-width="70px">
