@@ -28,9 +28,14 @@ public interface IArticleService {
 
     Boolean delArticle(Integer id);
 
+    Boolean uptArticleStatus(Integer id, Boolean status);
+    Boolean initOrderNum();
+
     Boolean pinTopArticle(Integer id);
 
-    Boolean uptArticleStatus(Integer id, Boolean status);
+
 
     Boolean uptOrderNum(Integer id, Integer targetId);
+
+
 }

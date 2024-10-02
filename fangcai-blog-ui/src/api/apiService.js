@@ -51,6 +51,10 @@ const uptArticleStatus = (id, status) => {
     return axiosInst.put("/article/status/" + id + "/" + status);
 }
 
+const  initArticleOrderNum=() => {
+    return axiosInst.put("/article/initOrderNum");
+}
+
 export default {
     loginByName,
     pagePublicArticle,
@@ -63,4 +67,5 @@ export default {
     pageArticle,
     deleteArticle,
     uptArticleStatus,
+    initArticleOrderNum,
 }

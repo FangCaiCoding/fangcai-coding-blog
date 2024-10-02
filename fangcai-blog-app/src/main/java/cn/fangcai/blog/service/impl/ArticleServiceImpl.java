@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -111,17 +112,31 @@ public class ArticleServiceImpl implements IArticleService {
     }
 
     @Override
-    public Boolean pinTopArticle(Integer id) {
-        return null;
-    }
-
-    @Override
     public Boolean uptArticleStatus(Integer id, Boolean status) {
         return articleRepository.lambdaUpdate()
                 .eq(Article::getId, id)
                 .set(Article::getStatus, status)
                 .update();
     }
+
+    @Override
+    public Boolean initOrderNum() {
+        List<Article> articleList = articleRepository.lambdaQuery()
+                .select(Article::getId)
+                .orderByAsc(Article::getOrderNum)
+                .orderByDesc(BaseEntity::getCreateTime, Article::getId)
+                .list();
+        for (int i = 0; i < articleList.size(); i++) {
+            articleList.get(i).setOrderNum(i * 10 + 9);
+        }
+        return articleRepository.updateBatchById(articleList);
+    }
+
+    @Override
+    public Boolean pinTopArticle(Integer id) {
+        return null;
+    }
+
 
     @Override
     public Boolean uptOrderNum(Integer id, Integer targetId) {

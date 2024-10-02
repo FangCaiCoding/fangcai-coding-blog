@@ -68,6 +68,12 @@ public class ArticleController {
         return FcResult.SUCCESS(articleService.uptArticleStatus(id, status));
     }
 
+    @Operation(summary = "重置顺序号")
+    @PutMapping("/initOrderNum")
+    public FcResult<Boolean> initOrderNum() {
+        return FcResult.SUCCESS(articleService.initOrderNum());
+    }
+
     @Operation(summary = "置顶文章")
     @PutMapping("/pinTop/{id}")
     public FcResult<Boolean> pinTopArticle(@PathVariable Integer id) {

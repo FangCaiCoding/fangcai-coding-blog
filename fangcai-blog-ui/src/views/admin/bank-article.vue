@@ -21,7 +21,14 @@
             @input="loadArticles(1)"
         />
         <div class="button-group">
-          <el-button type="success" icon="Sort" @click="initOrderNum">重排序</el-button>
+          <el-tooltip
+              class="box-item"
+              effect="light"
+              content="基于当前的顺序，重新生成间隔为9的顺序号！"
+              placement="left-end"
+          >
+            <el-button type="success" icon="Sort" @click="initOrderNum">重排序</el-button>
+          </el-tooltip>
           <el-button type="primary" icon="Plus" @click="editContent(null)">新增文章</el-button>
         </div>
       </div>
@@ -181,6 +188,7 @@ const saveArticle = async () => {
 
 const uptArticleStatus = async (id, status) => {
   await apiService.uptArticleStatus(id, status);
+  ElMessage.success('发布状态更新成功！');
 }
 
 // 编辑文章内容
@@ -190,6 +198,11 @@ const editContent = (id) => {
   window.open(routeUrl, '_blank');
 };
 
+const initOrderNum = async () => {
+  await apiService.initArticleOrderNum();
+  ElMessage.success('顺序号已按当前排序重新生成！');
+  await loadArticles();
+}
 
 // 删除文章
 const deleteArticle = async (id) => {
