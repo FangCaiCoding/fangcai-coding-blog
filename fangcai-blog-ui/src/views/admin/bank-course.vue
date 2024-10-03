@@ -1,13 +1,5 @@
 <template>
-  <BasePage :showLeftSidebar="true" :showRightSidebar="false">
-
-    <template v-slot:left-sidebar-dynamic>
-      <span style="color: goldenrod">管理功能：</span>
-      <p class="nav-item" @click="navigateTo('dashboard')">仪表盘</p>
-      <p class="nav-item" @click="navigateTo('articles')">教程管理</p>
-      <p class="nav-item" @click="navigateTo('categories')">分类管理</p>
-    </template>
-
+  <AdminBasePage >
     <template v-slot:main-content>
       <!-- 顶部工具栏 -->
       <div class="toolbar">
@@ -72,7 +64,7 @@
           :total="totalArticles"
       />
     </template>
-  </BasePage>
+  </AdminBasePage>
 
   <!-- 基础信息-抽屉组件 -->
   <el-drawer
@@ -228,6 +220,7 @@ import {useRouter} from 'vue-router';
 import apiService from '@/api/apiService';
 import {ElMessage, ElMessageBox} from "element-plus";
 import {Hide, Search, View} from "@element-plus/icons-vue";
+import AdminBasePage from "@/layout/admin-base-page.vue";
 
 const currentPage = ref(1);  // 当前加载的页码
 const totalArticles = ref(999);

@@ -14,5 +14,5 @@ export default {
 </script>
 
 <style>
-@import './components/css/home.css';
+@import './components/css/base-page.css';
 </style>
