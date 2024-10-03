@@ -91,8 +91,7 @@ const handleSelect = (key) => {
 /* 布局样式 */
 .admin-container {
   display: flex;
-  height: 100vh;
-  overflow: hidden; /* 确保整个页面的布局不超出视口 */
+  height: 97vh;
 }
 
 /* 左侧菜单 */
@@ -105,7 +104,8 @@ const handleSelect = (key) => {
 
 .menu-class {
   --el-menu-active-color: #ff8721;
-  --el-menu-text-color: #08142c
+  --el-menu-text-color: #08142c;
+  border-right: none; /* 取消右侧边框 */
 }
 
 
@@ -132,7 +132,7 @@ const handleSelect = (key) => {
 }
 
 .header-title {
-  font-size: 18px;
+  font-size: 16px;
   color: #08142c;
 }
 
@@ -144,7 +144,6 @@ const handleSelect = (key) => {
   padding: 20px;
   overflow: auto;
 }
-
 
 /* 面包屑导航 */
 .el-breadcrumb {
