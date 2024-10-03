@@ -30,4 +30,5 @@ public interface CourseConverter {
     List<CourseRes> toCourseResList(List<Course> records);
 
     CourseDetail toCourseDetail(CourseDetailSaveReq saveReq);
+    List<CourseDetail> toCourseDetailList(List<CourseDetailSaveReq> saveReqList);
 }

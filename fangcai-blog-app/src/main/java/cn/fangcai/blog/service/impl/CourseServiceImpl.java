@@ -16,6 +16,7 @@ import cn.fangcai.blog.service.ICourseService;
 import cn.fangcai.common.model.dto.FcPageRes;
 import cn.fangcai.common.model.enums.FcErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcBusinessException;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -125,10 +127,26 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     @Override
-    public Integer addCourseDetail(CourseDetailSaveReq saveReq) {
-        CourseDetail courseDetail = CourseConverter.INSTANCE.toCourseDetail(saveReq);
-        courseDetailRepository.save(courseDetail);
-        return courseDetail.getId();
+    public Boolean addCourseDetail(List<CourseDetailSaveReq> saveReqList) {
+        if (CollUtil.isEmpty(saveReqList)) {
+            return false;
+        }
+        long courseIdKeyCt = saveReqList.stream().map(CourseDetailSaveReq::getCourseId).distinct().count();
+        if (courseIdKeyCt > 1) {
+            throw new FcBusinessException(FcErrorCodeEnum.BAD_REQUEST, "只能关联一个教程");
+        }
+        if (saveReqList.stream().map(CourseDetailSaveReq::getArticleId).distinct().count() != saveReqList.size()) {
+            throw new FcBusinessException(FcErrorCodeEnum.BAD_REQUEST, "文章不能重复关联");
+        }
+        Set<Integer> existArticleIdSet = this.getById(saveReqList.getFirst().getCourseId()).getDetails()
+                .stream().map(CourseDetailRes::getArticleId).collect(Collectors.toSet());
+        saveReqList = saveReqList.stream().filter(req -> !existArticleIdSet.contains(req.getArticleId()))
+                .collect(Collectors.toList());
+        if (CollUtil.isEmpty(saveReqList)) {
+            return false;
+        }
+        List<CourseDetail> courseDetailList = CourseConverter.INSTANCE.toCourseDetailList(saveReqList);
+        return courseDetailRepository.saveBatch(courseDetailList);
     }
 
     @Override
@@ -139,8 +157,8 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     @Override
-    public Boolean delCourseDetail(Integer detailId) {
-        return courseDetailRepository.removeById(detailId);
+    public Boolean delCourseDetail(List<Integer> detailIds) {
+        return courseDetailRepository.removeByIds(detailIds);
     }
 
 

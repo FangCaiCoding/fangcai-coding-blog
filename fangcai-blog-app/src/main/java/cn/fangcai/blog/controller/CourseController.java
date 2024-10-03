@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * <p>
  * 文章教程 前端控制器
@@ -79,8 +81,8 @@ public class CourseController {
 
     @Operation(summary = "新增文章教程详情")
     @PostMapping("/detail")
-    public FcResult<Integer> addCourseDetail(@RequestBody @Validated CourseDetailSaveReq saveReq) {
-        return FcResult.SUCCESS(courseService.addCourseDetail(saveReq));
+    public FcResult<Boolean> addCourseDetail(@RequestBody @Validated List<CourseDetailSaveReq> saveReqList) {
+        return FcResult.SUCCESS(courseService.addCourseDetail(saveReqList));
     }
 
     @Operation(summary = "编辑文章教程详情")
@@ -90,9 +92,9 @@ public class CourseController {
     }
 
     @Operation(summary = "删除教程中的文章")
-    @DeleteMapping("/detail/{detailId}")
-    public FcResult<Boolean> delCourseDetail(@PathVariable Integer detailId) {
-        return FcResult.SUCCESS(courseService.delCourseDetail(detailId));
+    @DeleteMapping("/detail")
+    public FcResult<Boolean> delCourseDetail(@RequestBody List<Integer> detailIds) {
+        return FcResult.SUCCESS(courseService.delCourseDetail(detailIds));
     }
 
 

@@ -6,6 +6,8 @@ import cn.fangcai.blog.model.req.CourseSaveReq;
 import cn.fangcai.blog.model.res.CourseRes;
 import cn.fangcai.common.model.dto.FcPageRes;
 
+import java.util.List;
+
 /**
  * <p>
  * 文章教程 服务类
@@ -31,12 +33,11 @@ public interface ICourseService {
 
     Boolean uptOrderNum(Integer id, Integer orderNum);
 
-
-    Integer addCourseDetail(CourseDetailSaveReq saveReq);
+    Boolean addCourseDetail(List<CourseDetailSaveReq>  saveReqList);
 
     Integer editCourseDetail(CourseDetailSaveReq editReq);
 
-    Boolean delCourseDetail(Integer detailId);
+    Boolean delCourseDetail(List<Integer> detailIds);
 
 
 }

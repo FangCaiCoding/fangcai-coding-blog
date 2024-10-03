@@ -48,7 +48,7 @@
         </el-table-column>
         <el-table-column align="center" prop="id" label="主键" width="80"/>
         <el-table-column align="center" prop="readCt" label="阅读数" width="80"/>
-        <el-table-column align="center" prop="createTime" label="创建时间" width="200"/>
+        <el-table-column align="center" prop="createTime" label="创建时间" />
         <el-table-column align="center" prop="orderNum" label="顺序号" width="80"/>
         <el-table-column align="center" label="发布状态" width="100">
           <template #default="scope">
@@ -161,7 +161,6 @@ const loadArticles = async (page = 1) => {
     totalArticles.value = pagePublicArticle.total;
     articles.value.push(...pagePublicArticle.records);
   }
-
 }
 
 const viewArticle = (id) => {

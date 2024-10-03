@@ -41,6 +41,13 @@ const del = (url, params = {}, config = {}) => {
         ...config,
     });
 };
+const delByData = (url, data = {}, config = {}) => {
+    return axiosInst.delete(url, {
+        ...config,
+        // 通过 data 字段传递 body 参数
+        data: data,
+    });
+};
 
 
 // 请求拦截器
@@ -119,5 +126,6 @@ export default {
     post,
     put,
     del,
+    delByData,
 };
 

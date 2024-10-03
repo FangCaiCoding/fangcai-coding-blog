@@ -51,12 +51,12 @@ const uptArticleStatus = (id, status) => {
     return axiosInst.put("/article/status/" + id + "/" + status);
 }
 
-const  initArticleOrderNum=() => {
+const initArticleOrderNum = () => {
     return axiosInst.put("/article/initOrderNum");
 }
 
-const pageCourse=(pageReq={})=>{
-    return axiosInst.post("/course/page",pageReq);
+const pageCourse = (pageReq = {}) => {
+    return axiosInst.post("/course/page", pageReq);
 }
 
 const addCourse = (courseSaveReq = {}) => {
@@ -73,6 +73,13 @@ const getCourse = (id) => {
     return axiosInst.get("/course/" + id);
 }
 
+const delCourseDetail = (ids = []) => {
+    return axiosInst.delByData("/course/detail", ids);
+}
+
+const addCourseDetail = (saveReqList = []) => {
+    return axiosInst.post("/course/detail", saveReqList);
+}
 export default {
     loginByName,
     pagePublicArticle,
@@ -90,5 +97,7 @@ export default {
     addCourse,
     editCourse,
     deleteCourse,
-    getCourse
+    getCourse,
+    delCourseDetail,
+    addCourseDetail
 }

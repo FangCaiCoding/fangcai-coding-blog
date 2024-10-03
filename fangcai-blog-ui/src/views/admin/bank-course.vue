@@ -40,7 +40,7 @@
         </el-table-column>
         <el-table-column align="center" prop="id" label="主键" width="80"/>
         <el-table-column align="center" prop="readCt" label="阅读数" width="80"/>
-        <el-table-column align="center" prop="createTime" label="创建时间" width="200"/>
+        <el-table-column align="center" prop="createTime" label="创建时间" />
         <el-table-column align="center" prop="orderNum" label="顺序号" width="80"/>
         <el-table-column align="center" label="发布状态" width="100">
           <template #default="scope">
@@ -54,10 +54,10 @@
             />
           </template>
         </el-table-column>
-        <el-table-column align="center" fixed="right" label="操作" min-width="120">
+        <el-table-column align="center" fixed="right" label="操作" min-width="130">
           <template #default="scope">
             <el-button link type="primary" size="small" @click="editCourse(scope.row)">编辑</el-button>
-            <el-button link type="success" size="small" @click="editDetail(scope.row.id)">文章管理</el-button>
+            <el-button link type="success" size="small" @click="getCourseDetail(scope.row.id)">文章管理</el-button>
             <el-button link type="danger" size="small" @click="deleteCourse(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -115,19 +115,23 @@
 
   <!-- 维护教程文章详情 抽屉组件 -->
   <el-drawer
-      title="教程文章详情"
+      :title="'《'+course.title+'》文章详情'"
       :model-value="detailDrawerVisible"
       size="60%"
       :show-close="false"
       :destroy-on-close="true"
-      @close="detailDrawerVisible = false"
+      @close="detailDrawerVisible = false;course={};selectedDataList=[]"
   >
     <!-- 工具栏：新增文章、保存排序 -->
     <div class="toolbar">
       <p>教程文章总数：{{ detailTotal }}</p>
       <div class="button-group">
-        <el-button type="primary" icon="Plus" @click="addArticle">新增文章</el-button>
-        <el-button type="success" icon="Sort" @click="saveSort">保存排序</el-button>
+        <el-badge :value="selectedDataList.length" :show-zero="false" :max="999">
+          <el-button type="danger" icon="delete" @click="delCourseArticle" :disabled="selectedDataList.length ===0">
+            移除文章
+          </el-button>
+        </el-badge>
+        <el-button type="primary" icon="Plus" @click="toAddCourseArticle">添加文章</el-button>
       </div>
     </div>
     <!-- 教程文章列表 -->
@@ -136,11 +140,14 @@
         style="width: 100%"
         size="large"
         :border="true"
+        @selection-change="handleSelectChange"
     >
+      <!-- 多选框 -->
+      <el-table-column type="selection" width="55" align="center"/>
       <el-table-column fixed align="center" prop="articleTitle" label="文章标题" width="250">
         <template #default="scope">
           <el-link type="primary" :underline="false" @click="viewArticle(scope.row.articleId)" target="_blank">
-            {{ scope.row.articleTitle}}
+            {{ scope.row.articleTitle }}
           </el-link>
         </template>
       </el-table-column>
@@ -164,7 +171,51 @@
       <!-- 操作列 -->
       <el-table-column label="操作" width="180" align="center">
         <template #default="scope">
-          <el-button type="danger" size="small" @click="deleteArticle(scope.row.id)">删除</el-button>
+          <el-button type="primary" link size="small" @click="delCourseArticle(scope.row.id)">编辑</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </el-drawer>
+
+
+  <!-- 嵌套抽屉：添加文章 -->
+  <el-drawer
+      title="选择你需要添加到教程的文章列表"
+      :model-value="addCourseArticleDrawerVisible"
+      size="40%"
+      :show-close="false"
+      :destroy-on-close="true"
+      @close="addCourseArticleDrawerVisible=false;selectedDataList=[]"
+  >
+    <div class="toolbar">
+      <p>文章总数：{{ allArticles.length }}</p>
+      <div class="button-group">
+        <el-badge :value="selectedDataList.length" :show-zero="false">
+          <el-button type="primary" @click="addSelectedArticles" :disabled="selectedDataList.length ===0">确定添加
+          </el-button>
+        </el-badge>
+        <el-button @click="addCourseArticleDrawerVisible = false">取消</el-button>
+      </div>
+    </div>
+    <!-- 文章列表 -->
+    <el-table
+        :data="allArticles"
+        style="width: 100%"
+        size="large"
+        :border="true"
+        @selection-change="handleSelectChange"
+    >
+      <!-- 多选框 -->
+      <el-table-column type="selection" width="55" align="center"/>
+      <!-- 文章ID -->
+      <el-table-column prop="id" label="文章ID" width="100" align="center"/>
+      <!-- 文章标题 -->
+      <el-table-column prop="title" label="标题" align="center"/>
+      <!-- 发布状态 -->
+      <el-table-column prop="status" label="发布状态" width="100" align="center">
+        <template #default="scope">
+          <el-tag v-if="scope.row.status === 1" type="success">已发布</el-tag>
+          <el-tag v-else type="info">未发布</el-tag>
         </template>
       </el-table-column>
     </el-table>
@@ -248,12 +299,15 @@ const uptStatus = async (course) => {
   ElMessage.success('发布状态更新成功！');
 }
 
-// 编辑教程内容
-const editDetail = async (courseId) => {
+// 获取教程详情内容
+const getCourseDetail = async (courseId) => {
+  detailDrawerVisible.value = true;
   const courseDetail = await apiService.getCourse(courseId);
+  course.value = courseDetail;
   courseDetails.value = courseDetail.details;
   detailTotal.value = courseDetail.details.length;
-  detailDrawerVisible.value = true;
+  // 清空选择器的内容
+  selectedDataList.value = [];
 };
 
 
@@ -288,7 +342,7 @@ const deleteCourse = async (id) => {
 }
 
 
-// 控制抽屉的显示与隐藏
+// 教程文章详情维护内容
 const detailDrawerVisible = ref(false);
 const courseDetails = ref([]);
 const detailTotal = ref(0);
@@ -298,6 +352,91 @@ const viewArticle = (id) => {
   const routeUrl = router.resolve({name: 'article', params: {id}}).href;
   window.open(routeUrl, '_blank');
 }
+
+const delCourseArticle = async () => {
+  ElMessageBox.confirm(
+      '确定要移除所有选中的文章吗？',
+      '移除确认',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true,
+      }
+  ).then(() => {
+    const delDetailIds = selectedDataList.value.map(courseDetail => courseDetail.id)
+    apiService.delCourseDetail(delDetailIds).then((isSuccess) => {
+      if (isSuccess) {
+        ElMessage({
+          type: 'success',
+          message: '文章移除成功!',
+        });
+        getCourseDetail(course.value.id);
+      } else {
+        ElMessage({
+          type: 'error',
+          message: '文章移除失败!',
+        });
+      }
+    })
+  })
+
+}
+
+// 添加教程文章相关
+const addCourseArticleDrawerVisible = ref(false);
+// 已选中的数据
+const selectedDataList = ref([]);
+const allArticles = ref([]);
+
+// 加载所有可选文章
+const loadAllArticles = async () => {
+  const trimmedQuery = searchStr.value.trim();
+  const pagePublicArticle = await apiService.pageArticle({
+    page: 1,
+    pageSize: 500,
+    title: trimmedQuery
+  });
+  if (pagePublicArticle && pagePublicArticle.records.length > 0) {
+    allArticles.value = [];
+    allArticles.value.push(...pagePublicArticle.records);
+  }
+};
+
+// 监听多选文章选择变化
+const handleSelectChange = (selected) => {
+  selectedDataList.value = selected;
+  console.log("selectedDataList", selectedDataList.value)
+};
+
+// 确认添加文章到教程中
+const addSelectedArticles = async () => {
+  try {
+    let addCourseDetails = [];
+    // 将 selectedArticles 中的文章添加到 courseDetails 中
+    selectedDataList.value.forEach(article => {
+      addCourseDetails.push({
+        courseId: course.value.id,
+        articleId: article.id,
+        articleAlias: article.title,
+        orderNum: 999
+      });
+    });
+    await apiService.addCourseDetail(addCourseDetails);
+    await getCourseDetail(course.value.id);
+  } finally {
+    selectedDataList.value = [];
+    addCourseArticleDrawerVisible.value = false;
+  }
+};
+
+// 新增文章
+const toAddCourseArticle = () => {
+  // 加载所有文章列表
+  loadAllArticles();
+  selectedDataList.value = []
+  addCourseArticleDrawerVisible.value = true;
+};
 
 onMounted(() => {
   loadCourses();
