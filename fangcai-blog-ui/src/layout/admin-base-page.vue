@@ -31,15 +31,15 @@
             </el-icon>
             <span>网站设置</span>
           </el-menu-item>
-          <el-sub-menu >
+          <el-sub-menu>
             <template #title>
               <el-icon>
                 <User/>
               </el-icon>
               <span>用户管理</span>
             </template>
-            <el-menu-item index="/admin/user">用户列表</el-menu-item>
-            <el-menu-item index="/admin/auth">用户权限</el-menu-item>
+            <el-menu-item index="/admin/user"><span>用户列表</span></el-menu-item>
+            <el-menu-item index="/admin/auth"><span>授权管理</span></el-menu-item>
           </el-sub-menu>
         </el-menu>
       </el-col>
@@ -94,20 +94,6 @@ const handleSelect = (key) => {
   height: 97vh;
 }
 
-/* 左侧菜单 */
-.admin-sidebar {
-  width: 240px;
-  padding-top: 20px;
-}
-
-
-
-.menu-class {
-  --el-menu-active-color: #ff8721;
-  --el-menu-text-color: #08142c;
-  border-right: none; /* 取消右侧边框 */
-}
-
 
 /* 居中显示logo与标题 */
 .header-left {
@@ -132,9 +118,26 @@ const handleSelect = (key) => {
 }
 
 .header-title {
-  font-size: 16px;
+  font-size: 18px;
   color: #08142c;
 }
+
+/* 左侧菜单 */
+.admin-sidebar {
+  width: 240px;
+  padding-top: 20px;
+}
+
+.menu-class {
+  --el-menu-active-color: #ff8721;
+  --el-menu-text-color: #08142c;
+  border-right: none; /* 取消右侧边框 */
+}
+/* 菜单的文字 */
+span {
+  font-size: 16px;
+}
+
 
 /* 右侧内容区域 */
 .admin-content {

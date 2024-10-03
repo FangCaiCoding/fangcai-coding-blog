@@ -31,7 +31,7 @@
                 style="width: 100%"
                 :border="true"
                 size="large">
-        <el-table-column fixed align="center" prop="title" label="文章标题" width="350">
+        <el-table-column fixed align="center" prop="title" label="文章标题" width="450">
           <template #default="scope">
             <el-link type="primary" :underline="false" @click="viewArticle(scope.row.id)" target="_blank">
               {{ scope.row.title }}
@@ -56,9 +56,9 @@
         </el-table-column>
         <el-table-column align="center" fixed="right" label="操作" min-width="120">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click="editArticle(scope.row)">编辑</el-button>
-            <el-button link type="success" size="small" @click="editContent(scope.row.id)">编辑MD</el-button>
-            <el-button link type="danger" size="small" @click="deleteArticle(scope.row.id)">删除</el-button>
+            <el-button link type="primary"  @click="editArticle(scope.row)">编辑</el-button>
+            <el-button link type="success"  @click="editContent(scope.row.id)">编辑MD</el-button>
+            <el-button link type="danger"  @click="deleteArticle(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

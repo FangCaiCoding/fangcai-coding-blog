@@ -1,5 +1,5 @@
 <template>
-  <AdminBasePage >
+  <AdminBasePage>
     <template v-slot:main-content>
       <!-- 顶部工具栏 -->
       <div class="toolbar">
@@ -30,9 +30,19 @@
             </el-link>
           </template>
         </el-table-column>
+        <el-table-column align="center" prop="picture" label="封面" width="120">
+          <template #default="scope">
+            <el-image
+                :src="scope.row.picture"
+                alt="封面预览"
+                class="cover-preview"
+                fit="scale-down"
+            />
+          </template>
+        </el-table-column>
         <el-table-column align="center" prop="id" label="主键" width="80"/>
         <el-table-column align="center" prop="readCt" label="阅读数" width="80"/>
-        <el-table-column align="center" prop="createTime" label="创建时间" />
+        <el-table-column align="center" prop="createTime" label="创建时间"/>
         <el-table-column align="center" prop="orderNum" label="顺序号" width="80"/>
         <el-table-column align="center" label="发布状态" width="100">
           <template #default="scope">
@@ -48,9 +58,9 @@
         </el-table-column>
         <el-table-column align="center" fixed="right" label="操作" min-width="130">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click="editCourse(scope.row)">编辑</el-button>
-            <el-button link type="success" size="small" @click="getCourseDetail(scope.row.id)">文章管理</el-button>
-            <el-button link type="danger" size="small" @click="deleteCourse(scope.row.id)">删除</el-button>
+            <el-button link type="primary" @click="editCourse(scope.row)">编辑</el-button>
+            <el-button link type="success" @click="getCourseDetail(scope.row.id)">文章管理</el-button>
+            <el-button link type="danger" @click="deleteCourse(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -76,6 +86,17 @@
       @close="courseDrawerVisible = false;course={}"
       size="40%">
     <el-form :model="course" ref="editForm" label-width="70px">
+      <el-form-item label="封面">
+        <el-input v-model="course.picture"></el-input>
+        <el-image
+            :src="course.picture"
+            alt="封面预览"
+            class="cover-preview"
+            fit="scale-down"
+            :preview-src-list="[course.picture]"
+            :hide-on-click-modal="true"
+        />
+      </el-form-item>
       <el-form-item label="教程名">
         <el-input v-model="course.title"></el-input>
       </el-form-item>
@@ -107,9 +128,9 @@
 
   <!-- 维护教程文章详情 抽屉组件 -->
   <el-drawer
-      :title="'《'+course.title+'》文章详情'"
+      :title="'《'+course.title+'》的文章详情'"
       :model-value="detailDrawerVisible"
-      size="60%"
+      size="80%"
       :show-close="false"
       :destroy-on-close="true"
       @close="detailDrawerVisible = false;course={};selectedDataList=[]"
@@ -155,7 +176,7 @@
       <!-- 排序 -->
       <el-table-column prop="orderNum" label="顺序号" width="100" align="center">
         <template #default="scope">
-          <el-input v-model="scope.row.orderNum" size="small"/>
+          <el-input v-model="scope.row.orderNum"/>
         </template>
       </el-table-column>
       <!-- 创建时间 -->
@@ -163,7 +184,7 @@
       <!-- 操作列 -->
       <el-table-column label="操作" width="180" align="center">
         <template #default="scope">
-          <el-button type="primary" link size="small" @click="delCourseArticle(scope.row.id)">编辑</el-button>
+          <el-button type="primary" link @click="delCourseArticle(scope.row.id)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -463,6 +484,14 @@ const rowStyle = {
   justify-content: flex-end; /* 右对齐 */
   width: 100%; /* 确保占满宽度 */
   background-color: white;
+}
+
+.cover-preview {
+  padding-top: 5px;
+  display: block;
+  width: 120px;
+  height: 100px;
+  object-fit: scale-down; /*保持原有尺寸比例。 */
 }
 
 </style>
