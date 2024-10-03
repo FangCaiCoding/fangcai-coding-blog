@@ -60,7 +60,7 @@ const scrollElement = document.documentElement;
 const route = useRoute();
 const selectedArticleId = ref(0);
 
-// 模拟文章数据
+// 文章数据
 const courseDetail = reactive({
   id: 0,
   title: "",

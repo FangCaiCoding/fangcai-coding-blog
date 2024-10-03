@@ -80,6 +80,9 @@ const delCourseDetail = (ids = []) => {
 const addCourseDetail = (saveReqList = []) => {
     return axiosInst.post("/course/detail", saveReqList);
 }
+const editCourseDetail = (editReqList = []) => {
+    return axiosInst.put("/course/detail", editReqList);
+}
 export default {
     loginByName,
     pagePublicArticle,
@@ -99,5 +102,6 @@ export default {
     deleteCourse,
     getCourse,
     delCourseDetail,
-    addCourseDetail
+    addCourseDetail,
+    editCourseDetail
 }

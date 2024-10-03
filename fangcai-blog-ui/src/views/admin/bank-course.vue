@@ -133,7 +133,7 @@
       size="80%"
       :show-close="false"
       :destroy-on-close="true"
-      @close="detailDrawerVisible = false;course={};selectedDataList=[]"
+      @close="detailDrawerVisible = false;course={};selectedDataList=[];isEditCourseArticleMap=new Map"
   >
     <!-- 工具栏：新增文章、保存排序 -->
     <div class="toolbar">
@@ -170,13 +170,13 @@
       <!-- 文章别名 -->
       <el-table-column prop="articleAlias" label="文章别名" align="center">
         <template #default="scope">
-          <el-input v-model="scope.row.articleAlias" placeholder="编辑别名"/>
+          <el-input v-model="scope.row.articleAlias" placeholder="编辑别名" @change="handleInputChange(scope.row.id)"/>
         </template>
       </el-table-column>
       <!-- 排序 -->
       <el-table-column prop="orderNum" label="顺序号" width="100" align="center">
         <template #default="scope">
-          <el-input v-model="scope.row.orderNum"/>
+          <el-input v-model="scope.row.orderNum"   @change="handleInputChange(scope.row.id)"/>
         </template>
       </el-table-column>
       <!-- 创建时间 -->
@@ -184,7 +184,8 @@
       <!-- 操作列 -->
       <el-table-column label="操作" width="180" align="center">
         <template #default="scope">
-          <el-button type="primary" link @click="delCourseArticle(scope.row.id)">编辑</el-button>
+          <el-button type="primary" :disabled="!getIsEdited(scope.row.id)" link @click="editCourseArticle(scope.row)">保存
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -360,13 +361,24 @@ const deleteCourse = async (id) => {
 const detailDrawerVisible = ref(false);
 const courseDetails = ref([]);
 const detailTotal = ref(0);
-
+const isEditCourseArticleMap = ref(new Map)
 const viewArticle = (id) => {
   // 使用 vue-router 生成url，在新标签页打开文章详情页
   const routeUrl = router.resolve({name: 'article', params: {id}}).href;
   window.open(routeUrl, '_blank');
 }
 
+const handleInputChange = (rowId) => {
+  isEditCourseArticleMap.value.set(rowId,true);
+}
+const getIsEdited = (rowId) => {
+  return isEditCourseArticleMap.value.get(rowId);
+}
+const editCourseArticle = async (row) => {
+  console.log(row)
+  await apiService.editCourseDetail(row)
+  isEditCourseArticleMap.value.set(row.id,false);
+}
 const delCourseArticle = async () => {
   ElMessageBox.confirm(
       '确定要移除所有选中的文章吗？',
