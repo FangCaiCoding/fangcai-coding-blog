@@ -37,7 +37,6 @@ public class UserController {
     @ApiOperationSupport(order = 10)
     @Operation(summary = "用户注册")
     @PostMapping("register")
-    @FcNotCheckLogin
     private FcResult<UserRes> registerAndLogin(@RequestBody @Validated UserEmailRegisterReq registerReq) {
         // TODO : by mfc on 2024/8/24 邮件验证码验证
         UserRes userRes = userService.register(registerReq);
