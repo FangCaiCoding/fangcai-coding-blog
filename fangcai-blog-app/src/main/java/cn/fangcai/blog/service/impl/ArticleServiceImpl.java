@@ -10,8 +10,10 @@ import cn.fangcai.blog.model.entity.ArticleTemplate;
 import cn.fangcai.blog.model.entity.base.BaseEntity;
 import cn.fangcai.blog.model.req.ArticlePageReq;
 import cn.fangcai.blog.model.req.ArticleSaveReq;
+import cn.fangcai.blog.model.req.ArticleTemplatePageReq;
 import cn.fangcai.blog.model.res.ArticleDetailRes;
 import cn.fangcai.blog.model.res.ArticleRes;
+import cn.fangcai.blog.model.res.ArticleTemplateRes;
 import cn.fangcai.blog.service.IArticleService;
 import cn.fangcai.common.model.dto.FcPageRes;
 import cn.fangcai.common.model.enums.FcErrorCodeEnum;
@@ -134,17 +136,6 @@ public class ArticleServiceImpl implements IArticleService {
         return articleRepository.updateBatchById(articleList);
     }
 
-    @Override
-    public Boolean pinTopArticle(Integer id) {
-        return null;
-    }
-
-
-    @Override
-    public Boolean uptOrderNum(Integer id, Integer targetId) {
-        return null;
-    }
-
 
     @Override
     public List<ArticleRes> listByIds(List<Integer> articleIdList) {
@@ -154,6 +145,19 @@ public class ArticleServiceImpl implements IArticleService {
         List<Article> articleList = articleRepository.listByIds(articleIdList);
         return ArticleConverter.INSTANCE.articleListToResList(articleList);
     }
+
+
+    @Override
+    public FcPageRes<ArticleTemplateRes> pageArticleTemplate(ArticleTemplatePageReq pageReq) {
+        Page<ArticleTemplate> page = teamRepository.lambdaQuery()
+                .like(StrUtil.isNotBlank(pageReq.getTitle()), ArticleTemplate::getTitle, pageReq.getTitle())
+                .orderByDesc(BaseEntity::getCreateTime, ArticleTemplate::getId)
+                .page(new Page<>(pageReq.getPage(), pageReq.getPageSize()));
+        return new FcPageRes<ArticleTemplateRes>(pageReq)
+                .total(page.getTotal())
+                .records(ArticleConverter.INSTANCE.templateListToResList(page.getRecords()));
+    }
+
 
     @Component
     static class ArticleTemplateRepository extends ServiceImpl<ArticleTemplateMapper, ArticleTemplate> {

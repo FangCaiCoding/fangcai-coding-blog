@@ -2,8 +2,10 @@ package cn.fangcai.blog.service;
 
 import cn.fangcai.blog.model.req.ArticlePageReq;
 import cn.fangcai.blog.model.req.ArticleSaveReq;
+import cn.fangcai.blog.model.req.ArticleTemplatePageReq;
 import cn.fangcai.blog.model.res.ArticleDetailRes;
 import cn.fangcai.blog.model.res.ArticleRes;
+import cn.fangcai.blog.model.res.ArticleTemplateRes;
 import cn.fangcai.common.model.dto.FcPageRes;
 
 import java.util.Arrays;
@@ -34,12 +36,9 @@ public interface IArticleService {
     Boolean uptArticleStatus(Integer id, Boolean status);
     Boolean initOrderNum();
 
-    Boolean pinTopArticle(Integer id);
-
-
-
-    Boolean uptOrderNum(Integer id, Integer targetId);
-
 
     List<ArticleRes> listByIds(List<Integer> articleIdList);
+
+
+    FcPageRes<ArticleTemplateRes> pageArticleTemplate(ArticleTemplatePageReq pageReq);
 }

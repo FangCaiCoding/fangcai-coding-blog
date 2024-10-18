@@ -11,14 +11,11 @@ import lombok.EqualsAndHashCode;
  * @description
  */
 @EqualsAndHashCode(callSuper = true)
-@Schema(description = "文章分页请求")
+@Schema(description = "文章模板分页请求")
 @Data
-public class ArticlePageReq extends PageReq {
+public class ArticleTemplatePageReq extends PageReq {
 
     @Schema(description = "文章标题")
     private String title;
-
-    @Schema(description = "文章状态")
-    private Byte status;
 
 }

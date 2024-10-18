@@ -8,7 +8,7 @@
                 :preview="mdDto.preview"
                 @onHtmlChanged="onHtmlChanged"
                 style="height: 750px"
-                @save="openDialog"
+                @save="openSavaDialog"
       />
     </template>
   </BasePage>
@@ -16,12 +16,24 @@
   <!-- 弹出表单 -->
   <el-dialog v-model="dialogVisible" title="编辑文章" width="600px" label-width="100px">
     <el-form :model="article">
-      <el-form-item label="文章标题" >
+      <el-form-item label="文章标题">
         <el-input v-model="article.title"></el-input>
       </el-form-item>
-      <el-form-item label="文章摘要" >
+      <el-form-item label="文章摘要">
         <el-input type="textarea" v-model="article.summary" :rows="5"></el-input>
         <el-button type="text" @click="extractSummary">从内容提取摘要</el-button>
+      </el-form-item>
+      <el-form-item label="文章模板">
+        <!-- 使用 el-select 组件展示模板列表 -->
+        <el-select v-model="article.templateId" placeholder="请选择文章模板" :clearable="true">
+          <!-- 动态渲染模板列表为下拉选项 -->
+          <el-option
+              v-for="template in templates"
+              :key="template.id"
+              :label="template.title"
+              :value="template.id"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="是否发布">
         <el-select v-model="article.status" placeholder="请选择状态">
@@ -68,16 +80,27 @@ const article = reactive({
   content: '',
   status: 0,
   orderNum: 999,
+  templateId: null,
   contentMd: '',
   createTime: '',
   updateTime: '',
 })
-
+const templates = ref([]);
 
 // 打开弹窗
-const openDialog = () => {
+const openSavaDialog = () => {
   dialogVisible.value = true;
+  pageArticleTemplates();
 };
+
+const pageArticleTemplates = async () => {
+  const pageArticleTemplates = await apiService.pageArticleTemplates({
+    page: 1,
+    pageSize: 50,
+  });
+  templates.value = pageArticleTemplates.records;
+}
+
 
 // 提取摘要功能
 const extractSummary = () => {

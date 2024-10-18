@@ -1,6 +1,7 @@
 package cn.fangcai.blog.model.req;
 
 import cn.fangcai.common.model.valider.EditGroup;
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -39,6 +40,9 @@ public class ArticleSaveReq {
 
     @Schema(description = "是否编辑文章内容")
     private Boolean editContent = false;
+
+    @Schema(description = " 模板id")
+    private Integer templateId;
 
     @Schema(description = "文章内容")
     @Length(max = 100000, message = "文章内容不能超过100000个字符")

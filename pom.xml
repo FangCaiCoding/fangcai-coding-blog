@@ -19,7 +19,7 @@
         <module>fangcai-spring-parent</module>
     </modules>
     <properties>
-        <revision>1.0.20241003</revision>
+        <revision>1.0.20241019</revision>
     </properties>
 
 </project>

@@ -2,8 +2,10 @@ package cn.fangcai.blog.controller;
 
 import cn.fangcai.blog.model.req.ArticlePageReq;
 import cn.fangcai.blog.model.req.ArticleSaveReq;
+import cn.fangcai.blog.model.req.ArticleTemplatePageReq;
 import cn.fangcai.blog.model.res.ArticleDetailRes;
 import cn.fangcai.blog.model.res.ArticleRes;
+import cn.fangcai.blog.model.res.ArticleTemplateRes;
 import cn.fangcai.blog.service.IArticleService;
 import cn.fangcai.common.auth.FcAuthContext;
 import cn.fangcai.common.model.dto.FcPageRes;
@@ -74,15 +76,15 @@ public class ArticleController {
         return FcResult.SUCCESS(articleService.initOrderNum());
     }
 
-    @Operation(summary = "置顶文章")
-    @PutMapping("/pinTop/{id}")
-    public FcResult<Boolean> pinTopArticle(@PathVariable Integer id) {
-        return FcResult.SUCCESS(articleService.pinTopArticle(id));
+
+    /**
+     * 文章模板相关
+     */
+
+    @Operation(summary = "分页查询文章")
+    @PostMapping("/template/page")
+    public FcResult<FcPageRes<ArticleTemplateRes>> pageArticleTemplate(@RequestBody @Validated ArticleTemplatePageReq pageReq) {
+        return FcResult.SUCCESS(articleService.pageArticleTemplate(pageReq));
     }
 
-    @Operation(summary = "修改文章顺序")
-    @PutMapping("/orderNum/{id}")
-    public FcResult<Boolean> uptOrderNum(@PathVariable Integer id, @RequestParam Integer targetId) {
-        return FcResult.SUCCESS(articleService.uptOrderNum(id, targetId));
-    }
 }
