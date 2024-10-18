@@ -37,6 +37,12 @@ public class WebsiteSaveReq {
     @Length(max = 128, message = "标题不能超过128个字符")
     private String title;
 
+    @Schema(description = "网址")
+    @NotBlank(message = "网址 不能为空")
+    @Length(max = 128, message = "网址 不能超过128个字符")
+    private String webUrl;
+
+
     @Schema(description = "站点图片")
     @NotBlank(message = "站点图片 不能为空")
     @Length(max = 255, message = "站点图片 不能超过255个字符")

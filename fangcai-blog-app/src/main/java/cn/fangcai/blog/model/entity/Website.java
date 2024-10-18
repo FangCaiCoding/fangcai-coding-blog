@@ -40,6 +40,10 @@ public class Website extends BaseEntity {
     @TableField("title")
     private String title;
 
+    @Schema(description = "网址")
+    @TableField("web_url")
+    private String webUrl;
+
     @Schema(description = "头图")
     @TableField("picture")
     private String picture;

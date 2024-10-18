@@ -122,7 +122,7 @@ import {Hide, Search, View} from "@element-plus/icons-vue";
 import AdminBasePage from "@/layout/admin-base-page.vue";
 
 const currentPage = ref(1);  // 当前加载的页码
-const totalArticles = ref(999);
+const totalArticles = ref(0);
 const pageSize = 10;  // 每页加载的文章数量
 const searchStr = ref('');
 

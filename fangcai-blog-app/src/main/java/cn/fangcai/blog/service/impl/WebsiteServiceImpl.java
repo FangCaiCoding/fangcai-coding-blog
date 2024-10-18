@@ -7,20 +7,22 @@ import cn.fangcai.blog.mapper.WebsiteMapper;
 import cn.fangcai.blog.mapstruct.WebSiteConverter;
 import cn.fangcai.blog.model.entity.Website;
 import cn.fangcai.blog.model.entity.WebsiteCate;
+import cn.fangcai.blog.model.req.website.WebSitePageReq;
 import cn.fangcai.blog.model.req.website.WebsiteSaveReq;
+import cn.fangcai.blog.model.res.website.WebsiteCateRes;
 import cn.fangcai.blog.model.res.website.WebsiteListRes;
 import cn.fangcai.blog.model.res.website.WebsiteRes;
 import cn.fangcai.blog.service.IWebsiteService;
+import cn.fangcai.common.model.dto.FcPageRes;
 import cn.fangcai.common.model.exception.FcBusinessException;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -59,6 +61,31 @@ public class WebsiteServiceImpl implements IWebsiteService {
                 .update();
     }
 
+    @Override
+    public Boolean delete(Integer id) {
+        return websiteRepository.removeById(id);
+    }
+
+
+    @Override
+    public FcPageRes<WebsiteRes> pageByReq(WebSitePageReq pageReq) {
+        Page<Website> page = websiteRepository.lambdaQuery()
+                .eq(Objects.nonNull(pageReq.getStatus()), Website::getStatus, pageReq.getStatus())
+                .like(StrUtil.isNotBlank(pageReq.getTitle()), Website::getTitle, pageReq.getTitle())
+                .eq(Objects.nonNull(pageReq.getCateId()), Website::getCateId, pageReq.getCateId())
+                .orderByAsc(Website::getOrderNum)
+                .orderByDesc(Website::getCreateTime, Website::getId)
+                .page(new Page<>(pageReq.getPage(), pageReq.getPageSize()));
+        List<WebsiteRes> websiteRes = WebSiteConverter.INSTANCE.entityToListRes(page.getRecords());
+        List<Integer> cateIdList = websiteRes.stream().map(WebsiteRes::getCateId).toList();
+        Map<Integer, String> cateIdAndNameMap = websiteCateRepository.listByIds(cateIdList).stream().collect(Collectors.toMap(WebsiteCate::getId, WebsiteCate::getName));
+        websiteRes.forEach(website -> website.setCateName(cateIdAndNameMap.get(website.getCateId())));
+        return new FcPageRes<WebsiteRes>(pageReq)
+                .total(page.getTotal())
+                .records(websiteRes);
+    }
+
+
 
     @Override
     public List<WebsiteListRes> listPublicAll() {
@@ -66,7 +93,7 @@ public class WebsiteServiceImpl implements IWebsiteService {
                 .eq(Website::getStatus, StatusEnum.PUBLISHED.getCode())
                 .list()
                 .stream()
-                .map(WebSiteConverter.INSTANCE::entityToListRes)
+                .map(WebSiteConverter.INSTANCE::entityToRes)
                 .toList();
         if (!webSiteList.isEmpty()) {
             List<Integer> cateIdList = webSiteList.stream().map(WebsiteRes::getCateId).toList();
@@ -98,9 +125,22 @@ public class WebsiteServiceImpl implements IWebsiteService {
     }
 
 
+    @Override
+    public List<WebsiteCateRes> listAllCate() {
+        return websiteCateRepository.lambdaQuery()
+                .orderByAsc(WebsiteCate::getOrderNum)
+                .orderByDesc(WebsiteCate::getCreateTime, WebsiteCate::getId)
+                .list().stream()
+                .map(WebSiteConverter.INSTANCE::entityToCateRes)
+                .toList();
+    }
+
+
     /**
-     *  判断分类是否存在
+     * 判断分类是否存在
+     *
      * @param cateId 分类ID
+     *
      * @return
      */
     private Boolean cateExists(Integer cateId) {

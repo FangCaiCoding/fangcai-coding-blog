@@ -45,6 +45,13 @@ const routes = [
         component: () => import('@/views/admin/bank-course.vue')
     },
 
+    {
+        path: '/admin/website',
+        name: 'adminWebSite',
+        component: () => import('@/views/admin/bank-website.vue')
+    },
+
+
     // 添加以下配置来处理所有不存在的路径
     {
         path: '/:pathMatch(.*)*',  // 捕获所有未定义的路由

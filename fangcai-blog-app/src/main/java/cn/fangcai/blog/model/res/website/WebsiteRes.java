@@ -1,6 +1,7 @@
 package cn.fangcai.blog.model.res.website;
 
 import cn.fangcai.blog.model.entity.base.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -31,10 +32,16 @@ public class WebsiteRes extends BaseEntity {
     @NotNull(message = "分类 不能为空")
     private Integer cateId;
 
+    @Schema(description = "分类名称")
+    private String cateName;
+
     @Schema(description = "标题")
     @NotBlank(message = "标题 不能为空")
     @Length(max = 128, message = "标题不能超过128个字符")
     private String title;
+
+    @Schema(description = "网址")
+    private String webUrl;
 
     @Schema(description = "站点图片")
     @NotBlank(message = "站点图片 不能为空")

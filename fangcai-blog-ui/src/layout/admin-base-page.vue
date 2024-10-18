@@ -25,6 +25,12 @@
             </el-icon>
             <span>教程管理</span>
           </el-menu-item>
+          <el-menu-item index="/admin/website">
+            <el-icon>
+              <Connection/>
+            </el-icon>
+            <span>友链管理</span>
+          </el-menu-item>
           <el-menu-item index="/admin/setting">
             <el-icon>
               <Setting/>
@@ -65,7 +71,7 @@
 <script setup>
 import {computed, ref} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
-import {Document, Menu as IconMenu, Setting, User,} from '@element-plus/icons-vue'
+import {Connection, Document, Menu as IconMenu, Setting, User,} from '@element-plus/icons-vue'
 
 const router = useRouter();
 const route = useRoute();
@@ -75,6 +81,7 @@ const currentPage = computed(() => {
   const path = route.path;
   return path === '/admin/article' ? '文章管理' :
       path === '/admin/course' ? '教程管理' :
+      path === '/admin/website' ? '友链管理' :
           path === '/admin/setting' ? '网站设置' :
               path === '/admin/user' ? '用户列表' :
                   path === '/admin/auth' ? '用户权限' : '其他页面';
@@ -133,6 +140,7 @@ const handleSelect = (key) => {
   --el-menu-text-color: #08142c;
   border-right: none; /* 取消右侧边框 */
 }
+
 /* 菜单的文字 */
 span {
   font-size: 16px;

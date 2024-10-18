@@ -92,6 +92,22 @@ const pageArticleTemplates = (pageReq = {}) => {
     return axiosInst.post("/article/template/page", pageReq);
 }
 
+/**
+ * 网站相关
+ */
+const pageWebsite = (pageReq = {}) => {
+    return axiosInst.post("/website/page", pageReq);
+}
+const saveSite = (websiteSaveReq = {}) => {
+    return axiosInst.post("/website", websiteSaveReq);
+}
+const uptSiteStatus = (id, status) => {
+    return axiosInst.put("/website/status/" + id + "/" + status);
+}
+const deleteSite = (id) => {
+    return axiosInst.del("/website/" + id);
+}
+
 export default {
     loginByName,
     pagePublicArticle,
@@ -114,4 +130,8 @@ export default {
     addCourseDetail,
     editCourseDetail,
     pageArticleTemplates,
+    pageWebsite,
+    saveSite,
+    uptSiteStatus,
+    deleteSite
 }

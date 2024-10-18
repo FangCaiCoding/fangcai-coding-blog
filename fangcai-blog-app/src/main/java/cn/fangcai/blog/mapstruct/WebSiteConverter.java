@@ -1,10 +1,14 @@
 package cn.fangcai.blog.mapstruct;
 
 import cn.fangcai.blog.model.entity.Website;
+import cn.fangcai.blog.model.entity.WebsiteCate;
 import cn.fangcai.blog.model.req.website.WebsiteSaveReq;
+import cn.fangcai.blog.model.res.website.WebsiteCateRes;
 import cn.fangcai.blog.model.res.website.WebsiteRes;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+
+import java.util.List;
 
 /**
  * @author MouFangCai
@@ -18,5 +22,9 @@ public interface WebSiteConverter {
 
     Website savReqToEntity(WebsiteSaveReq saveReq);
 
-    WebsiteRes entityToListRes(Website website);
+    WebsiteRes entityToRes(Website website);
+
+    List<WebsiteRes> entityToListRes(List<Website> websites);
+
+    WebsiteCateRes entityToCateRes(WebsiteCate websiteCate);
 }

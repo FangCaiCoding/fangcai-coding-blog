@@ -1,7 +1,11 @@
 package cn.fangcai.blog.service;
 
+import cn.fangcai.blog.model.req.website.WebSitePageReq;
 import cn.fangcai.blog.model.req.website.WebsiteSaveReq;
+import cn.fangcai.blog.model.res.website.WebsiteCateRes;
 import cn.fangcai.blog.model.res.website.WebsiteListRes;
+import cn.fangcai.blog.model.res.website.WebsiteRes;
+import cn.fangcai.common.model.dto.FcPageRes;
 
 import java.util.List;
 
@@ -20,6 +24,14 @@ public interface IWebsiteService{
 
     Boolean uptStatus(Integer id, Byte status);
 
+    Boolean delete(Integer id);
+    
 
     List<WebsiteListRes> listPublicAll();
+
+
+    FcPageRes<WebsiteRes> pageByReq(WebSitePageReq pageReq);
+
+    List<WebsiteCateRes> listAllCate();
+
 }
