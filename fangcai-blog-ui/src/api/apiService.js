@@ -83,6 +83,15 @@ const addCourseDetail = (saveReqList = []) => {
 const editCourseDetail = (editReqList = []) => {
     return axiosInst.put("/course/detail", editReqList);
 }
+
+/**
+ * 文章模板相关
+ */
+
+const pageArticleTemplates = (pageReq = {}) => {
+    return axiosInst.post("/article/template/page", pageReq);
+}
+
 export default {
     loginByName,
     pagePublicArticle,
@@ -103,5 +112,6 @@ export default {
     getCourse,
     delCourseDetail,
     addCourseDetail,
-    editCourseDetail
+    editCourseDetail,
+    pageArticleTemplates,
 }
