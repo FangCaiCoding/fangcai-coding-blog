@@ -1,6 +1,6 @@
 package cn.fangcai.blog.controller;
 
-import cn.fangcai.blog.consts.ArticleStatusEnum;
+import cn.fangcai.blog.consts.StatusEnum;
 import cn.fangcai.blog.consts.BlogErrorCodeEnum;
 import cn.fangcai.blog.model.req.ArticlePageReq;
 import cn.fangcai.blog.model.req.CoursePageReq;
@@ -42,7 +42,7 @@ public class ArticlePublicController {
     @GetMapping("/{id}")
     public FcResult<ArticleDetailRes> getDetail(@PathVariable Integer id) {
         ArticleDetailRes detail = articleService.getDetail(id,true);
-        if (detail != null && !ArticleStatusEnum.PUBLISHED.getCode().equals(detail.getStatus())) {
+        if (detail != null && !StatusEnum.PUBLISHED.getCode().equals(detail.getStatus())) {
             throw new FcBusinessException(BlogErrorCodeEnum.ARTICLE_UN_PUBLISHED);
         }
         articleService.incrReadCt(id);
@@ -52,7 +52,7 @@ public class ArticlePublicController {
     @Operation(summary = "分页查询文章")
     @PostMapping("/page")
     public FcResult<FcPageRes<ArticleRes>> pageArticle(@RequestBody @Validated ArticlePageReq pageReq) {
-        pageReq.setStatus(ArticleStatusEnum.PUBLISHED.getCode());
+        pageReq.setStatus(StatusEnum.PUBLISHED.getCode());
         return FcResult.SUCCESS(articleService.pageArticle(pageReq));
     }
 
@@ -67,7 +67,7 @@ public class ArticlePublicController {
     @Operation(summary = "分页查询教程")
     @PostMapping("/course/page")
     public FcResult<FcPageRes<CourseRes>> pageCourse(@RequestBody @Validated CoursePageReq pageReq) {
-        pageReq.setStatus(ArticleStatusEnum.PUBLISHED.getCode());
+        pageReq.setStatus(StatusEnum.PUBLISHED.getCode());
         return FcResult.SUCCESS(courseService.pageCourse(pageReq));
     }
 

@@ -1,9 +1,8 @@
 package cn.fangcai.blog.model.req;
 
 import cn.fangcai.common.model.valider.EditGroup;
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -22,6 +21,7 @@ public class ArticleSaveReq {
     private Integer id;
 
     @Schema(description = "文章标题")
+    @NotBlank(message = "文章标题不能为空")
     @Length(max = 128, message = "文章标题不能超过128个字符")
     private String title;
 

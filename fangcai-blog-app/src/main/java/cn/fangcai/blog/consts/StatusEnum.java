@@ -8,7 +8,7 @@ import lombok.Getter;
  * @description
  */
 @Getter
-public enum ArticleStatusEnum {
+public enum StatusEnum {
 
     UN_PUBLISHED(0, "未发布"),
     PUBLISHED(1, "已发布"),
@@ -19,7 +19,7 @@ public enum ArticleStatusEnum {
     private final Byte code;
     private final String desc;
 
-    ArticleStatusEnum(Integer code, String desc) {
+    StatusEnum(Integer code, String desc) {
         this.code = code.byteValue();
         this.desc = desc;
     }

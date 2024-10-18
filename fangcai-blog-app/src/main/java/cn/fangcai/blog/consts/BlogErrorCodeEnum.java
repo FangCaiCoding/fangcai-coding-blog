@@ -29,6 +29,17 @@ public enum BlogErrorCodeEnum implements IError {
      */
 
     ARTICLE_UN_PUBLISHED(HttpStatus.FORBIDDEN.value(), "300", "非法请求，不存在的文章！"),
+
+
+    /**
+     * 4xx 系列：站点相关
+     */
+
+    WEB_SITE_CATE_NOT_FOUND(HttpStatus.BAD_REQUEST.value(), "400", "非法请求，不存在的站点分类！"),
+
+
+
+
     ;
 
     BlogErrorCodeEnum(Integer statusCode, String errorCode, String msg) {
