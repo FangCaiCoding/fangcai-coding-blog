@@ -2,11 +2,11 @@
 .layout-container {
     display: flex;
     justify-content: center; /* 居中内容 */
-    background-color: rgb(240, 240, 240);
+    background-color: rgb(242, 243, 245);
     /* 绘制网格背景 */
-    background-image: linear-gradient(rgba(0, 0, 0, 0.03) 0.5px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 0.5px, transparent 1px);
-    background-size: 20px 20px; /* 设置网格间距 */
+    /*background-image: linear-gradient(rgba(0, 0, 0, 0.03) 0.5px, transparent 1px),*/
+    /*linear-gradient(90deg, rgba(0, 0, 0, 0.03) 0.5px, transparent 1px);*/
+    /*background-size: 20px 20px; !* 设置网格间距 *!*/
 }
 
 /*后台布局容器*/
@@ -47,7 +47,7 @@
     z-index: 99;
     width: 100%; /* 默认宽度100%，配合max-width使内容自适应 */
     background-color: white;
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+    /*box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);*/
 }
 
 .header-wrapper {

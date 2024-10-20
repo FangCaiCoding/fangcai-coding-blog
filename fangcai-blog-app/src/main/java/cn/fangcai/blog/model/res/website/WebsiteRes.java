@@ -64,6 +64,9 @@ public class WebsiteRes extends BaseEntity {
     @Length(max = 300, message = "亮点 不能超过300个字符")
     private String brightSpot;
 
+    @Schema(description = "阅读数")
+    private Integer readCt;
+
     @Schema(description = "状态：0-未发布，1-已发布")
     private Byte status = 0;
 

@@ -115,6 +115,9 @@ const deleteSite = (id) => {
 const listSiteCate = () => {
     return axiosInst.get("/website/public/cate/all");
 }
+const clickSite = (id) => {
+    return axiosInst.put("/website/click/" + id);
+}
 
 export default {
     loginByName,
@@ -144,4 +147,5 @@ export default {
     uptSiteStatus,
     deleteSite,
     listSiteCate,
+    clickSite,
 }

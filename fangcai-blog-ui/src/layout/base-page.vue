@@ -75,7 +75,6 @@
             <slot name="right-sidebar-dynamic"></slot>
           </div>
         </el-col>
-
       </el-row>
     </div>
   </aside>

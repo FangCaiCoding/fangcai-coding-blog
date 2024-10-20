@@ -61,6 +61,7 @@
         </el-table-column>
         <el-table-column align="center" prop="cateName" label="分类" width="80"/>
         <el-table-column align="center" prop="id" label="主键" width="80"/>
+        <el-table-column align="center" prop="readCt" label="阅读数" width="80"/>
         <el-table-column align="center" prop="author" label="作者" width="150"/>
         <el-table-column align="center" prop="intro" label="简介" width="300"/>
         <el-table-column align="center" prop="orderNum" label="顺序号" width="80"/>
@@ -216,10 +217,8 @@ const loadSites = async (page = 1) => {
     status: searchDto.status,
     cateId: searchDto.cateId
   });
-  if (pageSite && pageSite.records.length > 0) {
-    sites.value = pageSite.records;
-    totalSites.value = pageSite.total;
-  }
+  sites.value = pageSite.records;
+  totalSites.value = pageSite.total;
 }
 const listCates = async () => {
   siteCates.value = await apiService.listSiteCate();
