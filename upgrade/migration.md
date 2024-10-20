@@ -12,6 +12,7 @@ CREATE TABLE `website` (
                            `web_url` varchar(128) NOT NULL DEFAULT '' COMMENT '站点地址',
                            `picture` varchar(255) NOT NULL DEFAULT '' COMMENT '头图',
                            `author` varchar(64) NOT NULL DEFAULT '' COMMENT '作者',
+                           `author_intro` varchar(255) DEFAULT '' COMMENT '作者简介',
                            `intro` varchar(300) NOT NULL DEFAULT '' COMMENT '简介',
                            `bright_spot` varchar(300) NOT NULL DEFAULT '' COMMENT '亮点',
                            `read_ct` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '阅读数',
@@ -22,7 +23,8 @@ CREATE TABLE `website` (
                            `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
                            PRIMARY KEY (`id`),
                            KEY `idx_cateId` (`cate_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='资源站点信息';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='资源站点信息';
+
 CREATE TABLE `website` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `user_id` int(11) unsigned NOT NULL COMMENT '用户ID',

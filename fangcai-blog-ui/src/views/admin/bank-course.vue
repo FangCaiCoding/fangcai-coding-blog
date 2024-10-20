@@ -30,7 +30,7 @@
             </el-link>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="picture" label="封面" width="120">
+        <el-table-column align="center" prop="picture" label="封面" width="150">
           <template #default="scope">
             <el-image
                 :src="scope.row.picture"

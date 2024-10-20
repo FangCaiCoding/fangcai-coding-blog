@@ -6,8 +6,10 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 /**
  * <p>
@@ -51,6 +53,10 @@ public class Website extends BaseEntity {
     @Schema(description = "作者")
     @TableField("author")
     private String author;
+
+    @Schema(description = "作者简介")
+    @TableField("author_intro")
+    private String authorIntro;
 
     @Schema(description = "简介")
     @TableField("intro")

@@ -98,6 +98,10 @@ const pageArticleTemplates = (pageReq = {}) => {
 const pageWebsite = (pageReq = {}) => {
     return axiosInst.post("/website/page", pageReq);
 }
+const getPublicSites = () => {
+    return axiosInst.get("/website/public/list/all");
+}
+
 const saveSite = (websiteSaveReq = {}) => {
     return axiosInst.post("/website", websiteSaveReq);
 }
@@ -106,6 +110,10 @@ const uptSiteStatus = (id, status) => {
 }
 const deleteSite = (id) => {
     return axiosInst.del("/website/" + id);
+}
+
+const listSiteCate = () => {
+    return axiosInst.get("/website/public/cate/all");
 }
 
 export default {
@@ -131,7 +139,9 @@ export default {
     editCourseDetail,
     pageArticleTemplates,
     pageWebsite,
+    getPublicSites,
     saveSite,
     uptSiteStatus,
-    deleteSite
+    deleteSite,
+    listSiteCate,
 }

@@ -21,7 +21,7 @@ public class WebsiteCateRes {
     private Integer cateId;
 
     @Schema(description = "分类名称")
-    private String cateName;
+    private String name;
 
     @Schema(description = "序号")
     private Integer orderNum;
