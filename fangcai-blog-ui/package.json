@@ -16,6 +16,7 @@
     "pinia": "^2.2.2",
     "pinia-plugin-persistedstate": "^4.0.0",
     "vue": "^3.4.37",
+    "vue-clipboard3": "^2.0.0",
     "vue-router": "^4.4.3"
   },
   "devDependencies": {
