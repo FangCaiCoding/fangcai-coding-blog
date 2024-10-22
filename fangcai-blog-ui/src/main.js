@@ -16,7 +16,15 @@ import baiduAnalytics from './components/js/baiduAnalytics';
 import BasePage from "./layout/base-page.vue";
 import AdminBasePage from "./layout/admin-base-page.vue";
 
+import { config } from 'md-editor-v3';
+import MdTargetBlankConfig from './components/js/MdTargetBlankConfig.js';
 
+// 注册 md-editor-v3 插件,所有的 url 都会增加 target="_blank"
+config({
+    markdownItConfig(md) {
+        md.use(MdTargetBlankConfig);
+    }
+});
 const app = createApp(App)
 console.debug(import.meta.env.VITE_API_URL)
 const pinia = createPinia()
