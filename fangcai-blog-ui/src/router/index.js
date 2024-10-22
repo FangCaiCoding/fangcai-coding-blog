@@ -18,7 +18,7 @@ const routes = [
     {
         path: '/website',
         name: 'website',
-        component: () => import('@/views/website.vue')
+        component: () => import('@/views/fc-website.vue')
     },
     {
         path: '/course/:id',
