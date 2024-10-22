@@ -77,5 +77,11 @@ public class WebsiteController {
         return FcResult.SUCCESS(websiteService.listAllCate());
     }
 
+    @Operation(summary = "点击网站")
+    @PutMapping("/click/{id}")
+    @FcNotCheckLogin
+    public FcResult<Boolean> clickWebsite(@PathVariable Integer id) {
+        return FcResult.SUCCESS(websiteService.clickWebsite(id));
+    }
 
 }

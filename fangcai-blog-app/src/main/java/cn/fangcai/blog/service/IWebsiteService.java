@@ -34,4 +34,5 @@ public interface IWebsiteService{
 
     List<WebsiteCateRes> listAllCate();
 
+    Boolean clickWebsite(Integer id);
 }

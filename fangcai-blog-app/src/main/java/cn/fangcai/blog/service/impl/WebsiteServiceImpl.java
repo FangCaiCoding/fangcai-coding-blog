@@ -76,15 +76,17 @@ public class WebsiteServiceImpl implements IWebsiteService {
                 .orderByAsc(Website::getOrderNum)
                 .orderByDesc(Website::getCreateTime, Website::getId)
                 .page(new Page<>(pageReq.getPage(), pageReq.getPageSize()));
+
         List<WebsiteRes> websiteRes = WebSiteConverter.INSTANCE.entityToListRes(page.getRecords());
         List<Integer> cateIdList = websiteRes.stream().map(WebsiteRes::getCateId).toList();
-        Map<Integer, String> cateIdAndNameMap = websiteCateRepository.listByIds(cateIdList).stream().collect(Collectors.toMap(WebsiteCate::getId, WebsiteCate::getName));
-        websiteRes.forEach(website -> website.setCateName(cateIdAndNameMap.get(website.getCateId())));
+        if (!cateIdList.isEmpty()) {
+            Map<Integer, String> cateIdAndNameMap = websiteCateRepository.listByIds(cateIdList).stream().collect(Collectors.toMap(WebsiteCate::getId, WebsiteCate::getName));
+            websiteRes.forEach(website -> website.setCateName(cateIdAndNameMap.get(website.getCateId())));
+        }
         return new FcPageRes<WebsiteRes>(pageReq)
                 .total(page.getTotal())
                 .records(websiteRes);
     }
-
 
 
     @Override
@@ -135,6 +137,21 @@ public class WebsiteServiceImpl implements IWebsiteService {
                 .toList();
     }
 
+
+    /**
+     * 点击网站,阅读数+1
+     *
+     * @param id
+     *
+     * @return
+     */
+    @Override
+    public Boolean clickWebsite(Integer id) {
+        return websiteRepository.lambdaUpdate()
+                .setSql("read_ct = read_ct + 1")
+                .eq(Website::getId, id)
+                .update();
+    }
 
     /**
      * 判断分类是否存在

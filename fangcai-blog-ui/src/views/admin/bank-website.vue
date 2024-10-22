@@ -6,14 +6,33 @@
         <el-input
             style="width: 300px"
             size="large"
-            v-model="searchStr"
+            v-model="searchDto.title"
             clearable
             placeholder="根据站点名称搜索"
             :prefix-icon="Search"
             @input="loadSites(1)"
         />
+
+        <!-- 分类搜索框 -->
+        <el-select
+
+            v-model="searchDto.cateId"
+            placeholder="根据分类搜索"
+            style="margin-left: 10px; width: 200px"
+            size="large"
+            @change="loadSites(1)"
+            :clearable="true"
+        >
+          <el-option
+              v-for="cate in siteCates"
+              :key="cate.cateId"
+              :label="cate.name"
+              :value="cate.cateId"
+          />
+        </el-select>
+
         <div class="button-group">
-          <el-button type="primary" icon="Plus" @click="addSite(null)">新增站点</el-button>
+          <el-button type="primary" icon="Plus" @click="editSite(null)">新增站点</el-button>
         </div>
       </div>
 
@@ -30,7 +49,7 @@
             </el-link>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="picture" label="站点图片" width="120">
+        <el-table-column align="center" prop="picture" label="站点图片" width="150">
           <template #default="scope">
             <el-image
                 :src="scope.row.picture"
@@ -40,7 +59,9 @@
             />
           </template>
         </el-table-column>
+        <el-table-column align="center" prop="cateName" label="分类" width="80"/>
         <el-table-column align="center" prop="id" label="主键" width="80"/>
+        <el-table-column align="center" prop="readCt" label="阅读数" width="80"/>
         <el-table-column align="center" prop="author" label="作者" width="150"/>
         <el-table-column align="center" prop="intro" label="简介" width="300"/>
         <el-table-column align="center" prop="orderNum" label="顺序号" width="80"/>
@@ -58,7 +79,7 @@
         </el-table-column>
         <el-table-column align="center" fixed="right" label="操作" min-width="130">
           <template #default="scope">
-            <el-button link type="primary" @click="addSite(scope.row)">编辑</el-button>
+            <el-button link type="primary" @click="editSite(scope.row)">编辑</el-button>
             <el-button link type="danger" @click="deleteSite(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -103,10 +124,25 @@
       <el-form-item label="站点名称">
         <el-input v-model="site.title"></el-input>
       </el-form-item>
+      <el-form-item label="站点分类">
+        <!-- 使用 el-select 组件展示模板列表 -->
+        <el-select v-model="site.cateId" placeholder="请选择分类" :clearable="true">
+          <!-- 动态渲染模板列表为下拉选项 -->
+          <el-option
+              v-for="cate in siteCates"
+              :key="cate.cateId"
+              :label="cate.name"
+              :value="cate.cateId"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="作者">
         <el-input v-model="site.author"></el-input>
       </el-form-item>
-      <el-form-item label="简介">
+      <el-form-item label="作者简介">
+        <el-input type="textarea" v-model="site.authorIntro" :rows="6"></el-input>
+      </el-form-item>
+      <el-form-item label="站点简介">
         <el-input type="textarea" v-model="site.intro" :rows="6"></el-input>
       </el-form-item>
       <el-form-item label="亮点">
@@ -150,6 +186,7 @@ const site = ref({
   webUrl: '',
   picture: '',
   author: '',
+  authorIntro: '',
   intro: '',
   brightSpot: '',
   status: 0,
@@ -161,6 +198,15 @@ const searchDto = reactive({
   cateId: null
 });
 
+const siteCates = ref([]);
+
+
+const editSite = (row) => {
+  Object.assign(site.value, row)
+  siteDrawerVisible.value = true
+}
+
+
 const loadSites = async (page = 1) => {
   currentPage.value = page;
   const trimmedQuery = searchDto.title.trim();
@@ -171,20 +217,18 @@ const loadSites = async (page = 1) => {
     status: searchDto.status,
     cateId: searchDto.cateId
   });
-  if (pageSite && pageSite.records.length > 0) {
-    sites.value = pageSite.records;
-    totalSites.value = pageSite.total;
-  }
+  sites.value = pageSite.records;
+  totalSites.value = pageSite.total;
+}
+const listCates = async () => {
+  siteCates.value = await apiService.listSiteCate();
 }
 
 const viewSite = (url) => {
   window.open(url, '_blank');
 }
 
-const addSite = (row) => {
-  Object.assign(site.value, row)
-  siteDrawerVisible.value = true
-}
+
 const listSiteCate = async () => {
   return await apiService.listSiteCate();
 }
@@ -233,6 +277,7 @@ const deleteSite = async (id) => {
 
 onMounted(() => {
   loadSites();
+  listCates();
 });
 
 const headerRowStyle = {

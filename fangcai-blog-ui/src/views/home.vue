@@ -5,8 +5,7 @@
            infinite-scroll-distance="1">
         <el-row :gutter="20">
           <el-col v-for="article in articles" :key="article.id" class="home-el-col">
-            <el-card class="list-card" shadow="hover" @click="viewArticle(article.id)"
-                     :body-style="{ padding: '20px' }">
+            <el-card class="list-card" shadow="hover" @click="viewArticle(article.id)">
               <h3 class="item-title">{{ article.title }}</h3>
               <p class="item-summary">{{ article.summary }}</p>
               <div class="item-meta">

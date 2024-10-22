@@ -17,6 +17,7 @@
       >
         <el-menu-item index="/">首页</el-menu-item>
         <el-menu-item index="/courses">教程</el-menu-item>
+        <el-menu-item index="/website">资源</el-menu-item>
       </el-menu>
 
       <!-- 中央 副标题 -->
@@ -74,7 +75,6 @@
             <slot name="right-sidebar-dynamic"></slot>
           </div>
         </el-col>
-
       </el-row>
     </div>
   </aside>

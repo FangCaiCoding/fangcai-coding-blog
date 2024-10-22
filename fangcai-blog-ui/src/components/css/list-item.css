@@ -13,6 +13,7 @@
 }
 
 .list-card {
+    border-radius: 10px;
     display: flex;
     align-items: center; /* 图片和内容顶部对齐 */
 }

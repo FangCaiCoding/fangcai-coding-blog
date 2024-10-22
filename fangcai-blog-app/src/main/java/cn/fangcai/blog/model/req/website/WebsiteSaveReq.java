@@ -53,6 +53,10 @@ public class WebsiteSaveReq {
     @Length(max = 64, message = "作者 不能超过64个字符")
     private String author;
 
+    @Schema(description = "作者简介")
+    @Length(max = 255, message = "作者简介 不能超过255个字符")
+    private String authorIntro;
+
     @Schema(description = "简介")
     @NotBlank(message = "简介 不能为空")
     @Length(max = 300, message = "简介 不能超过300个字符")

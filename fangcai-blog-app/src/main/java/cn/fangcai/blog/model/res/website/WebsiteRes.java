@@ -50,8 +50,10 @@ public class WebsiteRes extends BaseEntity {
 
     @Schema(description = "作者")
     @NotBlank(message = "作者 不能为空")
-    @Length(max = 64, message = "作者 不能超过64个字符")
     private String author;
+
+    @Schema(description = "作者简介")
+    private String authorIntro;
 
     @Schema(description = "简介")
     @NotBlank(message = "简介 不能为空")
@@ -61,6 +63,9 @@ public class WebsiteRes extends BaseEntity {
     @Schema(description = "亮点")
     @Length(max = 300, message = "亮点 不能超过300个字符")
     private String brightSpot;
+
+    @Schema(description = "阅读数")
+    private Integer readCt;
 
     @Schema(description = "状态：0-未发布，1-已发布")
     private Byte status = 0;
