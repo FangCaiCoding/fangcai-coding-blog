@@ -16,7 +16,8 @@
     width: 95%;
     height: 100vh;
 }
-.admin-left-sidebar{
+
+.admin-left-sidebar {
     padding-top: 75px;
     padding-left: 25px;
     background-color: #2d3339;
@@ -177,7 +178,8 @@
     font-size: 13px;
     color: #666;
 }
-.admin-footer{
+
+.admin-footer {
     position: fixed;
     bottom: 0;
 }
@@ -225,6 +227,13 @@
 
 .search-result:hover {
     color: #ff8721;
+}
+
+/* 响应式调整 */
+@media (max-width: 998px) {
+    .header-center {
+        display: none;
+    }
 }
 
 /* 响应式调整 */
