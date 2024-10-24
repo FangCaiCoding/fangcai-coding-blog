@@ -21,7 +21,7 @@ const routes = [
         component: () => import('@/views/fc-website.vue')
     },
     {
-        path: '/course/:id',
+        path: '/course/:id/:articleId?',
         name: 'course',
         component: () => import('@/views/course.vue')
     },
