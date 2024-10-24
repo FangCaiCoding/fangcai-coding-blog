@@ -103,9 +103,12 @@ const readingTime = computed(() => {
 });
 
 const getArticle = async (articleId) => {
+  if (articleId === selectedArticleId.value) {
+    return;
+  }
   await apiService.getPublicArticle(articleId).then(res => {
     article.value = res;
-    selectedArticleId.value = articleId;
+    selectedArticleId.value = article.value.id;
     // 更新路由参数
     router.replace({name: 'course', params: {id: route.params.id, articleId: articleId}});
   })
@@ -122,7 +125,8 @@ onMounted(async () => {
   await apiService.getPublicCourse(route.params.id).then(res => {
     Object.assign(courseDetail, res)
   });
-  const articleId = route.params.articleId;
+  // 注意 articleId 是 string 类型，需要转换成 number
+  const articleId = Number(route.params.articleId);
   // 如果有文章ID参数且文章在课程详情中，则加载指定文章详情
   if (articleId && courseDetail.details.some(item => item.articleId === articleId)) {
     await getArticle(articleId);
