@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,9 +21,8 @@ import lombok.Setter;
 @Setter
 @TableName("menu")
 @Schema(name = "Menu", description = "菜单（权限）列表")
-public class Menu extends BaseEntity<Menu> {
+public class Menu extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -60,9 +58,4 @@ public class Menu extends BaseEntity<Menu> {
     @Schema(description = "操作者-用户ID")
     @TableField("operator")
     private Integer operator;
-
-    @Override
-    public Serializable pkVal() {
-        return this.id;
-    }
 }

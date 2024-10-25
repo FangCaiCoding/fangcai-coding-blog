@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,9 +21,8 @@ import lombok.Setter;
 @Setter
 @TableName("role")
 @Schema(name = "Role", description = "角色信息（带角色权限关系）")
-public class Role extends BaseEntity<Role> {
+public class Role extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -49,8 +47,5 @@ public class Role extends BaseEntity<Role> {
     @TableField("operator")
     private Integer operator;
 
-    @Override
-    public Serializable pkVal() {
-        return this.id;
-    }
+
 }
