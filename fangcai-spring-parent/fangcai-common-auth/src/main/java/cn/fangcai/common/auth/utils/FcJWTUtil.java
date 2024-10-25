@@ -4,6 +4,7 @@ package cn.fangcai.common.auth.utils;
 import cn.fangcai.common.auth.config.AuthProperties;
 import cn.fangcai.common.auth.dto.UserTokenDto;
 import cn.fangcai.common.auth.enums.AuthErrorCodeEnum;
+import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.fangcai.common.model.exception.FcException;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.crypto.SmUtil;
@@ -64,10 +65,10 @@ public class FcJWTUtil {
      *
      * @return UserTokenDto
      */
-    public static UserTokenDto parserToken(String token) {
+    public static UserTokenDto parserToken(String token) throws FcBusinessException {
         boolean verify = JWTUtil.verify(token, jwtSigner);
         if (!verify) {
-            throw new FcException(AuthErrorCodeEnum.JWT_TOKEN_ERROR);
+            throw new FcBusinessException(AuthErrorCodeEnum.JWT_TOKEN_ERROR);
         }
         String tokenEncryptStr = (String) JWTUtil.parseToken(token).getPayload(JWT_CLAIM_NAME);
         String tokenStr = sm4.decryptStr(JSONUtil.toJsonStr(tokenEncryptStr), CharsetUtil.CHARSET_UTF_8);

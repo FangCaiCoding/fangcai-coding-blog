@@ -21,7 +21,7 @@ public class FcAuthUtil {
     }
 
     public static void assertIsLogin() {
-        FcAuthContext.initContext();
+        FcAuthContext.getAuthInfo();
     }
 
 

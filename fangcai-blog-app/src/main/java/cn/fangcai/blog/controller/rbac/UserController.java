@@ -1,4 +1,4 @@
-package cn.fangcai.blog.controller;
+package cn.fangcai.blog.controller.rbac;
 
 
 import cn.fangcai.blog.model.req.UserEmailRegisterReq;
@@ -10,7 +10,6 @@ import cn.fangcai.common.auth.FcAuthUtil;
 import cn.fangcai.common.auth.ano.FcNotCheckLogin;
 import cn.fangcai.common.model.dto.FcResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

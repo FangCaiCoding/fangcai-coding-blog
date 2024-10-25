@@ -2,9 +2,9 @@ package cn.fangcai.common.auth;
 
 import cn.fangcai.common.auth.dto.UserAuthInfo;
 import cn.fangcai.common.auth.dto.UserTokenDto;
+import cn.fangcai.common.auth.enums.AuthErrorCodeEnum;
 import cn.fangcai.common.auth.service.IAuthService;
 import cn.fangcai.common.auth.utils.LoginHttpUtil;
-import cn.fangcai.common.auth.enums.AuthErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.hutool.extra.spring.SpringUtil;
 
@@ -17,13 +17,10 @@ public class FcAuthContext {
     private static final ThreadLocal<Object> USER_INFO = new ThreadLocal<>();
 
 
-    public static void initContext() {
+    public static void initContext() throws FcBusinessException{
         UserTokenDto userToken = LoginHttpUtil.getUserToken();
         IAuthService authService = SpringUtil.getBean(IAuthService.class);
         Object authInfo = authService.getById(userToken.getUserId());
-        if (authInfo == null) {
-            throw new FcBusinessException(AuthErrorCodeEnum.AUTH_INFO_INIT_FAIL);
-        }
         USER_INFO.set(authInfo);
     }
 

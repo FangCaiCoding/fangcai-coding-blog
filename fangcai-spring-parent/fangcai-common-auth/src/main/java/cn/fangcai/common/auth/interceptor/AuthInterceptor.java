@@ -29,6 +29,11 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (!(handler instanceof HandlerMethod handlerMethod)) {
             return true;
         }
+        try {
+            FcAuthContext.initContext();
+        } catch (FcBusinessException ignored) {
+
+        }
         this.assertIsLogin(handlerMethod);
         this.assertAuthCode(handlerMethod);
         return true;

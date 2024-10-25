@@ -24,7 +24,7 @@ public class LoginHttpUtil {
         setLoginCookie(userTokenDto);
     }
 
-    public static UserTokenDto getUserToken() {
+    public static UserTokenDto getUserToken() throws FcBusinessException {
         String token = getCookie(AuthProperties.TOKEN_NAME);
         if (StrUtil.isBlank(token)) {
             throw new FcBusinessException(AuthErrorCodeEnum.USER_NOT_LOGIN);

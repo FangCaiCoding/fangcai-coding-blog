@@ -1,4 +1,42 @@
 # 升级记录
+## 1.0.20241025
+1. 用户角色权限实现；
+
+
+```sql
+
+alter table user add column  `role_id_list` json  COMMENT '角色id 集合' after `password`;
+
+CREATE TABLE `role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '角色名',
+  `menu_id_list` json  COMMENT '权限列表 id',
+  `order_num` int(11) unsigned NOT NULL DEFAULT '999' COMMENT '顺序号,升序排序',
+  `is_enabled` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否启用 1-启用 0-停用',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `operator` int(11) unsigned NOT NULL COMMENT '操作者-用户ID',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='角色信息（带角色权限关系）';
+
+CREATE TABLE `menu` (
+                        `id` int(11) NOT NULL AUTO_INCREMENT,
+                        `name` varchar(64)  NOT NULL COMMENT '菜单名',
+                        `menu_type` tinyint(1)  NOT NULL COMMENT '菜单类型 1-目录  2-页面  3-按钮',
+                        `order_num` int(11) unsigned NOT NULL DEFAULT '999' COMMENT '顺序号,升序排序',
+                        `route_key` varchar(64)  DEFAULT NULL COMMENT '路由地址',
+                        `auth_code` varchar(64)  DEFAULT NULL COMMENT '权限码',
+                        `api_code_list` json  COMMENT '接口权限码集合',
+                        `is_enabled` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否启用 1-启用 0-停用',
+                        `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                        `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                        `operator` int(11) unsigned NOT NULL COMMENT '操作者-用户ID',
+                        `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
+                        PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='菜单（权限）列表';
+
+```
 
 ## 1.0.20241019
 1. 文章模板编辑功能-文章内容保存时支持维护文章模板；
