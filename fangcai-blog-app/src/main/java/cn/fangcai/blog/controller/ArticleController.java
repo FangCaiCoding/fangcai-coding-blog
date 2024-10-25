@@ -8,6 +8,7 @@ import cn.fangcai.blog.model.res.ArticleRes;
 import cn.fangcai.blog.model.res.ArticleTemplateRes;
 import cn.fangcai.blog.service.IArticleService;
 import cn.fangcai.common.auth.FcAuthContext;
+import cn.fangcai.common.auth.ano.FcCheckAuth;
 import cn.fangcai.common.model.dto.FcPageRes;
 import cn.fangcai.common.model.dto.FcResult;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,6 +35,7 @@ public class ArticleController {
 
     @Operation(summary = "新增文章")
     @PostMapping
+    @FcCheckAuth(values = {"article:add"})
     public FcResult<Integer> addArticle(@RequestBody @Validated ArticleSaveReq saveReq) {
         saveReq.setUserId(FcAuthContext.getUserIdAsInt());
         return FcResult.SUCCESS(articleService.addArticle(saveReq));
@@ -41,37 +43,43 @@ public class ArticleController {
 
     @Operation(summary = "编辑文章")
     @PutMapping
+    @FcCheckAuth(values = {"article:edit"})
     public FcResult<Integer> editArticle(@RequestBody @Validated ArticleSaveReq editReq) {
         return FcResult.SUCCESS(articleService.editArticle(editReq));
     }
 
     @Operation(summary = "获取文章详情")
     @GetMapping("/{id}")
+    @FcCheckAuth(values = {"article:detail"})
     public FcResult<ArticleDetailRes> getDetail(@PathVariable Integer id) {
-        return FcResult.SUCCESS(articleService.getDetail(id,false));
+        return FcResult.SUCCESS(articleService.getDetail(id, false));
     }
 
 
     @Operation(summary = "分页查询文章")
     @PostMapping("/page")
+    @FcCheckAuth(values = {"article:page"})
     public FcResult<FcPageRes<ArticleRes>> pageArticle(@RequestBody @Validated ArticlePageReq pageReq) {
         return FcResult.SUCCESS(articleService.pageArticle(pageReq));
     }
 
     @Operation(summary = "删除文章")
     @DeleteMapping("/{id}")
+    @FcCheckAuth(values = {"article:del"})
     public FcResult<Boolean> delArticle(@PathVariable Integer id) {
         return FcResult.SUCCESS(articleService.delArticle(id));
     }
 
     @Operation(summary = "修改文章状态")
     @PutMapping("/status/{id}/{status}")
+    @FcCheckAuth(values = {"article:status"})
     public FcResult<Boolean> uptArticleStatus(@PathVariable Integer id, @PathVariable Boolean status) {
         return FcResult.SUCCESS(articleService.uptArticleStatus(id, status));
     }
 
     @Operation(summary = "重置顺序号")
     @PutMapping("/initOrderNum")
+    @FcCheckAuth(values = {"article:initOrderNum"})
     public FcResult<Boolean> initOrderNum() {
         return FcResult.SUCCESS(articleService.initOrderNum());
     }
@@ -83,6 +91,7 @@ public class ArticleController {
 
     @Operation(summary = "分页查询文章")
     @PostMapping("/template/page")
+    @FcCheckAuth(values = {"article:template:page"})
     public FcResult<FcPageRes<ArticleTemplateRes>> pageArticleTemplate(@RequestBody @Validated ArticleTemplatePageReq pageReq) {
         return FcResult.SUCCESS(articleService.pageArticleTemplate(pageReq));
     }

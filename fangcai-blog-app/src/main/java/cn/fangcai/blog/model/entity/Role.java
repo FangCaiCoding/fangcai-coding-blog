@@ -5,9 +5,12 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  * <p>
@@ -19,7 +22,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("role")
+@TableName(value = "role", autoResultMap = true)
 @Schema(name = "Role", description = "角色信息（带角色权限关系）")
 public class Role extends BaseEntity {
 
@@ -32,8 +35,8 @@ public class Role extends BaseEntity {
     private String name;
 
     @Schema(description = "权限列表 id")
-    @TableField("menu_id_list")
-    private String menuIdList;
+    @TableField(value = "menu_id_list", typeHandler = JacksonTypeHandler.class)
+    private List<Integer> menuIdList;
 
     @Schema(description = "顺序号,升序排序")
     @TableField("order_num")
@@ -41,7 +44,7 @@ public class Role extends BaseEntity {
 
     @Schema(description = "是否启用 1-启用 0-停用")
     @TableField("is_enabled")
-    private Byte isEnabled;
+    private Boolean enabled;
 
     @Schema(description = "操作者-用户ID")
     @TableField("operator")

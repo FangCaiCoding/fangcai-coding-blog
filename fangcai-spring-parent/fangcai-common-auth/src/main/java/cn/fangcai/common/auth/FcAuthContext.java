@@ -28,7 +28,7 @@ public class FcAuthContext {
     public static <T extends UserAuthInfo> T getAuthInfo() {
         Object authInfo = USER_INFO.get();
         if (authInfo == null) {
-            throw new FcBusinessException(AuthErrorCodeEnum.USER_CONTEXT_IS_NULL);
+            return null;
         }
         return (T) authInfo;
     }

@@ -1,5 +1,6 @@
 package cn.fangcai.common.auth;
 
+import cn.fangcai.common.auth.dto.UserAuthInfo;
 import cn.fangcai.common.auth.dto.UserTokenDto;
 import cn.fangcai.common.auth.utils.LoginHttpUtil;
 import cn.hutool.core.lang.UUID;
@@ -20,8 +21,9 @@ public class FcAuthUtil {
         LoginHttpUtil.delLoginSession();
     }
 
-    public static void assertIsLogin() {
-        FcAuthContext.getAuthInfo();
+    public static Boolean isLogin() {
+        UserAuthInfo authInfo = FcAuthContext.getAuthInfo();
+        return authInfo!= null;
     }
 
 

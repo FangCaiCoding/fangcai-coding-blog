@@ -5,9 +5,12 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  * <p>
@@ -19,7 +22,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("menu")
+@TableName(value = "menu",autoResultMap = true)
 @Schema(name = "Menu", description = "菜单（权限）列表")
 public class Menu extends BaseEntity {
 
@@ -48,12 +51,12 @@ public class Menu extends BaseEntity {
     private String authCode;
 
     @Schema(description = "接口权限码集合")
-    @TableField("api_code_list")
-    private String apiCodeList;
+    @TableField(value = "api_code_list", typeHandler = JacksonTypeHandler.class)
+    private List<String> apiCodeList;
 
     @Schema(description = "是否启用 1-启用 0-停用")
     @TableField("is_enabled")
-    private Byte isEnabled;
+    private Boolean enabled;
 
     @Schema(description = "操作者-用户ID")
     @TableField("operator")

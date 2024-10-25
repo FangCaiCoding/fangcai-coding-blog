@@ -5,8 +5,8 @@ import cn.fangcai.common.auth.FcAuthContext;
 import cn.fangcai.common.auth.FcAuthUtil;
 import cn.fangcai.common.auth.ano.FcCheckAuth;
 import cn.fangcai.common.auth.ano.FcNotCheckLogin;
-import cn.fangcai.common.auth.service.IAuthService;
 import cn.fangcai.common.auth.enums.AuthErrorCodeEnum;
+import cn.fangcai.common.auth.service.IAuthService;
 import cn.fangcai.common.model.exception.FcBusinessException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -58,9 +58,16 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (authCheck == null) {
             return;
         }
-        String needAuthCode = authCheck.value();
+        String[] needAuthCodeArr = authCheck.values();
+        Set<String> needAuthCodeSet = Set.of(needAuthCodeArr);
         Set<String> userAllAuthCodes = authService.listAuthCodeById(FcAuthContext.getUserId());
-        if (!userAllAuthCodes.contains(needAuthCode)) {
+        boolean isAuth;
+        if (authCheck.type() == FcCheckAuth.Type.AND) {
+            isAuth = userAllAuthCodes.containsAll(needAuthCodeSet);
+        } else {
+            isAuth = userAllAuthCodes.stream().anyMatch(needAuthCodeSet::contains);
+        }
+        if (!isAuth) {
             throw new FcBusinessException(AuthErrorCodeEnum.API_AUTH_ERROR);
         }
     }
@@ -76,6 +83,8 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (fcNotCheckLogin != null) {
             return;
         }
-        FcAuthUtil.assertIsLogin();
+        if (!FcAuthUtil.isLogin()) {
+            throw new FcBusinessException(AuthErrorCodeEnum.USER_CONTEXT_IS_NULL);
+        }
     }
 }

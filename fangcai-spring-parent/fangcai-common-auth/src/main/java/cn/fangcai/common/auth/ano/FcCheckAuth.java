@@ -8,10 +8,23 @@ import java.lang.annotation.Target;
 /**
  * @author MouFangCai
  * @date 2024/8/19 22:20
- * @description 无需登录 的标识
+ * @description 用于检查权限的注解
  */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FcCheckAuth {
-    String value();
+
+    /**
+     * 需要的权限值列表
+     */
+    String[] values();
+
+    /**
+     * 权限值列表的逻辑关系
+     */
+    Type type() default Type.AND;
+    enum Type {
+        AND,
+        OR
+    }
 }

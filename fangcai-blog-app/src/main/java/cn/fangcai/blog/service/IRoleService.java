@@ -1,7 +1,7 @@
 package cn.fangcai.blog.service;
 
-import cn.fangcai.blog.model.entity.Role;
-import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author MouFangCai
  * @since 2024-10-25
  */
-public interface IRoleService extends IService<Role> {
+public interface IRoleService {
 
+    Set<String> listApiCodes(List<Integer> roleIds);
 }

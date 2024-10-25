@@ -7,7 +7,10 @@ import cn.fangcai.blog.model.entity.User;
 import cn.fangcai.blog.model.req.UserEmailRegisterReq;
 import cn.fangcai.blog.model.req.UserLoginReq;
 import cn.fangcai.blog.model.res.UserRes;
+import cn.fangcai.blog.service.IRoleService;
 import cn.fangcai.blog.service.IUserService;
+import cn.fangcai.common.auth.dto.UserAuthInfo;
+import cn.fangcai.common.auth.service.IAuthService;
 import cn.fangcai.common.auth.utils.FcPWDUtil;
 import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.hutool.core.collection.CollUtil;
@@ -17,7 +20,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -28,11 +33,12 @@ import java.util.List;
  * @since 2023-03-21
  */
 @Service
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl implements IUserService, IAuthService {
 
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private IRoleService roleService;
 
     @Override
     public UserRes getById(Integer userId) {
@@ -90,6 +96,30 @@ public class UserServiceImpl implements IUserService {
         return UserConverter.INSTANCE.userToRes(user);
     }
 
+
+    @Override
+    public <T extends UserAuthInfo> T getById(Object userId) {
+        if (!(userId instanceof Integer)) {
+            return null;
+        }
+        User user = userRepository.getById((Integer) userId);
+        if (user != null && user.getEnabled()) {
+            return (T) new UserAuthInfo(userId);
+        }
+        return null;
+    }
+
+    @Override
+    public Set<String> listAuthCodeById(Object userId) {
+        if (!(userId instanceof Integer)) {
+            return new HashSet<>();
+        }
+        User user = userRepository.getById((Integer) userId);
+        if (user != null && user.getEnabled()) {
+            return roleService.listApiCodes(user.getRoleIdList());
+        }
+        return new HashSet<>();
+    }
 
     @Component
     static class UserRepository extends ServiceImpl<UserMapper, User> {

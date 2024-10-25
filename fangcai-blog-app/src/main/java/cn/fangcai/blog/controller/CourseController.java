@@ -7,6 +7,7 @@ import cn.fangcai.blog.model.req.CourseSaveReq;
 import cn.fangcai.blog.model.res.CourseRes;
 import cn.fangcai.blog.service.ICourseService;
 import cn.fangcai.common.auth.FcAuthContext;
+import cn.fangcai.common.auth.ano.FcCheckAuth;
 import cn.fangcai.common.model.dto.FcPageRes;
 import cn.fangcai.common.model.dto.FcResult;
 import cn.fangcai.common.model.valider.EditGroup;
@@ -36,6 +37,7 @@ public class CourseController {
 
     @Operation(summary = "新增文章教程")
     @PostMapping
+    @FcCheckAuth(values = {"course:add"})
     public FcResult<Integer> addCourse(@RequestBody @Validated CourseSaveReq saveReq) {
         saveReq.setUserId(FcAuthContext.getUserIdAsInt());
         return FcResult.SUCCESS(courseService.addCourse(saveReq));
@@ -43,12 +45,14 @@ public class CourseController {
 
     @Operation(summary = "编辑文章教程")
     @PutMapping
+    @FcCheckAuth(values = {"course:edit"})
     public FcResult<Integer> editCourse(@RequestBody @Validated(EditGroup.class) CourseSaveReq editReq) {
         return FcResult.SUCCESS(courseService.editCourse(editReq));
     }
 
     @Operation(summary = "获取文章教程")
     @GetMapping("/{id}")
+    @FcCheckAuth(values = {"course:get"})
     public FcResult<CourseRes> getById(@PathVariable Integer id) {
         return FcResult.SUCCESS(courseService.getById(id));
     }
@@ -56,12 +60,14 @@ public class CourseController {
 
     @Operation(summary = "分页查询文章教程")
     @PostMapping("/page")
+    @FcCheckAuth(values = {"course:page"})
     public FcResult<FcPageRes<CourseRes>> pageCourse(@RequestBody @Validated CoursePageReq pageReq) {
         return FcResult.SUCCESS(courseService.pageCourse(pageReq));
     }
 
     @Operation(summary = "删除文章教程")
     @DeleteMapping("/{id}")
+    @FcCheckAuth(values = {"course:del"})
     public FcResult<Boolean> delCourse(@PathVariable Integer id) {
         return FcResult.SUCCESS(courseService.delCourse(id));
     }
@@ -69,6 +75,7 @@ public class CourseController {
 
     @Operation(summary = "修改文章教程顺序")
     @PutMapping("/orderNum/{id}")
+    @FcCheckAuth(values = {"course:orderNum"})
     public FcResult<Boolean> uptOrderNum(@PathVariable Integer id, @RequestParam Integer orderNum) {
         return FcResult.SUCCESS(courseService.uptOrderNum(id, orderNum));
     }
@@ -81,18 +88,21 @@ public class CourseController {
 
     @Operation(summary = "新增文章教程详情")
     @PostMapping("/detail")
+    @FcCheckAuth(values = {"course:addDetail"})
     public FcResult<Boolean> addCourseDetail(@RequestBody @Validated List<CourseDetailSaveReq> saveReqList) {
         return FcResult.SUCCESS(courseService.addCourseDetail(saveReqList));
     }
 
     @Operation(summary = "编辑文章教程详情")
     @PutMapping("/detail")
+    @FcCheckAuth(values = {"course:editDetail"})
     public FcResult<Integer> editCourseDetail(@RequestBody @Validated CourseDetailSaveReq editReq) {
         return FcResult.SUCCESS(courseService.editCourseDetail(editReq));
     }
 
     @Operation(summary = "删除教程中的文章")
     @DeleteMapping("/detail")
+    @FcCheckAuth(values = {"course:delDetail"})
     public FcResult<Boolean> delCourseDetail(@RequestBody List<Integer> detailIds) {
         return FcResult.SUCCESS(courseService.delCourseDetail(detailIds));
     }

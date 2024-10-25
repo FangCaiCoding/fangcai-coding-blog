@@ -33,17 +33,6 @@ public class UserController {
     private IUserService userService;
 
 
-    @ApiOperationSupport(order = 10)
-    @Operation(summary = "用户注册")
-    @PostMapping("register")
-    private FcResult<UserRes> registerAndLogin(@RequestBody @Validated UserEmailRegisterReq registerReq) {
-        // TODO : by mfc on 2024/8/24 邮件验证码验证
-        UserRes userRes = userService.register(registerReq);
-        FcAuthUtil.login(userRes.getId());
-        return FcResult.SUCCESS(userRes);
-    }
-
-
     @ApiOperationSupport(order = 20)
     @Operation(summary = "登录-通过账号")
     @PostMapping("loginByName")
@@ -55,12 +44,25 @@ public class UserController {
     }
 
 
+    @ApiOperationSupport(order = 10)
+    @Operation(summary = "用户注册")
+    @PostMapping("register")
+    private FcResult<UserRes> registerAndLogin(@RequestBody @Validated UserEmailRegisterReq registerReq) {
+        // TODO : by mfc on 2024/8/24 邮件验证码验证
+        UserRes userRes = userService.register(registerReq);
+        FcAuthUtil.login(userRes.getId());
+        return FcResult.SUCCESS(userRes);
+    }
+
+
+
     @ApiOperationSupport(order = 30)
     @Operation(summary = "获取当前登录者用户信息")
     @GetMapping("getUser")
     private FcResult<UserRes> getUser() {
         return FcResult.SUCCESS(userService.getById(FcAuthContext.getUserIdAsInt()));
     }
+
 
     @ApiOperationSupport(order = 40)
     @Operation(summary = "退出登录")
@@ -69,6 +71,7 @@ public class UserController {
         FcAuthUtil.logout();
         return FcResult.SUCCESS(Boolean.TRUE);
     }
+
 
 
 }

@@ -4,9 +4,13 @@ import cn.fangcai.blog.model.entity.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
 
 /**
  * <p>
@@ -18,6 +22,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@TableName(value = "user", autoResultMap = true)
 @Schema(description = "用户表")
 public class User extends BaseEntity {
 
@@ -38,6 +43,10 @@ public class User extends BaseEntity {
 
     @Schema(description = "密码")
     private String password;
+
+    @Schema(description = "角色id列表")
+    @TableField(value = "role_id_list", typeHandler = JacksonTypeHandler.class)
+    private List<Integer> roleIdList;
 
     @TableField(value = "is_enabled")
     @Schema(description = "是否启用 1-启用 0-停用")
