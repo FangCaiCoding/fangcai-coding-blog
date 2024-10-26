@@ -38,7 +38,11 @@ public enum BlogErrorCodeEnum implements IError {
     WEB_SITE_CATE_NOT_FOUND(HttpStatus.BAD_REQUEST.value(), "400", "非法请求，不存在的站点分类！"),
 
 
-
+    /**
+     * 5xx 系列：微信相关
+     */
+    WX_SIGNATURE_ERROR(HttpStatus.BAD_REQUEST.value(), "500", "微信签名验证失败！"),
+    WX_CODE_EXPIRED(HttpStatus.BAD_REQUEST.value(), "501", "验证码已过期，请重新获取！"),
 
     ;
 

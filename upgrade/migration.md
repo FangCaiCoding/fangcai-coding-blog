@@ -1,10 +1,20 @@
 # 升级记录
+## 1.0.20241026
+1. 微信登录实现；
+
+```sql
+-- 微信登录实现改造
+ALTER TABLE USER ADD `wx_open_id` varchar(64) NOT NULL COMMENT '微信-用户唯一标识' AFTER `login_name`;
+alter table user drop index uk_email;
+ALTER TABLE `user` MODIFY COLUMN email varchar(64)  NULL COMMENT '邮箱';
+alter table user add unique key uk_wxOpenId(wx_open_id);
+```
+
 ## 1.0.20241025
 1. 用户角色权限实现；
 
-
 ```sql
-
+# 用户角色权限实现
 CREATE TABLE `menu`
 (
     `id`             int(11)                         NOT NULL AUTO_INCREMENT,

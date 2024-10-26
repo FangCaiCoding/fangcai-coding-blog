@@ -7,3 +7,8 @@ spring:
     active: dev
   application:
     name: fangcai-blog-app
+
+blog-app-config:
+  wxToken: ${wx.token}
+  # 注册用户的默认角色ID
+  default-role-id: 2

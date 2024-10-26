@@ -20,10 +20,7 @@ public interface IUserService {
 
     UserRes getById(Integer userId);
 
-    List<UserRes> listResByIds(List<Integer> familyUserIds);
-
-    UserRes register(UserEmailRegisterReq registerReq);
-
     UserRes loginByName(UserLoginReq loginReq);
 
+    UserRes loginByWxCode(String wxCode);
 }

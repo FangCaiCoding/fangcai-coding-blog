@@ -5,12 +5,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.List;
 
 /**
  * <p>
@@ -31,6 +28,9 @@ public class User extends BaseEntity {
 
     @Schema(description = "登录名")
     private String loginName;
+
+    @Schema(description = "微信openid")
+    private String wxOpenId;
 
     @Schema(description = "邮箱")
     private String email;

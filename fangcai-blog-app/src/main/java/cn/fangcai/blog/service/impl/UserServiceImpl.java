@@ -1,28 +1,29 @@
 package cn.fangcai.blog.service.impl;
 
+import cn.fangcai.blog.config.BlogAppProperties;
 import cn.fangcai.blog.consts.BlogErrorCodeEnum;
+import cn.fangcai.blog.controller.ICacheService;
 import cn.fangcai.blog.mapper.UserMapper;
 import cn.fangcai.blog.mapper.UserRoleMapper;
 import cn.fangcai.blog.mapstruct.UserConverter;
 import cn.fangcai.blog.model.entity.User;
 import cn.fangcai.blog.model.entity.UserRole;
-import cn.fangcai.blog.model.req.UserEmailRegisterReq;
 import cn.fangcai.blog.model.req.UserLoginReq;
 import cn.fangcai.blog.model.res.UserRes;
 import cn.fangcai.blog.service.IRoleService;
 import cn.fangcai.blog.service.IUserService;
+import cn.fangcai.blog.uitls.CacheKeyFactory;
 import cn.fangcai.common.auth.dto.UserAuthInfo;
 import cn.fangcai.common.auth.service.IAuthService;
 import cn.fangcai.common.auth.utils.FcPWDUtil;
 import cn.fangcai.common.model.exception.FcBusinessException;
-import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,6 +45,10 @@ public class UserServiceImpl implements IUserService, IAuthService {
     private UserRoleRepository userRoleRepository;
     @Autowired
     private IRoleService roleService;
+    @Autowired
+    private ICacheService cacheService;
+    @Autowired
+    private BlogAppProperties blogAppProperties;
 
     @Override
     public UserRes getById(Integer userId) {
@@ -51,37 +56,6 @@ public class UserServiceImpl implements IUserService, IAuthService {
         return UserConverter.INSTANCE.userToRes(user);
     }
 
-    @Override
-    public List<UserRes> listResByIds(List<Integer> userIds) {
-        if (CollUtil.isEmpty(userIds)) {
-            return new ArrayList<>();
-        }
-        List<User> userList = userRepository.listByIds(userIds);
-        return UserConverter.INSTANCE.userListToResList(userList);
-    }
-
-
-    @Override
-    public UserRes register(UserEmailRegisterReq registerReq) {
-        String email = registerReq.getEmail();
-        boolean loginNameExists = userRepository.lambdaQuery()
-                .eq(User::getEmail, email)
-                .exists();
-        if (loginNameExists) {
-            throw new FcBusinessException(BlogErrorCodeEnum.EMAIL_EXIST);
-        }
-        User newUser = new User();
-        newUser.setLoginName(email);
-        newUser.setEmail(email);
-        newUser.setNickName(email);
-        newUser.setPassword("TempValue");
-        userRepository.save(newUser);
-        userRepository.lambdaUpdate()
-                .eq(User::getId, newUser.getId())
-                .set(User::getPassword, FcPWDUtil.encrypt(newUser.getId().toString(), email))
-                .update();
-        return UserConverter.INSTANCE.userToRes(newUser);
-    }
 
     @Override
     public UserRes loginByName(UserLoginReq loginReq) {
@@ -101,6 +75,20 @@ public class UserServiceImpl implements IUserService, IAuthService {
         return UserConverter.INSTANCE.userToRes(user);
     }
 
+    @Override
+    public UserRes loginByWxCode(String wxCode) {
+        String wxOpenId = cacheService.get(CacheKeyFactory.getWxLoginKey(wxCode));
+        if (wxOpenId == null) {
+            throw new FcBusinessException(BlogErrorCodeEnum.WX_CODE_EXPIRED);
+        }
+        User user = userRepository.lambdaQuery()
+                .eq(User::getWxOpenId, wxOpenId)
+                .one();
+        if (user == null) {
+            return this.register(wxOpenId);
+        }
+        return UserConverter.INSTANCE.userToRes(user);
+    }
 
     @Override
     public <T extends UserAuthInfo> T getById(Object userId) {
@@ -130,6 +118,25 @@ public class UserServiceImpl implements IUserService, IAuthService {
             return roleService.listAuthCode(roleIds);
         }
         return new HashSet<>();
+    }
+
+
+    private UserRes register(String wxOpenId) {
+        User newUser = new User();
+        newUser.setLoginName(wxOpenId);
+        newUser.setNickName(LocalDate.now().getMonthValue() + "月，遇见你");
+        userRepository.save(newUser);
+        userRepository.lambdaUpdate()
+                .eq(User::getId, newUser.getId())
+                .set(User::getPassword, FcPWDUtil.encrypt(newUser.getId().toString(),
+                        RandomUtil.randomString(16)))
+                .update();
+        // 注册默认角色
+        UserRole userRole = new UserRole();
+        userRole.setUserId(newUser.getId());
+        userRole.setRoleId(blogAppProperties.getDefaultRoleId());
+        userRoleRepository.save(userRole);
+        return UserConverter.INSTANCE.userToRes(newUser);
     }
 
     @Repository

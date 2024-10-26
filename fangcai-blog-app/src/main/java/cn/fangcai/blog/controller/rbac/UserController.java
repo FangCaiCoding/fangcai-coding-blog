@@ -12,6 +12,7 @@ import cn.fangcai.common.model.dto.FcResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -43,17 +44,23 @@ public class UserController {
         return FcResult.SUCCESS(userRes);
     }
 
+    @ApiOperationSupport(order = 20)
+    @Operation(summary = "登录-通过微信code")
+    @PostMapping("loginByWxCode")
+    private FcResult<UserRes> loginByWxCode(@RequestBody @NotBlank(message = "wxCode不能为空") String wxCode) {
 
-    @ApiOperationSupport(order = 10)
-    @Operation(summary = "用户注册")
-    @PostMapping("register")
-    private FcResult<UserRes> registerAndLogin(@RequestBody @Validated UserEmailRegisterReq registerReq) {
-        // TODO : by mfc on 2024/8/24 邮件验证码验证
-        UserRes userRes = userService.register(registerReq);
+        UserRes userRes = userService.loginByWxCode(wxCode);
         FcAuthUtil.login(userRes.getId());
         return FcResult.SUCCESS(userRes);
     }
 
+    @ApiOperationSupport(order = 10)
+    @Operation(summary = "用户注册")
+    @PostMapping("loginByEmail")
+    private FcResult<UserRes> loginByEmail(@RequestBody @Validated UserEmailRegisterReq registerReq) {
+        // TODO : by mfc on 2024/8/24 邮件验证码验证
+        return FcResult.SUCCESS(null);
+    }
 
 
     @ApiOperationSupport(order = 30)
@@ -71,7 +78,6 @@ public class UserController {
         FcAuthUtil.logout();
         return FcResult.SUCCESS(Boolean.TRUE);
     }
-
 
 
 }
