@@ -13,5 +13,5 @@ import java.util.Set;
  */
 public interface IMenuService {
 
-    Set<String> listApiCodeByIds(List<Integer> ids);
+    Set<String> listAuthCodeByIds(List<Integer> ids);
 }

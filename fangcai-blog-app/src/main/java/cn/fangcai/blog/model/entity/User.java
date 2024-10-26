@@ -44,10 +44,6 @@ public class User extends BaseEntity {
     @Schema(description = "密码")
     private String password;
 
-    @Schema(description = "角色id列表")
-    @TableField(value = "role_id_list", typeHandler = JacksonTypeHandler.class)
-    private List<Integer> roleIdList;
-
     @TableField(value = "is_enabled")
     @Schema(description = "是否启用 1-启用 0-停用")
     private Boolean enabled;

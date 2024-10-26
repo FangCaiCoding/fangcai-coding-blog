@@ -5,36 +5,131 @@
 
 ```sql
 
-alter table user add column  `role_id_list` json  COMMENT '角色id 集合' after `password`;
+CREATE TABLE `menu`
+(
+    `id`             int(11)                         NOT NULL AUTO_INCREMENT,
+    `name`           varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '菜单名',
+    `menu_type`      tinyint(1)                      NOT NULL COMMENT '菜单类型 1-目录  2-页面  3-按钮',
+    `order_num`      int(11) unsigned                NOT NULL DEFAULT '999' COMMENT '顺序号,升序排序',
+    `route_key`      varchar(64) COLLATE utf8mb4_bin          DEFAULT NULL COMMENT '路由地址',
+    `menu_key`       varchar(64) COLLATE utf8mb4_bin          DEFAULT NULL COMMENT '菜单 key',
+    `auth_code_list` json                                     DEFAULT NULL COMMENT '权限码集合',
+    `is_enabled`     tinyint(1)                      NOT NULL DEFAULT '1' COMMENT '是否启用 1-启用 0-停用',
+    `create_time`    datetime                                 DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`    datetime                                 DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `operator`       int(11) unsigned                NOT NULL COMMENT '操作者-用户ID',
+    `is_uk_deleted`  bigint(20) unsigned             NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，其他-删除',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_menuKeyAndDeleted` (`menu_key`, `is_uk_deleted`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin COMMENT ='菜单（权限）列表';
 
-CREATE TABLE `role` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '角色名',
-  `menu_id_list` json  COMMENT '权限列表 id',
-  `order_num` int(11) unsigned NOT NULL DEFAULT '999' COMMENT '顺序号,升序排序',
-  `is_enabled` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否启用 1-启用 0-停用',
-  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `operator` int(11) unsigned NOT NULL COMMENT '操作者-用户ID',
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='角色信息（带角色权限关系）';
 
-CREATE TABLE `menu` (
-                        `id` int(11) NOT NULL AUTO_INCREMENT,
-                        `name` varchar(64)  NOT NULL COMMENT '菜单名',
-                        `menu_type` tinyint(1)  NOT NULL COMMENT '菜单类型 1-目录  2-页面  3-按钮',
-                        `order_num` int(11) unsigned NOT NULL DEFAULT '999' COMMENT '顺序号,升序排序',
-                        `route_key` varchar(64)  DEFAULT NULL COMMENT '路由地址',
-                        `auth_code` varchar(64)  DEFAULT NULL COMMENT '权限码',
-                        `api_code_list` json  COMMENT '接口权限码集合',
-                        `is_enabled` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否启用 1-启用 0-停用',
-                        `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                        `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-                        `operator` int(11) unsigned NOT NULL COMMENT '操作者-用户ID',
-                        `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
-                        PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='菜单（权限）列表';
+CREATE TABLE `role`
+(
+    `id`            int(11)                         NOT NULL AUTO_INCREMENT,
+    `name`          varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '角色名',
+    `order_num`     int(11) unsigned                NOT NULL DEFAULT '999' COMMENT '顺序号,升序排序',
+    `is_enabled`    tinyint(1)                      NOT NULL DEFAULT '1' COMMENT '是否启用 1-启用 0-停用',
+    `create_time`   datetime                                 DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`   datetime                                 DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `operator`      int(11) unsigned                NOT NULL COMMENT '操作者-用户ID',
+    `is_uk_deleted` bigint(20) unsigned             NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，其他-删除',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_nameAndDeleted` (`name`, `is_uk_deleted`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin COMMENT ='角色信息表';
+
+
+CREATE TABLE `role_menu`
+(
+    `id`          int(11)          NOT NULL AUTO_INCREMENT,
+    `role_id`     int(11) unsigned NOT NULL COMMENT '角色 id',
+    `menu_id`     int(11) unsigned NOT NULL COMMENT '菜单 id',
+    `create_time` datetime                  DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` datetime                  DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `operator`    int(11) unsigned NOT NULL COMMENT '操作者-用户ID',
+    `is_deleted`  tinyint(1)       NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
+    PRIMARY KEY (`id`),
+    KEY `idx_roleId` (`role_id`),
+    KEY `idx_menuId` (`menu_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin COMMENT ='角色-菜单关系表';
+
+
+CREATE TABLE `user_role`
+(
+    `id`          int(11)          NOT NULL AUTO_INCREMENT,
+    `user_id`     int(11) unsigned NOT NULL COMMENT '用户 id',
+    `role_id`     int(11) unsigned NOT NULL COMMENT '角色 id',
+    `create_time` datetime                  DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` datetime                  DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `operator`    int(11) unsigned NOT NULL COMMENT '操作者-用户ID',
+    `is_deleted`  tinyint(1)       NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
+    PRIMARY KEY (`id`),
+    KEY `idx_userId` (`user_id`),
+    KEY `idx_roleId` (`role_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin COMMENT ='用户-角色关系表';
+
+INSERT INTO menu (name, menu_type, order_num, route_key, menu_key, auth_code_list, is_enabled, create_time, update_time,
+                  operator, is_uk_deleted)
+VALUES ('新增文章', 3, 1, '/article', 'article:add', '["article:add"]', 1, '2024-10-26 10:42:21', '2024-10-26 10:42:21',
+        1, 0),
+       ('编辑文章', 3, 2, '/article', 'article:edit', '["article:edit"]', 1, '2024-10-26 10:42:21',
+        '2024-10-26 10:42:21', 1, 0),
+       ('获取文章详情', 3, 3, '/article/{id}', 'article:detail', '["article:detail"]', 1, '2024-10-26 10:42:21',
+        '2024-10-26 10:42:21', 1, 0),
+       ('分页查询文章', 3, 4, '/article/page', 'article:page', '["article:page"]', 1, '2024-10-26 10:42:21',
+        '2024-10-26 10:42:21', 1, 0),
+       ('删除文章', 3, 5, '/article/{id}', 'article:del', '["article:del"]', 1, '2024-10-26 10:42:21',
+        '2024-10-26 10:42:21', 1, 0),
+       ('修改文章状态', 3, 6, '/article/status/{id}/{status}', 'article:status', '["article:status"]', 1,
+        '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
+       ('重置顺序号', 3, 7, '/article/initOrderNum', 'article:initOrderNum', '["article:initOrderNum"]', 1,
+        '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
+       ('分页查询文章模板', 3, 8, '/article/template/page', 'article:template:page', '["article:template:page"]', 1,
+        '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
+       ('新增文章教程', 3, 9, '/course', 'course:add', '["course:add"]', 1, '2024-10-26 10:42:21',
+        '2024-10-26 10:42:21', 1, 0),
+       ('编辑文章教程', 3, 10, '/course', 'course:edit', '["course:edit"]', 1, '2024-10-26 10:42:21',
+        '2024-10-26 10:42:21', 1, 0),
+       ('获取文章教程', 3, 11, '/course/{id}', 'course:get', '["course:get"]', 1, '2024-10-26 10:42:21',
+        '2024-10-26 10:42:21', 1, 0),
+       ('分页查询文章教程', 3, 12, '/course/page', 'course:page', '["course:page"]', 1, '2024-10-26 10:42:21',
+        '2024-10-26 10:42:21', 1, 0),
+       ('删除文章教程', 3, 13, '/course/{id}', 'course:del', '["course:del"]', 1, '2024-10-26 10:42:21',
+        '2024-10-26 10:42:21', 1, 0),
+       ('修改文章教程顺序', 3, 14, '/course/orderNum/{id}', 'course:orderNum', '["course:orderNum"]', 1,
+        '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
+       ('新增文章教程详情', 3, 15, '/course/detail', 'course:addDetail', '["course:addDetail"]', 1,
+        '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
+       ('编辑文章教程详情', 3, 16, '/course/detail', 'course:editDetail', '["course:editDetail"]', 1,
+        '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
+       ('删除文章教程详情', 3, 17, '/course/detail', 'course:delDetail', '["course:delDetail"]', 1,
+        '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
+       ('新增网站信息', 3, 18, '/website', 'website:save', '["website:save"]', 1, '2024-10-26 10:42:21',
+        '2024-10-26 10:42:21', 1, 0),
+       ('更新网站状态', 3, 19, '/website/uptStatus/{id}/{status}', 'website:uptStatus', '["website:uptStatus"]', 1,
+        '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
+       ('删除网站信息', 3, 20, '/website/{id}', 'website:delete', '["website:delete"]', 1, '2024-10-26 10:42:21',
+        '2024-10-26 10:42:21', 1, 0),
+       ('分页查询网站信息', 3, 21, '/website/page', 'website:page', '["website:page"]', 1, '2024-10-26 10:42:21',
+        '2024-10-26 10:42:21', 1, 0);
+
+
+INSERT INTO `role`
+(id, name, order_num, is_enabled, create_time, update_time, operator, is_uk_deleted)
+VALUES (1, 'admin', 999, 1, '2024-10-26 10:42:49', '2024-10-26 10:42:49', 2, 0);
+
+INSERT INTO role_menu (menu_id,role_id ,operator)
+select id,1 as role_id,2 as operator  from menu  order by id ;
+
+
 
 ```
 

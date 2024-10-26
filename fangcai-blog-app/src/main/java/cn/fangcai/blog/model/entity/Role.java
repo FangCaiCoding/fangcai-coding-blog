@@ -1,16 +1,13 @@
 package cn.fangcai.blog.model.entity;
 
-import cn.fangcai.blog.model.entity.base.BaseEntity;
+import cn.fangcai.blog.model.entity.base.BaseEntityWithUk;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 /**
  * <p>
@@ -24,7 +21,7 @@ import java.util.List;
 @Setter
 @TableName(value = "role", autoResultMap = true)
 @Schema(name = "Role", description = "角色信息（带角色权限关系）")
-public class Role extends BaseEntity {
+public class Role extends BaseEntityWithUk {
 
 
     @TableId(value = "id", type = IdType.AUTO)
@@ -33,10 +30,6 @@ public class Role extends BaseEntity {
     @Schema(description = "角色名")
     @TableField("name")
     private String name;
-
-    @Schema(description = "权限列表 id")
-    @TableField(value = "menu_id_list", typeHandler = JacksonTypeHandler.class)
-    private List<Integer> menuIdList;
 
     @Schema(description = "顺序号,升序排序")
     @TableField("order_num")

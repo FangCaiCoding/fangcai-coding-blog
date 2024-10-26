@@ -20,7 +20,7 @@ public class MybatisPlusGer {
     private static final String userName = "dev_tohero_blog";
     private static final String password = "jwrM3Dp7wAWfnFtM";
 
-    private static final List<String> tables = Arrays.asList("role", "menu");
+    private static final List<String> tables = Arrays.asList("role","role_menu","user_role", "menu");
 
     public static void main(String[] args) {
         FastAutoGenerator.create(dbUrl + "?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&serverTimezone=GMT%2B8",

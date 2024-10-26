@@ -1,6 +1,7 @@
 package cn.fangcai.blog.model.entity;
 
 import cn.fangcai.blog.model.entity.base.BaseEntity;
+import cn.fangcai.blog.model.entity.base.BaseEntityWithUk;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -24,7 +25,7 @@ import java.util.List;
 @Setter
 @TableName(value = "menu",autoResultMap = true)
 @Schema(name = "Menu", description = "菜单（权限）列表")
-public class Menu extends BaseEntity {
+public class Menu extends BaseEntityWithUk {
 
 
     @TableId(value = "id", type = IdType.AUTO)
@@ -46,13 +47,13 @@ public class Menu extends BaseEntity {
     @TableField("route_key")
     private String routeKey;
 
-    @Schema(description = "权限码")
-    @TableField("auth_code")
-    private String authCode;
+    @Schema(description = "菜单码")
+    @TableField("menu_key")
+    private String menuKey;
 
     @Schema(description = "接口权限码集合")
-    @TableField(value = "api_code_list", typeHandler = JacksonTypeHandler.class)
-    private List<String> apiCodeList;
+    @TableField(value = "auth_code_list", typeHandler = JacksonTypeHandler.class)
+    private List<String> authCodeList;
 
     @Schema(description = "是否启用 1-启用 0-停用")
     @TableField("is_enabled")

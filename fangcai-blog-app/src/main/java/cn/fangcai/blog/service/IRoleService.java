@@ -13,5 +13,11 @@ import java.util.Set;
  */
 public interface IRoleService {
 
-    Set<String> listApiCodes(List<Integer> roleIds);
+
+    Boolean delById(Integer id);
+
+
+
+    Set<String> listAuthCode(List<Integer> roleIds);
+
 }

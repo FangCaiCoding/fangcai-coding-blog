@@ -31,22 +31,22 @@ public class MenuServiceImpl implements IMenuService {
 
 
     @Override
-    public Set<String> listApiCodeByIds(List<Integer> ids) {
+    public Set<String> listAuthCodeByIds(List<Integer> ids) {
         if (CollUtil.isEmpty(ids)) {
             return new HashSet<>();
         }
         return menuRepository.lambdaQuery()
-                .select(Menu::getApiCodeList)
+                .select(Menu::getAuthCodeList)
                 .in(Menu::getId, ids)
                 .eq(Menu::getEnabled, true)
                 .list()
                 .stream()
-                .map(Menu::getApiCodeList)
+                .map(Menu::getAuthCodeList)
                 .flatMap(List::stream)
                 .collect(Collectors.toSet());
     }
     @Repository
     static  class  MenuRepository  extends ServiceImpl<MenuMapper, Menu>{
-
     }
+
 }

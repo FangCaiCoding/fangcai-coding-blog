@@ -1,7 +1,9 @@
 package cn.fangcai.blog.service.impl;
 
-import cn.fangcai.blog.model.entity.Role;
 import cn.fangcai.blog.mapper.RoleMapper;
+import cn.fangcai.blog.mapper.RoleMenuMapper;
+import cn.fangcai.blog.model.entity.Role;
+import cn.fangcai.blog.model.entity.RoleMenu;
 import cn.fangcai.blog.service.IMenuService;
 import cn.fangcai.blog.service.IRoleService;
 import cn.hutool.core.collection.CollUtil;
@@ -29,30 +31,50 @@ public class RoleServiceImpl implements IRoleService {
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
+    private RoleMenuRepository roleMenuRepository;
+    @Autowired
     private IMenuService menuService;
 
+
     @Override
-    public Set<String> listApiCodes(List<Integer> roleIds) {
+    public Boolean delById(Integer id) {
+        return roleRepository.removeById(id);
+    }
+
+    @Override
+    public Set<String> listAuthCode(List<Integer> roleIds) {
         if (CollUtil.isEmpty(roleIds)) {
             return new HashSet<>();
         }
-        List<Integer> meunIdList = roleRepository.lambdaQuery()
-                .select(Role::getMenuIdList)
+        List<Integer> enableRoleIds = roleRepository.lambdaQuery()
+                .select(Role::getId)
                 .eq(Role::getEnabled, true)
                 .in(Role::getId, roleIds)
                 .list()
                 .stream()
-                .map(Role::getMenuIdList)
-                .flatMap(List::stream)
-                .distinct()
+                .map(Role::getId)
                 .toList();
-       return menuService.listApiCodeByIds(meunIdList);
+        if (CollUtil.isEmpty(enableRoleIds)) {
+            return new HashSet<>();
+        }
+        List<Integer> meunIdList = roleMenuRepository.lambdaQuery()
+                .select(RoleMenu::getMenuId)
+                .in(RoleMenu::getRoleId, enableRoleIds)
+                .list()
+                .stream()
+                .map(RoleMenu::getMenuId)
+                .toList();
+        return menuService.listAuthCodeByIds(meunIdList);
     }
-
 
 
     @Repository
     static class RoleRepository extends ServiceImpl<RoleMapper, Role> {
+
+    }
+
+    @Repository
+    static class RoleMenuRepository extends ServiceImpl<RoleMenuMapper, RoleMenu> {
 
     }
 }

@@ -2,8 +2,10 @@ package cn.fangcai.blog.service.impl;
 
 import cn.fangcai.blog.consts.BlogErrorCodeEnum;
 import cn.fangcai.blog.mapper.UserMapper;
+import cn.fangcai.blog.mapper.UserRoleMapper;
 import cn.fangcai.blog.mapstruct.UserConverter;
 import cn.fangcai.blog.model.entity.User;
+import cn.fangcai.blog.model.entity.UserRole;
 import cn.fangcai.blog.model.req.UserEmailRegisterReq;
 import cn.fangcai.blog.model.req.UserLoginReq;
 import cn.fangcai.blog.model.res.UserRes;
@@ -17,6 +19,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,6 +40,8 @@ public class UserServiceImpl implements IUserService, IAuthService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserRoleRepository userRoleRepository;
     @Autowired
     private IRoleService roleService;
 
@@ -116,13 +121,24 @@ public class UserServiceImpl implements IUserService, IAuthService {
         }
         User user = userRepository.getById((Integer) userId);
         if (user != null && user.getEnabled()) {
-            return roleService.listApiCodes(user.getRoleIdList());
+            List<Integer> roleIds = userRoleRepository.lambdaQuery()
+                    .eq(UserRole::getUserId, user.getId())
+                    .list()
+                    .stream()
+                    .map(UserRole::getRoleId)
+                    .toList();
+            return roleService.listAuthCode(roleIds);
         }
         return new HashSet<>();
     }
 
-    @Component
+    @Repository
     static class UserRepository extends ServiceImpl<UserMapper, User> {
+
+    }
+
+    @Repository
+    static class UserRoleRepository extends ServiceImpl<UserRoleMapper, UserRole> {
 
     }
 }
