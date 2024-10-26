@@ -64,11 +64,6 @@ public class AuthProperties {
     public static Boolean COOKIE_SECURE;
 
 
-
-
-
-
-
     /**
      * 环境标识
      */
@@ -110,7 +105,7 @@ public class AuthProperties {
         JWT_SM4_KEY = sm4SecretKey;
     }
 
-    @Value("${fangcai.auth.jwt.exp_days:1}")
+    @Value("${fangcai.auth.jwt.exp_days:30}")
     public void setJwtExpDays(Integer jwtExpDays) {
         JWT_EXP_DAYS = jwtExpDays;
     }
@@ -122,7 +117,7 @@ public class AuthProperties {
     }
 
 
-    @Value("${fangcai.auth.jwt.exp_days:1}")
+    @Value("${fangcai.auth.jwt.exp_days:30}")
     public void setCookieMaxAge(Integer jwtExpDays) {
         COOKIE_MAX_AGE = (jwtExpDays + 1) * 24 * 60 * 60;
     }
