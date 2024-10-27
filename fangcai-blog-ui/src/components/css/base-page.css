@@ -207,10 +207,18 @@
     margin-left: 20px;
 }
 
+
 .user-avatar {
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+    background-color: white;
+    color: #ff8721;
+    border: solid #ff8721 1px;
     cursor: pointer;
     width: 40px;
     height: 40px;
+    font-size: 11px;
 }
 
 .search-input {

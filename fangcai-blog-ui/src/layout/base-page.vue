@@ -36,13 +36,15 @@
               @click="openSearch"
           />
         </div>
-
+        <el-button class="right-item " v-if="!userStore.isLogin()" type="primary" @click="handleAvatarClick">登录
+        </el-button>
         <el-avatar
-            :icon="UserFilled"
+            v-if="userStore.isLogin()"
             :src="userStore.userContext.avatar"
             class="right-item user-avatar"
             @click="handleAvatarClick"
         >
+          {{ userStore.userContext.nickName.substring(0, 7) }}
         </el-avatar>
       </div>
     </div>
@@ -119,34 +121,59 @@
     </div>
   </el-dialog>
 
-
   <!-- 登录弹窗 -->
-  <el-dialog v-model="showLoginDialog" title="用户登录" width="400px" :close-on-click-modal="false">
-    <el-form v-model="loginForm" label-width="80px">
-      <!-- 用户名 -->
-      <el-form-item label="用户名" prop="用户名" v-model="loginForm.loginName">
-        <el-input v-model="loginForm.loginName" placeholder="请输入用户名"></el-input>
-      </el-form-item>
+  <el-dialog v-model="showLoginDialog" title="登录享受更多权益" width="500px" :close-on-click-modal="false">
+    <!-- Tab Navigation for Different Login Options -->
+    <el-tabs type="card">
+      <el-tab-pane label="微信登录">
+        <!-- 微信二维码部分 -->
+        <div style="text-align: center;">
+          <p>微信扫码，关注公众号</p>
+          <img :src="qrCodeUrl" alt="微信二维码" style="width: 180px; height: 180px;">
+          <p>扫码后输入 <span style="color: red; font-weight: bold; font-size: 18px;">666 </span> 获取验证码</p>
+          <div style="display: flex; justify-content: center; ">
+            <el-input style="width: 120px; height: 35px; margin-right: 10px;"
+                      v-model="loginForm.wxCode" placeholder="输入验证码"></el-input>
+            <el-button style="margin: auto 0; height: 30px;" type="primary" @click="loginByWxCode">登录</el-button>
+          </div>
+        </div>
+      </el-tab-pane>
 
-      <!-- 密码 -->
-      <el-form-item label="密码" prop="密码">
-        <el-input type="password" v-model="loginForm.password" placeholder="请输入密码"></el-input>
-      </el-form-item>
-    </el-form>
+      <el-tab-pane label="账号登录">
+        <!-- 用户名和密码表单 -->
+        <el-form v-model="loginForm">
+          <!-- 用户名 -->
+          <el-form-item label="账号：">
+            <el-input v-model="loginForm.loginName" placeholder="输入用户名"></el-input>
+          </el-form-item>
 
-    <!-- 登录按钮 -->
-    <div class="dialog-footer" style="text-align: right;">
-      <el-button type="primary" @click="login">登录</el-button>
+          <!-- 密码 -->
+          <el-form-item label="密码：">
+            <el-input type="password" v-model="loginForm.password" placeholder="输入密码"></el-input>
+          </el-form-item>
+          <!-- 登录按钮 -->
+          <div style="display: flex">
+            <el-button style="margin: 5px auto;width: 250px;" type="primary" @click="loginByName">登录</el-button>
+          </div>
+        </el-form>
+      </el-tab-pane>
+    </el-tabs>
+
+    <!-- 用户协议和隐私政策 -->
+    <div style="text-align: center; margin-top: 20px;">
+      登录即同意
+      <el-link href="user-agreement" target="_blank">用户协议</el-link>
+      和
+      <el-link href="privacy-policy" target="_blank">隐私政策</el-link>
     </div>
   </el-dialog>
-
 </template>
 
 <script setup>
-import {defineProps, nextTick, reactive, ref} from "vue";
+import {defineProps, nextTick, reactive, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
-import {Search, UserFilled} from "@element-plus/icons-vue";
+import {Search} from "@element-plus/icons-vue";
 import apiService from "../api/apiService.js";
 import {useUserStore} from "@/stores/UserContext.js";
 
@@ -183,6 +210,7 @@ const showLoginDialog = ref(false);
 const loginForm = reactive({
   loginName: "",
   password: "",
+  wxCode: ""
 });
 
 
@@ -234,11 +262,21 @@ const viewArticle = (id) => {
 }
 
 // 登录逻辑
-const login = async () => {
+const loginByWxCode = async () => {
+  const userRes = await apiService.loginByWxCode({
+    wxCode: loginForm.wxCode
+  })
+  userStore.login(userRes)
+  showLoginDialog.value = false; // 关闭登录弹窗
+  ElMessage.success("登录成功！");
+};
+
+// 登录逻辑
+const loginByName = async () => {
   const userRes = await apiService.loginByName({
     loginName: loginForm.loginName,
     password: loginForm.password
-  });
+  })
   userStore.login(userRes)
   showLoginDialog.value = false; // 关闭登录弹窗
   ElMessage.success("登录成功！");
@@ -253,5 +291,6 @@ const selectNavigate = (key) => {
 </script>
 
 <style scoped>
+
 
 </style>

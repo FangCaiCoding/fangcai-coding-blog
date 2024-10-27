@@ -11,6 +11,8 @@ public interface ICacheService {
     String get(String key);
 
 
+    String getAndDel(String key);
+
     void put(String key, String value, long duration);
 
 

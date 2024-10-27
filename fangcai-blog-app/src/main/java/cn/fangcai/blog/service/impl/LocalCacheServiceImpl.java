@@ -68,11 +68,27 @@ public class LocalCacheServiceImpl implements ICacheService {
         return cache.getIfPresent(key) == null ? null : Objects.requireNonNull(cache.getIfPresent(key)).value;
     }
 
+
+    /**
+     * 从缓存获取数据
+     *
+     * @param key 缓存键
+     *
+     * @return 缓存值，若不存在则返回 null
+     */
+    @Override
+    public String getAndDel(String key) {
+        String value = cache.getIfPresent(key) == null ? null : Objects.requireNonNull(cache.getIfPresent(key)).value;
+        this.del(key);
+        return value;
+    }
+
+
     /**
      * 向缓存添加数据
      *
-     * @param key   缓存键
-     * @param value 缓存值
+     * @param key      缓存键
+     * @param value    缓存值
      * @param duration 有效期，单位：秒
      */
     @Override
@@ -80,6 +96,14 @@ public class LocalCacheServiceImpl implements ICacheService {
         cache.put(key, new LocalCacheObj<>(value, duration));
     }
 
+    /**
+     * 删除缓存
+     *
+     * @param key
+     */
+    private void del(String key) {
+        cache.invalidate(key);
+    }
 
 
     public static void main(String[] args) throws InterruptedException {
@@ -92,6 +116,7 @@ public class LocalCacheServiceImpl implements ICacheService {
         System.out.println(cacheService.get("key1"));
         Thread.sleep(3000);
         System.out.println(cacheService.get("key1"));
+        System.out.println(cacheService.getAndDel("key2"));
         System.out.println(cacheService.get("key2"));
 
         Thread.sleep(4000);

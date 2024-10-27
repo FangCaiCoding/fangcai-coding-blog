@@ -67,15 +67,14 @@ public class WechatServiceImpl implements IWechatService {
         String newSubscribe = "subscribe";
         String loginCode = "666";
         if (loginCode.equals(content)) {
-            String captcha = RandomUtil.randomString(6);
+            String captcha = RandomUtil.randomNumbers(6);
             cacheService.put(CacheKeyFactory.getWxLoginKey(captcha), wxMsgReq.getFromUserName(), 30);
             textRes = "【方才coding】登录验证码：" + captcha + " ，请在30秒内输入。";
         } else if (newSubscribe.equalsIgnoreCase(event)) {
-            textRes = WX_MSG_MAP.get(newSubscribe.toLowerCase());
+            textRes = WX_MSG_MAP.get(newSubscribe.toLowerCase())+ WX_MSG_MAP.get("default");
         } else {
             textRes = WX_MSG_MAP.getOrDefault(content, "/:? 还在找其它资料么？嘿嘿，后面会越来越多的。\n");
         }
-        textRes = textRes + WX_MSG_MAP.get("default");
         log.debug("handleWxMsg-textRes:[{}]", textRes);
         WxTxtMsgRes msgRes = new WxTxtMsgRes();
         msgRes.setContent(textRes);

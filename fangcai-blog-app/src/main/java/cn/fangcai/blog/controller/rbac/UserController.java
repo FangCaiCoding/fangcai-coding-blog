@@ -2,6 +2,7 @@ package cn.fangcai.blog.controller.rbac;
 
 
 import cn.fangcai.blog.model.req.UserEmailRegisterReq;
+import cn.fangcai.blog.model.req.UserLoginByWxReq;
 import cn.fangcai.blog.model.req.UserLoginReq;
 import cn.fangcai.blog.model.res.UserRes;
 import cn.fangcai.blog.service.IUserService;
@@ -47,9 +48,9 @@ public class UserController {
     @ApiOperationSupport(order = 20)
     @Operation(summary = "登录-通过微信code")
     @PostMapping("loginByWxCode")
-    private FcResult<UserRes> loginByWxCode(@RequestBody @NotBlank(message = "wxCode不能为空") String wxCode) {
-
-        UserRes userRes = userService.loginByWxCode(wxCode);
+    @FcNotCheckLogin
+    private FcResult<UserRes> loginByWxCode(@RequestBody @Validated UserLoginByWxReq wxReq) {
+        UserRes userRes = userService.loginByWxCode(wxReq.getWxCode());
         FcAuthUtil.login(userRes.getId());
         return FcResult.SUCCESS(userRes);
     }

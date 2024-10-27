@@ -66,7 +66,13 @@ public class FcJWTUtil {
      * @return UserTokenDto
      */
     public static UserTokenDto parserToken(String token) throws FcBusinessException {
-        boolean verify = JWTUtil.verify(token, jwtSigner);
+        boolean verify = false;
+        try {
+            verify = JWTUtil.verify(token, jwtSigner);
+
+        } catch (Exception e) {
+            log.warn("JWTUtil.verify Exception,errorMsg:{}", e.getMessage());
+        }
         if (!verify) {
             throw new FcBusinessException(AuthErrorCodeEnum.JWT_TOKEN_ERROR);
         }
@@ -89,7 +95,7 @@ public class FcJWTUtil {
         String tokenEncryptStr = (String) JWTUtil.parseToken(token).getPayload(JWT_CLAIM_NAME);
         String tokenStr = sm4.decryptStr(JSONUtil.toJsonStr(tokenEncryptStr), CharsetUtil.CHARSET_UTF_8);
         UserTokenDto tokenDto = JSONUtil.toBean(tokenStr, UserTokenDto.class);
-        //TODO : by mfc on 2024/8/21
+        // TODO : by mfc on 2024/8/21
     }
 
 

@@ -85,19 +85,22 @@ axiosInst.interceptors.response.use(
         } else {
             ElMessage.error(response.data.message);
             // 可以根据具体的业务需求处理非200的情况
-            return Promise.resolve(response.data.message);
+            return Promise.reject(new Error(response.data.message));
         }
     },
     (error) => {
         // 统一处理响应错误
         let message = '';
         if (error.response) {
+            message = `${error.response.data.message}`;
             // 请求已经发出，但是服务器响应一个状态码非 2xx 的范围
             switch (error.response.status) {
                 case 401:
                     // todo 遗留问题，js中更新 store后，vue无法响应，需要刷新页面才能响应
-                    message = '未登录，请先登录！系统将在2秒后跳转至首页！'
                     userStore.$reset()
+                    break;
+                case  403:
+                    message = '你还没有当前操作的权限哟！系统将在2秒后跳转至首页！'
                     // 2秒后跳转到首页
                     setTimeout(() => {
                         router.push('/');
@@ -107,16 +110,11 @@ axiosInst.interceptors.response.use(
                     message = `${error.response.data.message}`;
             }
         } else {
-            // 处理断网的情况
-            if (!window.navigator.onLine) {
-                message = '网络已断开';
-            } else {
-                message = '请求失败，请稍后重试';
-            }
+            message = window.navigator.onLine ? '请求失败，请稍后重试' : '网络已断开';
         }
         // 显示错误提示信息
         ElMessage.error(message);
-        return Promise.resolve(message);
+        return Promise.reject(new Error(message));
     }
 );
 

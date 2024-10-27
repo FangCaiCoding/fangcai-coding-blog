@@ -3,6 +3,7 @@ package cn.fangcai.blog.model.res.wx;
 import cn.fangcai.blog.model.req.wx.WxTxtMsgReq;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 
@@ -12,7 +13,7 @@ import lombok.Data;
  * @description
  */
 @Data
-@XmlRootElement(name = "xml")
+@JacksonXmlRootElement(localName = "xml")
 public class WxTxtMsgRes {
 
     @JacksonXmlProperty(localName = "ToUserName")

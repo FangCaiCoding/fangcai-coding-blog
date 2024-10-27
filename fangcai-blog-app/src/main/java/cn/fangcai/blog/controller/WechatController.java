@@ -78,11 +78,11 @@ public class WechatController {
             produces = "application/xml;charset=utf-8")
     public WxTxtMsgRes handleWxMsg(@RequestBody WxTxtMsgReq msg,
                                    HttpServletRequest request) {
+        log.debug("handleWxMsg-WxTxtMsgReq:[{}]", JSONUtil.toJsonStr(msg));
         Boolean success = this.checkWxSignature(request);
         if (!success) {
             throw new FcBusinessException(BlogErrorCodeEnum.WX_SIGNATURE_ERROR);
         }
-        log.debug("handleWxMsg-WxTxtMsgReq:[{}]", JSONUtil.toJsonStr(msg));
         return wechatService.handleWxMsg(msg);
     }
 

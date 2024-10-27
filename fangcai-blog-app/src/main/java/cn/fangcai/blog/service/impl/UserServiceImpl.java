@@ -77,7 +77,7 @@ public class UserServiceImpl implements IUserService, IAuthService {
 
     @Override
     public UserRes loginByWxCode(String wxCode) {
-        String wxOpenId = cacheService.get(CacheKeyFactory.getWxLoginKey(wxCode));
+        String wxOpenId = cacheService.getAndDel(CacheKeyFactory.getWxLoginKey(wxCode));
         if (wxOpenId == null) {
             throw new FcBusinessException(BlogErrorCodeEnum.WX_CODE_EXPIRED);
         }
@@ -86,6 +86,9 @@ public class UserServiceImpl implements IUserService, IAuthService {
                 .one();
         if (user == null) {
             return this.register(wxOpenId);
+        }
+        if (!user.getEnabled()) {
+            throw new FcBusinessException(BlogErrorCodeEnum.USER_UN_ENABLED);
         }
         return UserConverter.INSTANCE.userToRes(user);
     }
@@ -123,8 +126,10 @@ public class UserServiceImpl implements IUserService, IAuthService {
 
     private UserRes register(String wxOpenId) {
         User newUser = new User();
+        newUser.setWxOpenId(wxOpenId);
         newUser.setLoginName(wxOpenId);
         newUser.setNickName(LocalDate.now().getMonthValue() + "月，遇见你");
+        newUser.setPassword("tempStr");
         userRepository.save(newUser);
         userRepository.lambdaUpdate()
                 .eq(User::getId, newUser.getId())
@@ -135,6 +140,7 @@ public class UserServiceImpl implements IUserService, IAuthService {
         UserRole userRole = new UserRole();
         userRole.setUserId(newUser.getId());
         userRole.setRoleId(blogAppProperties.getDefaultRoleId());
+        userRole.setOperator(newUser.getId());
         userRoleRepository.save(userRole);
         return UserConverter.INSTANCE.userToRes(newUser);
     }

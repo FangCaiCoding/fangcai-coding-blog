@@ -17,11 +17,11 @@ public enum BlogErrorCodeEnum implements IError {
      * 2xx 系列：用户相关
      */
 
-    EMAIL_EXIST(HttpStatus.OK.value(), "200", "该邮箱已注册，请直接登录！"),
+
 
     LONGIN_NAME_OR_PASS_WORD_ERROR(HttpStatus.BAD_REQUEST.value(), "210", "用户名或密码错误！"),
 
-    USER_UN_ENABLED(HttpStatus.OK.value(), "220", "用户已被禁用！请联系站长解封！"),
+    USER_UN_ENABLED(HttpStatus.UNAUTHORIZED.value(), "220", "用户已被禁用！请联系站长解封！"),
 
 
     /**

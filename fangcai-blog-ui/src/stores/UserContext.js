@@ -26,9 +26,6 @@ export const useUserStore = defineStore('userContext', () => {
         }
         const $reset = () => {
             userContext.id = undefined;
-            userContext.loginName = "";
-            userContext.nickName = "";
-            userContext.avatar = "";
             // 清理本地存储中的持久化内容
             localStorage.removeItem('userContext');
         }
