@@ -119,7 +119,7 @@ const listSiteCate = () => {
     return axiosInst.get("/website/public/cate/all");
 }
 const clickSite = (id) => {
-    return axiosInst.put("/website/click/" + id);
+    return axiosInst.put("/website/public/click/" + id);
 }
 
 export default {

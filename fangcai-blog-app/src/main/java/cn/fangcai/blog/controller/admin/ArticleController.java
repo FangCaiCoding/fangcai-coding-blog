@@ -1,4 +1,4 @@
-package cn.fangcai.blog.controller;
+package cn.fangcai.blog.controller.admin;
 
 import cn.fangcai.blog.model.req.ArticlePageReq;
 import cn.fangcai.blog.model.req.ArticleSaveReq;

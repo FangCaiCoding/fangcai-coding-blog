@@ -3,6 +3,7 @@ package cn.fangcai.blog.controller;
 import cn.fangcai.blog.config.BlogAppProperties;
 import cn.fangcai.blog.consts.BlogErrorCodeEnum;
 import cn.fangcai.blog.model.req.wx.WxTxtMsgReq;
+import cn.fangcai.blog.model.res.wx.WxBaseMsgRes;
 import cn.fangcai.blog.model.res.wx.WxTxtMsgRes;
 import cn.fangcai.blog.service.IWechatService;
 import cn.fangcai.common.auth.ano.FcNotCheckLogin;
@@ -76,8 +77,8 @@ public class WechatController {
     @PostMapping(path = "handleWxMsg",
             consumes = {"application/xml", "text/xml"},
             produces = "application/xml;charset=utf-8")
-    public WxTxtMsgRes handleWxMsg(@RequestBody WxTxtMsgReq msg,
-                                   HttpServletRequest request) {
+    public WxBaseMsgRes handleWxMsg(@RequestBody WxTxtMsgReq msg,
+                                    HttpServletRequest request) {
         log.debug("handleWxMsg-WxTxtMsgReq:[{}]", JSONUtil.toJsonStr(msg));
         Boolean success = this.checkWxSignature(request);
         if (!success) {

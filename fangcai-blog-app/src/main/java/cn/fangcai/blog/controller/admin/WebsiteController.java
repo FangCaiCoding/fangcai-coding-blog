@@ -1,4 +1,4 @@
-package cn.fangcai.blog.controller;
+package cn.fangcai.blog.controller.admin;
 
 import cn.fangcai.blog.model.req.website.WebSitePageReq;
 import cn.fangcai.blog.model.req.website.WebsiteSaveReq;
@@ -64,31 +64,6 @@ public class WebsiteController {
     @FcCheckAuth(values = {"website:page"})
     public FcResult<FcPageRes<WebsiteRes>> pageByReq(@RequestBody @Validated WebSitePageReq pageReq) {
         return FcResult.SUCCESS(websiteService.pageByReq(pageReq));
-    }
-
-
-    /**
-     * 公开类接口
-     */
-    @Operation(summary = "获取所有公开的站点")
-    @GetMapping("/public/list/all")
-    @FcNotCheckLogin
-    public FcResult<List<WebsiteListRes>> listPublicAll() {
-        return FcResult.SUCCESS(websiteService.listPublicAll());
-    }
-
-    @Operation(summary = "获取所有站点分类")
-    @GetMapping("/public/cate/all")
-    @FcNotCheckLogin
-    public FcResult<List<WebsiteCateRes>> listAllCate() {
-        return FcResult.SUCCESS(websiteService.listAllCate());
-    }
-
-    @Operation(summary = "点击网站")
-    @PutMapping("/click/{id}")
-    @FcNotCheckLogin
-    public FcResult<Boolean> clickWebsite(@PathVariable Integer id) {
-        return FcResult.SUCCESS(websiteService.clickWebsite(id));
     }
 
 }

@@ -2,7 +2,7 @@ package cn.fangcai.blog.service.impl;
 
 import cn.fangcai.blog.config.BlogAppProperties;
 import cn.fangcai.blog.consts.BlogErrorCodeEnum;
-import cn.fangcai.blog.controller.ICacheService;
+import cn.fangcai.blog.service.ICacheService;
 import cn.fangcai.blog.mapper.UserMapper;
 import cn.fangcai.blog.mapper.UserRoleMapper;
 import cn.fangcai.blog.mapstruct.UserConverter;

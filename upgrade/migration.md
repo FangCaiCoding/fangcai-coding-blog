@@ -1,6 +1,7 @@
 # 升级记录
 ## 1.0.20241026
 1. 微信登录实现；
+2. 微信后台配置实现；
 
 ```sql
 -- 微信登录实现改造
@@ -8,6 +9,21 @@ ALTER TABLE USER ADD `wx_open_id` varchar(64) NOT NULL COMMENT '微信-用户唯
 alter table user drop index uk_email;
 ALTER TABLE `user` MODIFY COLUMN email varchar(64)  NULL COMMENT '邮箱';
 alter table user add unique key uk_wxOpenId(wx_open_id);
+
+CREATE TABLE `config_wechat` (
+                                 `id` int(11) NOT NULL AUTO_INCREMENT,
+                                 `name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '名称',
+                                 `msg_type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '消息类型 1-文本 2-图片',
+                                 `key_str` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '关键字',
+                                 `msg_value` varchar(1255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '信息（微信后台限制就是600）',
+                                 `is_enabled` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否启用 1-启用 0-停用',
+                                 `order_num` int(11) unsigned NOT NULL DEFAULT '999' COMMENT '顺序号,升序排序',
+                                 `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                                 `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                                 `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
+                                 PRIMARY KEY (`id`),
+                                 UNIQUE KEY `uk_key` (`key_str`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='微信配置类';
 ```
 
 ## 1.0.20241025

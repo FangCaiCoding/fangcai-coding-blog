@@ -1,6 +1,6 @@
 package cn.fangcai.blog.service.impl;
 
-import cn.fangcai.blog.controller.ICacheService;
+import cn.fangcai.blog.service.ICacheService;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.Expiry;

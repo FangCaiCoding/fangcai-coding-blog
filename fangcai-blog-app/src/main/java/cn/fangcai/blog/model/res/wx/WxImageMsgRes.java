@@ -15,15 +15,26 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @JacksonXmlRootElement(localName = "xml")
-public class WxTxtMsgRes extends WxBaseMsgRes {
+public class WxImageMsgRes extends WxBaseMsgRes {
 
 
-    @JacksonXmlProperty(localName = "Content")
-    @JacksonXmlCData
-    private String content;
+    @JacksonXmlProperty(localName = "Image")
+    private WxImageInfo image;
 
-    public WxTxtMsgRes(String content) {
-        this.content = content;
-        this.setMsgType(WechatMsgTypeEnum.TEXT.getWxFlag());
+    @Data
+    static class WxImageInfo {
+
+        @JacksonXmlProperty(localName = "MediaId")
+        @JacksonXmlCData
+        private String mediaId;
+
+        public WxImageInfo(String mediaId) {
+            this.mediaId = mediaId;
+        }
+    }
+
+    public WxImageMsgRes(String mediaId) {
+        this.image = new WxImageInfo(mediaId);
+        this.setMsgType(WechatMsgTypeEnum.IMAGE.getWxFlag());
     }
 }
