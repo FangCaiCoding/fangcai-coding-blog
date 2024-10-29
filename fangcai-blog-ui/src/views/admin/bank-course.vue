@@ -6,7 +6,7 @@
         <el-input
             style="width: 300px"
             size="large"
-            v-model="searchStr"
+            v-model="courseSearchStr"
             clearable
             placeholder="根据名称搜索"
             :prefix-icon="Search"
@@ -176,7 +176,7 @@
       <!-- 排序 -->
       <el-table-column prop="orderNum" label="顺序号" width="100" align="center">
         <template #default="scope">
-          <el-input v-model="scope.row.orderNum"   @change="handleInputChange(scope.row.id)"/>
+          <el-input v-model="scope.row.orderNum" @change="handleInputChange(scope.row.id)"/>
         </template>
       </el-table-column>
       <!-- 创建时间 -->
@@ -247,7 +247,7 @@ import AdminBasePage from "@/layout/admin-base-page.vue";
 const currentPage = ref(1);  // 当前加载的页码
 const totalArticles = ref(0);
 const pageSize = 10;  // 每页加载的教程数量
-const searchStr = ref('');
+const courseSearchStr = ref('');
 
 const router = useRouter();
 // 定义响应式数据
@@ -267,18 +267,15 @@ const course = ref({
 // 加载教程数据
 const loadCourses = async (page = 1) => {
   currentPage.value = page;
-  const trimmedQuery = searchStr.value.trim();
+  const trimmedQuery = courseSearchStr.value.trim();
   const pageCourse = await apiService.pageCourse({
     page: currentPage.value,
     pageSize: pageSize,
     title: trimmedQuery
   });
-  if (pageCourse && pageCourse.records.length > 0) {
-    courses.value = [];
-    totalArticles.value = pageCourse.total;
-    courses.value.push(...pageCourse.records);
-  }
-
+  courses.value = [];
+  totalArticles.value = pageCourse.total;
+  courses.value.push(...pageCourse.records);
 }
 
 const viewCourse = (id) => {
@@ -316,13 +313,14 @@ const uptStatus = async (course) => {
 
 // 获取教程详情内容
 const getCourseDetail = async (courseId) => {
+  // 清空选择器的内容
+  selectedDataList.value = [];
+
   detailDrawerVisible.value = true;
   const courseDetail = await apiService.getCourse(courseId);
   course.value = courseDetail;
   courseDetails.value = courseDetail.details;
   detailTotal.value = courseDetail.details.length;
-  // 清空选择器的内容
-  selectedDataList.value = [];
 };
 
 
@@ -369,7 +367,7 @@ const viewArticle = (id) => {
 }
 
 const handleInputChange = (rowId) => {
-  isEditCourseArticleMap.value.set(rowId,true);
+  isEditCourseArticleMap.value.set(rowId, true);
 }
 const getIsEdited = (rowId) => {
   return isEditCourseArticleMap.value.get(rowId);
@@ -377,7 +375,8 @@ const getIsEdited = (rowId) => {
 const editCourseArticle = async (row) => {
   console.log(row)
   await apiService.editCourseDetail(row)
-  isEditCourseArticleMap.value.set(row.id,false);
+  await getCourseDetail(row.courseId);
+  isEditCourseArticleMap.value.set(row.id, false);
 }
 const delCourseArticle = async () => {
   ElMessageBox.confirm(
@@ -417,22 +416,18 @@ const allArticles = ref([]);
 
 // 加载所有可选文章
 const loadAllArticles = async () => {
-  const trimmedQuery = searchStr.value.trim();
+  allArticles.value = [];
   const pagePublicArticle = await apiService.pageArticle({
     page: 1,
-    pageSize: 500,
-    title: trimmedQuery
+    pageSize: 1000,
+    excludeCourseId: course.value.id,
   });
-  if (pagePublicArticle && pagePublicArticle.records.length > 0) {
-    allArticles.value = [];
-    allArticles.value.push(...pagePublicArticle.records);
-  }
+  allArticles.value.push(...pagePublicArticle.records);
 };
 
 // 监听多选文章选择变化
 const handleSelectChange = (selected) => {
   selectedDataList.value = selected;
-  console.log("selectedDataList", selectedDataList.value)
 };
 
 // 确认添加文章到教程中

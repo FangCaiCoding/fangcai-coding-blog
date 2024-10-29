@@ -103,11 +103,11 @@ const copy = async () => {
   const currentUrl = window.location.href;
 
   // 定义要在复制内容前添加的转载信息
-  const sourceText = `> 本文转载自：${currentUrl}\n\n`;
+  const sourceText = `> 本文转载自：[${currentUrl}](${currentUrl})\n\n`;
   const contentToCopy = sourceText + article.value.contentMd;
   try {
     await toClipboard(contentToCopy)
-    ElMessage.success('复制成功！')
+    ElMessage.success('文章内容复制成功！')
   } catch (e) {
     ElMessage.error('复制失败！')
   }

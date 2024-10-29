@@ -1,5 +1,6 @@
 package cn.fangcai.blog.service.impl;
 
+import cn.fangcai.blog.consts.StatusEnum;
 import cn.fangcai.blog.mapper.CourseDetailMapper;
 import cn.fangcai.blog.mapper.CourseMapper;
 import cn.fangcai.blog.mapstruct.CourseConverter;
@@ -24,10 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -78,6 +76,7 @@ public class CourseServiceImpl implements ICourseService {
         }
         List<CourseDetailRes> details = courseDetailRepository.lambdaQuery()
                 .eq(CourseDetail::getCourseId, courseRes.getId())
+                .orderByAsc(CourseDetail::getOrderNum)
                 .list()
                 .stream()
                 .map(CourseConverter.INSTANCE::toCourseDetailRes)
@@ -161,6 +160,44 @@ public class CourseServiceImpl implements ICourseService {
         return courseDetailRepository.removeByIds(detailIds);
     }
 
+
+    @Override
+    public Map<Integer, Integer> getMapByArticleIds(List<Integer> articleIdList) {
+        if (CollUtil.isEmpty(articleIdList)) {
+            return new HashMap<>();
+        }
+        Map<Integer, Integer> articleIdCourseIdMap = courseDetailRepository.lambdaQuery()
+                .in(CourseDetail::getArticleId, articleIdList)
+                .list()
+                .stream()
+                .collect(Collectors.toMap(CourseDetail::getArticleId,
+                        CourseDetail::getCourseId, (k1, k2) -> k2));
+        if (CollUtil.isEmpty(articleIdCourseIdMap)) {
+            return articleIdCourseIdMap;
+        }
+        // 过滤掉未发布的课程
+        List<Integer> courseIdList = articleIdCourseIdMap.values().stream().distinct().toList();
+        Set<Integer> publishedCourseIdSet = courseRepository.lambdaQuery()
+                .select(Course::getId)
+                .in(Course::getId, courseIdList)
+                .eq(Course::getStatus, StatusEnum.PUBLISHED.getCode())
+                .list()
+                .stream()
+                .map(Course::getId)
+                .collect(Collectors.toSet());
+        articleIdCourseIdMap.entrySet().removeIf(entry -> !publishedCourseIdSet.contains(entry.getValue()));
+        return articleIdCourseIdMap;
+    }
+
+    @Override
+    public List<Integer> listArticleIdById(Integer courseId) {
+        return courseDetailRepository.lambdaQuery()
+                .eq(CourseDetail::getCourseId, courseId)
+                .list()
+                .stream()
+                .map(CourseDetail::getArticleId)
+                .toList();
+    }
 
     @Component
     static class CourseRepository extends ServiceImpl<CourseMapper, Course> {

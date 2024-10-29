@@ -14,7 +14,9 @@ import cn.fangcai.blog.model.req.ArticleTemplatePageReq;
 import cn.fangcai.blog.model.res.ArticleDetailRes;
 import cn.fangcai.blog.model.res.ArticleRes;
 import cn.fangcai.blog.model.res.ArticleTemplateRes;
+import cn.fangcai.blog.model.res.CourseRes;
 import cn.fangcai.blog.service.IArticleService;
+import cn.fangcai.blog.service.ICourseService;
 import cn.fangcai.common.model.dto.FcPageRes;
 import cn.fangcai.common.model.enums.FcErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcBusinessException;
@@ -23,11 +25,13 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -48,6 +52,9 @@ public class ArticleServiceImpl implements IArticleService {
     private ArticleDetailRepository articleDetailRepository;
     @Autowired
     private ArticleTemplateRepository teamRepository;
+    @Autowired
+    @Lazy
+    private ICourseService courseService;
 
     @Override
     public Integer addArticle(ArticleSaveReq saveReq) {
@@ -98,16 +105,29 @@ public class ArticleServiceImpl implements IArticleService {
 
     @Override
     public FcPageRes<ArticleRes> pageArticle(ArticlePageReq pageReq) {
+        Integer excludeCourseId = pageReq.getExcludeCourseId();
+        List<Integer> excludeArticleIdList = new ArrayList<>();
+        if (excludeCourseId != null) {
+            excludeArticleIdList = courseService.listArticleIdById(excludeCourseId);
+        }
         Page<Article> page = articleRepository.lambdaQuery()
                 .like(StrUtil.isNotBlank(pageReq.getTitle()), Article::getTitle, pageReq.getTitle())
                 .eq(!Objects.isNull(pageReq.getStatus()), Article::getStatus, pageReq.getStatus())
+                .notIn(CollUtil.isNotEmpty(excludeArticleIdList), Article::getId, excludeArticleIdList)
                 .orderByAsc(Article::getOrderNum)
-                .orderByDesc(BaseEntity::getCreateTime, Article::getId)
+                .orderByDesc(Article::getId)
                 .page(new Page<>(pageReq.getPage(), pageReq.getPageSize()));
+        List<ArticleRes> articleResList = ArticleConverter.INSTANCE.articleListToResList(page.getRecords());
+        if (CollUtil.isNotEmpty(articleResList)) {
+            List<Integer> articleIdList = articleResList.stream().map(ArticleRes::getId).toList();
+            Map<Integer, Integer> articleIdAndCourseIdMap = courseService.getMapByArticleIds(articleIdList);
+            articleResList.forEach(article -> article.setCourseId(articleIdAndCourseIdMap.get(article.getId())));
+        }
         return new FcPageRes<ArticleRes>(pageReq)
                 .total(page.getTotal())
-                .records(ArticleConverter.INSTANCE.articleListToResList(page.getRecords()));
+                .records(articleResList);
     }
+
 
     @Override
     public Boolean delArticle(Integer id) {
@@ -128,7 +148,7 @@ public class ArticleServiceImpl implements IArticleService {
         List<Article> articleList = articleRepository.lambdaQuery()
                 .select(Article::getId)
                 .orderByAsc(Article::getOrderNum)
-                .orderByDesc(BaseEntity::getCreateTime, Article::getId)
+                .orderByDesc(Article::getId)
                 .list();
         for (int i = 0; i < articleList.size(); i++) {
             articleList.get(i).setOrderNum(i * 10 + 9);

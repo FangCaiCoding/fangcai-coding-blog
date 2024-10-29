@@ -1,7 +1,7 @@
 package cn.fangcai.blog.controller;
 
-import cn.fangcai.blog.consts.StatusEnum;
 import cn.fangcai.blog.consts.BlogErrorCodeEnum;
+import cn.fangcai.blog.consts.StatusEnum;
 import cn.fangcai.blog.model.req.ArticlePageReq;
 import cn.fangcai.blog.model.req.CoursePageReq;
 import cn.fangcai.blog.model.res.ArticleDetailRes;
@@ -41,7 +41,7 @@ public class ArticlePublicController {
     @Operation(summary = "获取文章详情")
     @GetMapping("/{id}")
     public FcResult<ArticleDetailRes> getDetail(@PathVariable Integer id) {
-        ArticleDetailRes detail = articleService.getDetail(id,true);
+        ArticleDetailRes detail = articleService.getDetail(id, true);
         if (detail != null && !StatusEnum.PUBLISHED.getCode().equals(detail.getStatus())) {
             throw new FcBusinessException(BlogErrorCodeEnum.ARTICLE_UN_PUBLISHED);
         }
@@ -60,8 +60,12 @@ public class ArticlePublicController {
     @Operation(summary = "获取文章教程")
     @GetMapping("/course/{id}")
     public FcResult<CourseRes> getById(@PathVariable Integer id) {
+        CourseRes courseRes = courseService.getById(id);
+        if (courseRes != null && !StatusEnum.PUBLISHED.getCode().equals(courseRes.getStatus())) {
+            throw new FcBusinessException(BlogErrorCodeEnum.COURSE_UN_PUBLISHED);
+        }
         courseService.incrReadCt(id);
-        return FcResult.SUCCESS(courseService.getById(id));
+        return FcResult.SUCCESS(courseRes);
     }
 
     @Operation(summary = "分页查询教程")

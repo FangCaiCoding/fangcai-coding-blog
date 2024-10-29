@@ -21,4 +21,7 @@ public class ArticlePageReq extends PageReq {
     @Schema(description = "文章状态")
     private Byte status;
 
+    @Schema(description = "期望排除的文章教程ID")
+    private Integer excludeCourseId;
+
 }

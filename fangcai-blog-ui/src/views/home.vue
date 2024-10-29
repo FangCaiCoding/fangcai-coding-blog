@@ -5,7 +5,7 @@
            infinite-scroll-distance="1">
         <el-row :gutter="20">
           <el-col v-for="article in articles" :key="article.id" class="home-el-col">
-            <el-card class="list-card" shadow="hover" @click="viewArticle(article.id)">
+            <el-card class="list-card" shadow="hover" @click="viewArticle(article)">
               <h3 class="item-title">{{ article.title }}</h3>
               <p class="item-summary">{{ article.summary }}</p>
               <div class="item-meta">
@@ -40,7 +40,8 @@ const router = useRouter()
 // 定义响应式数据
 const articles = ref([
   {
-    id: 1,
+    id: null,
+    courseId: null,
     title: "",
     createTime: "",
     readCt: 100,
@@ -94,11 +95,13 @@ async function loadMoreArticles() {
 }
 
 
-const viewArticle = (id) => {
-  // 跳转到文章详情页逻辑
-  console.log(`查看文章详情：${id}`);
+const viewArticle = (article) => {
   // 使用 vue-router 跳转到文章详情页
-  router.push({name: 'article', params: {id: id}})
+  if (article.courseId) {
+    router.push({name: 'course', params: {id: article.courseId, articleId: article.id}})
+  } else {
+    router.push({name: 'article', params: {id: article.id}})
+  }
 }
 
 

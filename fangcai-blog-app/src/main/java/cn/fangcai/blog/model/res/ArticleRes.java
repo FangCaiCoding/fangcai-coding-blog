@@ -1,6 +1,5 @@
 package cn.fangcai.blog.model.res;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -17,6 +16,9 @@ public class ArticleRes {
 
     @Schema(description = "文章ID")
     private Integer id;
+
+    @Schema(description = "教程id，若有多个，则随机返回一个")
+    private Integer courseId;
 
     @Schema(description = "文章标题")
     private String title;

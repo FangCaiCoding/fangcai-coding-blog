@@ -25,6 +25,8 @@
           </span>
           <span class="edit-button" @click="editArticle(article.id)" v-if="userStore.isLogin()">
             <strong>编辑</strong></span>
+          <span class="edit-button" style="color: blue" @click="copy" v-if="userStore.isLogin()">
+            <strong>转载</strong></span>
         </div>
 
         <!-- 文章内容 -->
@@ -53,6 +55,8 @@ import router from "../router/index.js";
 import {MdCatalog, MdPreview} from 'md-editor-v3';
 import 'md-editor-v3/lib/preview.css';
 import {useUserStore} from "@/stores/UserContext.js";
+import {ElMessage} from "element-plus";
+import useClipboard from "vue-clipboard3";
 
 const userStore = useUserStore()
 const id = 'preview-only';
@@ -119,6 +123,22 @@ const editArticle = (id) => {
   console.debug(`编辑文章详情：${id}`);
   // 使用 vue-router 文章编辑页
   router.push({name: 'editArticle', query: {id: id}})
+}
+// 使用插件
+const { toClipboard } = useClipboard()
+const copy = async () => {
+  // 获取当前页面的 URL
+  const currentUrl = window.location.href;
+
+  // 定义要在复制内容前添加的转载信息
+  const sourceText = `> 本文转载自：[${currentUrl}](${currentUrl})\n\n`;
+  const contentToCopy = sourceText + article.value.contentMd;
+  try {
+    await toClipboard(contentToCopy)
+    ElMessage.success('文章内容复制成功！')
+  } catch (e) {
+    ElMessage.error('复制失败！')
+  }
 }
 
 onMounted(async () => {

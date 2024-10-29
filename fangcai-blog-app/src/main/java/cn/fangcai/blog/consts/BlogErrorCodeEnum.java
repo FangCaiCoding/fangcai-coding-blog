@@ -28,8 +28,9 @@ public enum BlogErrorCodeEnum implements IError {
      * 3xx 系列：文章相关
      */
 
-    ARTICLE_UN_PUBLISHED(HttpStatus.FORBIDDEN.value(), "300", "非法请求，不存在的文章！"),
+    ARTICLE_UN_PUBLISHED(HttpStatus.BAD_REQUEST.value(), "300", "非法请求，不存在的文章！"),
 
+    COURSE_UN_PUBLISHED(HttpStatus.BAD_REQUEST.value(), "301", "非法请求，不存在的教程！"),
 
     /**
      * 4xx 系列：站点相关
