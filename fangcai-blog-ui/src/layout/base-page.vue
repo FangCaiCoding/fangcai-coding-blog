@@ -189,7 +189,7 @@ const sidebarProps = defineProps({
   },
   fixedTitle: {
     type: String,
-    default: '扫码关注，领取资料'
+    default: '扫码关注，链接作者'
   },
   qrCodeUrl: {
     type: String,

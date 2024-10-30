@@ -3,6 +3,7 @@
     display: flex;
     justify-content: center; /* 居中内容 */
     background-color: rgb(242, 243, 245);
+    z-index: 1;
     /* 绘制网格背景 */
     /*background-image: linear-gradient(rgba(0, 0, 0, 0.03) 0.5px, transparent 1px),*/
     /*linear-gradient(90deg, rgba(0, 0, 0, 0.03) 0.5px, transparent 1px);*/
@@ -29,6 +30,7 @@
     width: 100%; /* 默认宽度100%，配合max-width使内容自适应 */
     margin-top: 5px;
     border-radius: 10px;
+    z-index: 2;
 }
 
 

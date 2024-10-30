@@ -3,7 +3,8 @@
   <BasePage>
     <template v-slot:main-content>
       <!-- 标题栏和文章内容 -->
-      <el-card >
+      <!-- 它的位置只是为了遮罩层的  position: absolute; 定位 -->
+      <el-card style="position: sticky">
         <!-- 标题栏 -->
         <h1 class="article-title">{{ article.title }}</h1>
         <div class="article-meta">
@@ -18,24 +19,28 @@
           <span class="edit-button" style="color: blue" @click="copy" v-if="userStore.isLogin()">
             <strong>转载</strong></span>
         </div>
-
         <!-- 文章内容 -->
         <div class="article-content">
           <MdPreview :editorId="id" :modelValue="article.contentMd"/>
+
+
         </div>
         <!-- 遮罩层 -->
         <div v-if="!article.contendIsEnd" class="overlay">
-            <p>登录后，即可阅读全文</p>
-            <el-button type="primary" @click="handleAvatarClick">去登录</el-button>
+          <p>登录后，即可阅读全文</p>
+          <el-button type="primary" @click="handleAvatarClick">去登录</el-button>
         </div>
       </el-card>
 
+
     </template>
+
     <template v-slot:right-sidebar-dynamic>
       <div class="catalog-head">
         <span style="color: goldenrod">文章目录：</span>
         <MdCatalog class="catalog" :editorId="id" :scrollElement="scrollElement"/>
       </div>
+
     </template>
   </BasePage>
 </template>
@@ -126,28 +131,27 @@ const copy = async () => {
 
 
 .overlay {
+  cursor: pointer;
   position: absolute;
   bottom: 0;
   left: 0;
-  right: 0;
   width: 100%; /* 确保宽度与文章内容一致 */
   height: 150px; /* 调整遮罩的高度 */
-  background: linear-gradient(to top, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0)); /* 白色渐变效果 */
-  color: #fff;
+  background: linear-gradient(to top, rgba(255, 240, 240, 100), rgba(255, 255, 255, 0)); /* 白色渐变效果 */
+  color: black;
+  font-size: 26px;
+  font-weight: bold;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 16px;
-  z-index: 1;
+  z-index: 99;
 }
 
 
+.overlay p {
 
-.overlay-content p {
-  font-size: 18px;
-  margin-bottom: 10px;
 }
 
 </style>
