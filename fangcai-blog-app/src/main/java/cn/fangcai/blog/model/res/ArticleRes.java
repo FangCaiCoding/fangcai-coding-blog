@@ -29,6 +29,12 @@ public class ArticleRes {
     @Schema(description = "文章头图")
     private String picture;
 
+    @Schema(description = " 模板id")
+    private Integer templateId;
+
+    @Schema(description = "可直接阅读的限制比例 百分制，按行数计算")
+    private Byte readLimitRatio;
+
     @Schema(description = "状态：0-未发布，1-已发布")
     private Byte status;
 

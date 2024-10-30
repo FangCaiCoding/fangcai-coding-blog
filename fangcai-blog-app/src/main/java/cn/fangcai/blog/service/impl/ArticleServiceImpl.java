@@ -14,7 +14,6 @@ import cn.fangcai.blog.model.req.ArticleTemplatePageReq;
 import cn.fangcai.blog.model.res.ArticleDetailRes;
 import cn.fangcai.blog.model.res.ArticleRes;
 import cn.fangcai.blog.model.res.ArticleTemplateRes;
-import cn.fangcai.blog.model.res.CourseRes;
 import cn.fangcai.blog.service.IArticleService;
 import cn.fangcai.blog.service.ICourseService;
 import cn.fangcai.common.model.dto.FcPageRes;
@@ -83,9 +82,12 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public ArticleDetailRes getDetail(Integer id, Boolean needTemplate) {
         Article article = articleRepository.getById(id);
+        if (article == null) {
+            throw new FcBusinessException(FcErrorCodeEnum.BAD_REQUEST, "文章不存在");
+        }
         ArticleDetail articleDetail = articleDetailRepository.getById(id);
-        if (needTemplate && articleDetail != null && articleDetail.getTemplateId() != null) {
-            ArticleTemplate template = teamRepository.getById(articleDetail.getTemplateId());
+        if (needTemplate && articleDetail != null && article.getTemplateId() != null) {
+            ArticleTemplate template = teamRepository.getById(article.getTemplateId());
             if (template != null) {
                 articleDetail.setContentMd(template.getHeaderContentMd()
                         + articleDetail.getContentMd()

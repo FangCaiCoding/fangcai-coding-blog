@@ -24,13 +24,6 @@
     height: 100vh;
 }
 
-.layout-one-level-container {
-    position: fixed;
-    top: 0;
-    max-width: 1300px; /* 固定最大宽度 */
-    width: 100%; /* 默认宽度100%，配合max-width使内容自适应 */
-}
-
 .layout-content-container {
     max-width: 1290px; /* 固定最大宽度 */
     width: 100%; /* 默认宽度100%，配合max-width使内容自适应 */

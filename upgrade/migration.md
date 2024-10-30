@@ -1,4 +1,19 @@
 # 升级记录
+## 1.1.20241030
+1. 新增文章时，允许直接添加到某个专栏；
+2. 阅读限制功能，实现登录阅读限制；
+
+```sql
+-- 调整表结构【规范设计】
+alter table article  add column  `template_id` int(10) unsigned DEFAULT NULL COMMENT '开头 模板id' after `summary` ;
+-- 迁移历史数据
+update article a left join article_detail  b on a.id  = b.article_id set a.template_id = b.template_id  where a.template_id is null; 
+
+-- 新增字段
+alter table article  add column  `read_limit_ratio` tinyint(1) unsigned DEFAULT NULL COMMENT '可直接阅读的限制比例 百分制，按行数计算' after `template_id` ;
+
+```
+
 
 ## 1.1.20241029
 1. 优化后台教程文章列表的管理逻辑：添加文章时，排除已当前教程的文章；

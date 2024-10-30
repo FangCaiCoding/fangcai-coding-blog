@@ -9,6 +9,8 @@ import cn.fangcai.blog.model.res.ArticleRes;
 import cn.fangcai.blog.model.res.CourseRes;
 import cn.fangcai.blog.service.IArticleService;
 import cn.fangcai.blog.service.ICourseService;
+import cn.fangcai.blog.uitls.FcStrUtil;
+import cn.fangcai.common.auth.FcAuthUtil;
 import cn.fangcai.common.auth.ano.FcNotCheckLogin;
 import cn.fangcai.common.model.dto.FcPageRes;
 import cn.fangcai.common.model.dto.FcResult;
@@ -42,8 +44,12 @@ public class ArticlePublicController {
     @GetMapping("/{id}")
     public FcResult<ArticleDetailRes> getDetail(@PathVariable Integer id) {
         ArticleDetailRes detail = articleService.getDetail(id, true);
-        if (detail != null && !StatusEnum.PUBLISHED.getCode().equals(detail.getStatus())) {
+        if (detail == null || !StatusEnum.PUBLISHED.getCode().equals(detail.getStatus())) {
             throw new FcBusinessException(BlogErrorCodeEnum.ARTICLE_UN_PUBLISHED);
+        }
+        if (!FcAuthUtil.isLogin() && detail.getReadLimitRatio() != null && detail.getReadLimitRatio() > 0) {
+            detail.setContentMd(FcStrUtil.subStrByLinesLimit(detail.getContentMd(), detail.getReadLimitRatio()));
+            detail.setContendIsEnd(false);
         }
         articleService.incrReadCt(id);
         return FcResult.SUCCESS(detail);
@@ -61,7 +67,7 @@ public class ArticlePublicController {
     @GetMapping("/course/{id}")
     public FcResult<CourseRes> getById(@PathVariable Integer id) {
         CourseRes courseRes = courseService.getById(id);
-        if (courseRes != null && !StatusEnum.PUBLISHED.getCode().equals(courseRes.getStatus())) {
+        if (courseRes == null || !StatusEnum.PUBLISHED.getCode().equals(courseRes.getStatus())) {
             throw new FcBusinessException(BlogErrorCodeEnum.COURSE_UN_PUBLISHED);
         }
         courseService.incrReadCt(id);

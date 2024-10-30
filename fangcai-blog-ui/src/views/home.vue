@@ -1,7 +1,7 @@
 <template>
   <BasePage>
     <template v-slot:main-content>
-      <div class="content-class" v-infinite-scroll="loadMoreArticles" :infinite-scroll-disabled="listScrollDisabled"
+      <div  v-infinite-scroll="loadMoreArticles" :infinite-scroll-disabled="listScrollDisabled"
            infinite-scroll-distance="1">
         <el-row :gutter="20">
           <el-col v-for="article in articles" :key="article.id" class="home-el-col">

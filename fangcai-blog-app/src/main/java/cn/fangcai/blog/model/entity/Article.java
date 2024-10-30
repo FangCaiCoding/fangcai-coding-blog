@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,6 +42,15 @@ public class Article extends BaseEntity {
     @Schema(description = "文章摘要")
     @TableField("summary")
     private String summary;
+
+    @Schema(description = " 模板id")
+    @TableField(value = "template_id")
+    private Integer templateId;
+
+    @Schema(description = "可直接阅读的限制比例 百分制，按行数计算")
+    @TableField(value = "read_limit_ratio")
+    private Byte readLimitRatio;
+
 
     @Schema(description = "阅读数")
     @TableField("read_ct")
