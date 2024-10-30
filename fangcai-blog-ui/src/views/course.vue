@@ -1,5 +1,6 @@
 <template>
-  <BasePage :showLeftSidebar="true" :showRightSidebar="true">
+  <BasePage :showLeftSidebar="true" :showRightSidebar="true"
+            :show-login-event="showLoginEvent" @loginSuccess="getArticle(article.id)">
 
     <template v-slot:left-sidebar-dynamic>
       <span style="color: goldenrod">教程目录：</span>
@@ -106,6 +107,8 @@ const readingTime = computed(() => {
   return Math.ceil(wordCount.value / 2000);
 });
 
+const showLoginEvent = ref(false)
+
 const getArticle = async (articleId) => {
   if (articleId === selectedArticleId.value) {
     return;
@@ -116,7 +119,6 @@ const getArticle = async (articleId) => {
     // 更新路由参数
     router.replace({name: 'course', params: {id: route.params.id, articleId: articleId}});
   })
-
 }
 
 const editArticle = (id) => {
@@ -125,7 +127,7 @@ const editArticle = (id) => {
   router.push({name: 'editArticle', query: {id: id}})
 }
 // 使用插件
-const { toClipboard } = useClipboard()
+const {toClipboard} = useClipboard()
 const copy = async () => {
   // 获取当前页面的 URL
   const currentUrl = window.location.href;

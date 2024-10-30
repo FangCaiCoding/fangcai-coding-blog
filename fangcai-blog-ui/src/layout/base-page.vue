@@ -178,7 +178,7 @@ import apiService from "../api/apiService.js";
 import {useUserStore} from "@/stores/UserContext.js";
 
 // 定义props
-const sidebarProps = defineProps({
+const basePageProps = defineProps({
   showRightSidebar: {
     type: Boolean,
     default: true
@@ -194,6 +194,10 @@ const sidebarProps = defineProps({
   qrCodeUrl: {
     type: String,
     default: "/public_wechat.jpg",
+  },
+  showLoginEvent: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -213,17 +217,8 @@ const loginForm = reactive({
   wxCode: ""
 });
 
+const state = reactive({count: 0})
 
-// 点击头像时触发的事件
-const handleAvatarClick = () => {
-  // 未登录时弹出登录对话框
-  if (!userStore.isLogin()) {
-    showLoginDialog.value = true;
-  } else {
-    ElMessage.success("你已是登录状态！");
-  }
-  // 登录状态下可以进行其他用户操作
-};
 
 const showSearchDialog = ref(false);
 const searchStr = ref('');
@@ -261,6 +256,33 @@ const viewArticle = (id) => {
   router.push({name: 'article', params: {id: id}})
 }
 
+
+// 监听父组件期望打开登录对话框的事件
+watch(
+    () => basePageProps.showLoginEvent,
+    (newValue, oldValue) => {
+      showLoginDialog.value = true;
+    },
+    {deep: true}
+)
+
+// 点击头像时触发的事件
+const handleAvatarClick = () => {
+  // 未登录时弹出登录对话框
+  if (!userStore.isLogin()) {
+    showLoginDialog.value = true;
+  } else {
+    ElMessage.success("你已是登录状态！");
+  }
+  // 登录状态下可以进行其他用户操作
+};
+
+const emit = defineEmits(["loginSuccess"])
+
+const sendLoginSuccessEvent = () => {
+  emit("loginSuccess");
+}
+
 // 登录逻辑
 const loginByWxCode = async () => {
   const userRes = await apiService.loginByWxCode({
@@ -268,6 +290,7 @@ const loginByWxCode = async () => {
   })
   userStore.login(userRes)
   showLoginDialog.value = false; // 关闭登录弹窗
+  sendLoginSuccessEvent();
   ElMessage.success("登录成功！");
 };
 
@@ -279,6 +302,7 @@ const loginByName = async () => {
   })
   userStore.login(userRes)
   showLoginDialog.value = false; // 关闭登录弹窗
+  sendLoginSuccessEvent();
   ElMessage.success("登录成功！");
 };
 

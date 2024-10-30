@@ -1,6 +1,6 @@
 <template>
 
-  <BasePage>
+  <BasePage :show-login-event="showLoginEvent" @loginSuccess="getArticle(article.id)">
     <template v-slot:main-content>
       <!-- 标题栏和文章内容 -->
       <!-- 它的位置只是为了遮罩层的  position: absolute; 定位 -->
@@ -26,9 +26,9 @@
 
         </div>
         <!-- 遮罩层 -->
-        <div v-if="!article.contendIsEnd" class="overlay">
+        <div v-if="!article.contendIsEnd" class="overlay" @click="toLogin">
           <p>登录后，即可阅读全文</p>
-          <el-button type="primary" @click="handleAvatarClick">去登录</el-button>
+          <el-button type="primary">去登录</el-button>
         </div>
       </el-card>
 
@@ -61,6 +61,7 @@ import {ElMessage} from "element-plus";
 const userStore = useUserStore()
 const id = 'preview-only';
 const scrollElement = document.documentElement;
+const showLoginEvent = ref(false)
 const route = useRoute();
 
 // 模拟文章数据
@@ -90,6 +91,7 @@ onUpdated(async () => {
   await getArticle(route.params.id);
 })
 
+// 用于进入页面时获取文章数据
 onMounted(async () => {
   await getArticle(route.params.id);
 });
@@ -106,6 +108,11 @@ const editArticle = (id) => {
   console.debug(`编辑文章详情：${id}`);
   // 使用 vue-router 文章编辑页
   router.push({name: 'editArticle', query: {id: id}})
+}
+
+const basePage = ref(null);
+const toLogin = () => {
+  showLoginEvent.value = !showLoginEvent.value;
 }
 
 // 使用插件
