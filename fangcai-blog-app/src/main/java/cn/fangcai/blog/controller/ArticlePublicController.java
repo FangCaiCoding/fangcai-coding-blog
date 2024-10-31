@@ -47,7 +47,7 @@ public class ArticlePublicController {
         if (detail == null || !StatusEnum.PUBLISHED.getCode().equals(detail.getStatus())) {
             throw new FcBusinessException(BlogErrorCodeEnum.ARTICLE_UN_PUBLISHED);
         }
-        if (!FcAuthUtil.isLogin() && detail.getReadLimitRatio() != null && detail.getReadLimitRatio() > 0) {
+        if (!FcAuthUtil.isLogin() && detail.getReadLimitRatio() != null && detail.getReadLimitRatio() < 100) {
             detail.setContentMd(FcStrUtil.subStrByLinesLimit(detail.getContentMd(), detail.getReadLimitRatio()));
             detail.setContendIsEnd(false);
         }

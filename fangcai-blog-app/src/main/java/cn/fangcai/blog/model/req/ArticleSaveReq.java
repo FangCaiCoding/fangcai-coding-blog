@@ -2,6 +2,8 @@ package cn.fangcai.blog.model.req;
 
 import cn.fangcai.common.model.valider.EditGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -43,6 +45,16 @@ public class ArticleSaveReq {
 
     @Schema(description = " 模板id")
     private Integer templateId;
+
+    @Schema(description = "教程ID")
+    private Integer courseId;
+
+
+    @Schema(description = "可直接阅读的限制比例 百分制，按行数计算[1-99]")
+    @Max(value = 99, message = "可直接阅读的限制比例 不可超过 99%")
+    @Min(value = 0, message = "可直接阅读的限制比例 应大于0")
+    private Byte readLimitRatio;
+
 
     @Schema(description = "文章内容")
     @Length(max = 100000, message = "文章内容不能超过100000个字符")

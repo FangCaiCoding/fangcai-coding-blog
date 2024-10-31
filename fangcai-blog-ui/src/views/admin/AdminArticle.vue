@@ -40,8 +40,9 @@
         </el-table-column>
         <el-table-column align="center" prop="id" label="主键" width="80"/>
         <el-table-column align="center" prop="readCt" label="阅读数" width="80"/>
-        <el-table-column align="center" prop="createTime" label="创建时间" />
+        <el-table-column align="center" prop="createTime" label="创建时间"/>
         <el-table-column align="center" prop="orderNum" label="顺序号" width="80"/>
+        <el-table-column align="center" prop="readLimitRatio" label="免限制比例 %" width="80"/>
         <el-table-column align="center" label="发布状态" width="100">
           <template #default="scope">
             <el-switch
@@ -56,9 +57,9 @@
         </el-table-column>
         <el-table-column align="center" fixed="right" label="操作" min-width="120">
           <template #default="scope">
-            <el-button link type="primary"  @click="editArticle(scope.row)">编辑</el-button>
-            <el-button link type="success"  @click="editContent(scope.row.id)">编辑MD</el-button>
-            <el-button link type="danger"  @click="deleteArticle(scope.row.id)">删除</el-button>
+            <el-button link type="primary" @click="editArticle(scope.row)">编辑</el-button>
+            <el-button link type="success" @click="editContent(scope.row.id)">编辑MD</el-button>
+            <el-button link type="danger" @click="deleteArticle(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -119,7 +120,7 @@ import {useRouter} from 'vue-router';
 import apiService from '@/api/apiService';
 import {ElMessage, ElMessageBox} from "element-plus";
 import {Hide, Search, View} from "@element-plus/icons-vue";
-import AdminBasePage from "@/layout/admin-base-page.vue";
+
 
 const currentPage = ref(1);  // 当前加载的页码
 const totalArticles = ref(0);
@@ -136,6 +137,7 @@ const article = ref({
   summary: '',
   status: 0,
   orderNum: 999,
+  readLimitRatio: null,
   createTime: '',
   readCt: 0
 })

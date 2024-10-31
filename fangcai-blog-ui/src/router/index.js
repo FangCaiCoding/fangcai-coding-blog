@@ -7,38 +7,32 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        component: () => import('@/views/home.vue')
+        component: () => import('@/views/Home.vue')
     },
-    {
-        path: '/test',
-        name: 'test',
-        component: () => import('@/utils/father.vue')
-    },
-
     {
         path: '/courses',
         name: 'courses',
-        component: () => import('@/views/course-list.vue')
+        component: () => import('@/views/CourseList.vue')
     },
     {
         path: '/website',
         name: 'website',
-        component: () => import('@/views/fc-website.vue')
+        component: () => import('@/views/FcWebsite.vue')
     },
     {
         path: '/course/:id/:articleId?',
         name: 'course',
-        component: () => import('@/views/course.vue')
+        component: () => import('@/views/Course.vue')
     },
     {
         path: '/article/:id',
         name: 'article',
-        component: () => import('@/views/article.vue')
+        component: () => import('@/views/Article.vue')
     },
     {
         path: '/editArticle',
         name: 'editArticle',
-        component: () => import('@/views/edit-article.vue')
+        component: () => import('@/views/EditArticle.vue')
     },
 
     /**
@@ -47,18 +41,18 @@ const routes = [
     {
         path: '/admin/article',
         name: 'adminArticle',
-        component: () => import('@/views/admin/bank-article.vue')
+        component: () => import('@/views/admin/AdminArticle.vue')
     },
     {
         path: '/admin/course',
         name: 'adminCourse',
-        component: () => import('@/views/admin/bank-course.vue')
+        component: () => import('@/views/admin/AdminCourse.vue')
     },
 
     {
         path: '/admin/website',
         name: 'adminWebSite',
-        component: () => import('@/views/admin/bank-website.vue')
+        component: () => import('@/views/admin/AdminWebsite.vue')
     },
 
 

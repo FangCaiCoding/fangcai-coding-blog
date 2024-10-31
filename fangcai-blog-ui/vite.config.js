@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
             port: 5173, // 你可以自定义端口
             proxy: isDevelopment ? {
                 '/api': {
-                    target: 'http://192.168.74.1:7000',
+                    target: 'http://172.31.1.36:7000',
                     changeOrigin: true,
                     // rewrite: (path) => path.replace(/^\/api/, '')
                 }

@@ -217,7 +217,6 @@ const loginForm = reactive({
   wxCode: ""
 });
 
-const state = reactive({count: 0})
 
 
 const showSearchDialog = ref(false);

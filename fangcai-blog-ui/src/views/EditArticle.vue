@@ -35,6 +35,13 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="阅读限制">
+        <el-switch v-model="article.openLimit"/>
+      </el-form-item>
+
+      <el-form-item label="阅读限制比例" v-if="article.openLimit">
+        <el-input-number v-model="article.readLimitRatio" :min="1" :max="99"></el-input-number>
+      </el-form-item>
       <el-form-item label="是否发布">
         <el-select v-model="article.status" placeholder="请选择状态">
           <el-option label="不发布" :value="0"></el-option>
@@ -59,9 +66,8 @@ import {onMounted, reactive, ref} from 'vue';
 import {MdEditor} from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import {ElMessage} from 'element-plus';
-import apiService from "../api/apiService.js";
+import apiService from "@/api/apiService.js";
 import {useRoute} from "vue-router";
-import BasePage from "@/layout/base-page.vue";
 
 const route = useRoute();
 const dialogVisible = ref(false);
@@ -81,6 +87,8 @@ const article = reactive({
   status: 0,
   orderNum: 999,
   templateId: null,
+  readLimitRatio: null,
+  openLimit: false,
   contentMd: '',
   createTime: '',
   updateTime: '',
@@ -111,6 +119,9 @@ const extractSummary = () => {
 // 保存文章
 const saveArticle = async () => {
   article.editContent = true;
+  if (!article.openLimit) {
+    article.readLimitRatio = null;
+  }
   if (article.id > 0) {
     article.id = await apiService.editArticle(article);
   } else {
@@ -134,6 +145,7 @@ onMounted(async () => {
   // 这里可以进行数据请求，加载文章详情
   const newArticle = await apiService.getArticle(route.query.id);
   Object.assign(article, newArticle);  // 逐个更新 article 对象的属性
+  article.openLimit = article.readLimitRatio > 0 && article.readLimitRatio < 100;
 });
 
 </script>

@@ -13,8 +13,8 @@ import BackToTop from "./components/vue/backToTop.vue";
 import {createPinia} from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import baiduAnalytics from './components/js/baiduAnalytics';
-import BasePage from "./layout/base-page.vue";
-import AdminBasePage from "./layout/admin-base-page.vue";
+import BasePage from "./layout/BasePage.vue";
+import AdminBasePage from "./layout/AdminBasePage.vue";
 
 import { config } from 'md-editor-v3';
 import MdTargetBlankConfig from './components/js/MdTargetBlankConfig.js';

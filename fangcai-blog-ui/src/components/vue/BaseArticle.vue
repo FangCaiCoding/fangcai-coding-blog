@@ -1,20 +1,14 @@
 <template>
-  <BasePage :showLeftSidebar="true" :showRightSidebar="true"
-            :show-login-event="showLoginEvent" @loginSuccess="getArticle(article.id)">
 
+  <!--  会和子组件 BasePage 通信，发起登录事件，并监听登录成功后的回调-->
+  <BasePage :showLeftSidebar="baseArticleProps.showLeftSidebar" :show-login-event="showLoginEvent" @loginSuccess="getArticle(article.id)">
     <template v-slot:left-sidebar-dynamic>
-      <span style="color: goldenrod">教程目录：</span>
-      <p :class="[ 'course-article', { 'selected-article': courseArticle.articleId === selectedArticleId } ]"
-         v-for="(courseArticle,index) in courseDetail.details"
-         :key="courseArticle.id"
-         @click="getArticle(courseArticle.articleId)">
-        {{ index + 1 }}. {{ courseArticle.articleAlias }}
-      </p>
+      <slot name="left-sidebar-dynamic"></slot>
     </template>
-
     <template v-slot:main-content>
       <!-- 标题栏和文章内容 -->
-      <el-card class="layout-content-container">
+      <!-- 它的位置只是为了遮罩层的  position: absolute; 定位 -->
+      <el-card style="position: sticky">
         <!-- 标题栏 -->
         <h1 class="article-title">{{ article.title }}</h1>
         <div class="article-meta">
@@ -29,73 +23,72 @@
           <span class="edit-button" style="color: blue" @click="copy" v-if="userStore.isLogin()">
             <strong>转载</strong></span>
         </div>
-
         <!-- 文章内容 -->
         <div class="article-content">
           <MdPreview :editorId="id" :modelValue="article.contentMd"/>
         </div>
+        <!-- 遮罩层 -->
+        <div v-if="!article.contendIsEnd" class="overlay" @click="toLogin">
+          <p>登录后，即可阅读全文</p>
+          <el-button type="primary">去登录</el-button>
+        </div>
       </el-card>
+
+
     </template>
+
     <template v-slot:right-sidebar-dynamic>
       <div class="catalog-head">
         <span style="color: goldenrod">文章目录：</span>
         <MdCatalog class="catalog" :editorId="id" :scrollElement="scrollElement"/>
       </div>
+
     </template>
   </BasePage>
-
 </template>
 
 
 <script setup>
-import {computed, onMounted, reactive, ref} from 'vue';
+import {computed, onMounted, ref, watch} from 'vue';
 import {useRoute} from "vue-router";
-import BasePage from "../layout/base-page.vue";
-import apiService from "../api/apiService.js";
-import router from "../router/index.js";
+import apiService from "@/api/apiService.js";
+import router from "@/router/index.js";
 import {MdCatalog, MdPreview} from 'md-editor-v3';
 import 'md-editor-v3/lib/preview.css';
 import {useUserStore} from "@/stores/UserContext.js";
+import useClipboard from 'vue-clipboard3'
 import {ElMessage} from "element-plus";
-import useClipboard from "vue-clipboard3";
 
 const userStore = useUserStore()
-const id = 'preview-only';
+const id = 'article-preview-only';
 const scrollElement = document.documentElement;
+const showLoginEvent = ref(false)
 const route = useRoute();
-const selectedArticleId = ref(0);
 
-// 文章数据
-const courseDetail = reactive({
-  id: 0,
-  title: "",
-  summary: "",
-  picture: "",
-  status: "",
-  orderNum: 0,
-  details: [
-    {
-      id: 0,
-      courseId: 0,
-      articleId: 0,
-      articleAlias: "",
-      orderNum: 0
-    }
-  ]
+// 定义props
+const baseArticleProps = defineProps({
+  // 接受父组件传值，穿透至下一个子组件，即 BasePage
+  showLeftSidebar: {
+    type: Boolean,
+    default: false
+  },
+  articleId:{
+    type: Number,
+    default: null
+  }
 });
-
-
 // 模拟文章数据
 const article = ref({
   id: 1,
   title: '',
   author: '',
   createTime: '2',
-  readCount: 0,
-  likes: 0,
+  readCt: 0,
   content: '',
-  contentMd: ''
+  contentMd: '',
+  contendIsEnd: true,
 });
+
 
 // 计算文章字数
 const wordCount = computed(() => {
@@ -107,18 +100,21 @@ const readingTime = computed(() => {
   return Math.ceil(wordCount.value / 2000);
 });
 
-const showLoginEvent = ref(false)
 
-const getArticle = async (articleId) => {
-  if (articleId === selectedArticleId.value) {
-    return;
+// 监听父组件期望打开登录对话框的事件
+watch(
+    () => baseArticleProps.articleId,
+    async (newValue, oldValue) => {
+      await getArticle(baseArticleProps.articleId);
+    },
+    {deep: true}
+)
+const getArticle = async (id) => {
+  article.value = await apiService.getPublicArticle(id);
+  if (article.value == null) {
+    article.value = {}
+    await router.push('/');
   }
-  await apiService.getPublicArticle(articleId).then(res => {
-    article.value = res;
-    selectedArticleId.value = article.value.id;
-    // 更新路由参数
-    router.replace({name: 'course', params: {id: route.params.id, articleId: articleId}});
-  })
 }
 
 const editArticle = (id) => {
@@ -126,6 +122,11 @@ const editArticle = (id) => {
   // 使用 vue-router 文章编辑页
   router.push({name: 'editArticle', query: {id: id}})
 }
+
+const toLogin = () => {
+  showLoginEvent.value = !showLoginEvent.value;
+}
+
 // 使用插件
 const {toClipboard} = useClipboard()
 const copy = async () => {
@@ -143,34 +144,33 @@ const copy = async () => {
   }
 }
 
-onMounted(async () => {
-  await apiService.getPublicCourse(route.params.id).then(res => {
-    Object.assign(courseDetail, res)
-  });
-  // 注意 articleId 是 string 类型，需要转换成 number
-  const articleId = Number(route.params.articleId);
-  // 如果有文章ID参数且文章在课程详情中，则加载指定文章详情
-  if (articleId && courseDetail.details.some(item => item.articleId === articleId)) {
-    await getArticle(articleId);
-  } else {
-    await getArticle(courseDetail.details[0].articleId)
-  }
-});
-
-
 </script>
 
 <style scoped>
 
-.course-article {
+
+.overlay {
   cursor: pointer;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%; /* 确保宽度与文章内容一致 */
+  height: 150px; /* 调整遮罩的高度 */
+  background: linear-gradient(to top, rgba(255, 240, 240, 100), rgba(255, 255, 255, 0)); /* 白色渐变效果 */
+  color: black;
+  font-size: 26px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 99;
 }
 
-.selected-article {
-  color: #ff8721;
+
+.overlay p {
+
 }
 
-.course-article:hover {
-  color: #ff8721;
-}
 </style>
