@@ -69,12 +69,20 @@
         <el-col :xs="0" :sm="showRightSidebar?5:0">
           <!-- 第一板块：固定内容 -->
           <div class="right-sidebar-fixed">
-            <h4 class="title-class">{{ fixedTitle }}</h4>
+            <h4>{{ fixedTitle }}</h4>
             <img :src="qrCodeUrl" alt="QR Code" class="qr-code"/>
           </div>
           <!-- 第二板块：动态内容 -->
           <div class="right-sidebar-dynamic">
-            <slot name="right-sidebar-dynamic"></slot>
+            <slot name="right-sidebar-dynamic">
+              <!-- 第一板块：固定内容 -->
+              <div class="advertising-class">
+                <h4 class="title-class">开源啦！点击图片即可直达</h4>
+                <img src="/blog_msg.png" alt="QR Code" @click="clickAdvertise" class="qr-code" style="border-radius: 5px"/>
+                <p>QQ交流群：1092166080</p>
+                <p>微信交流群，扫码即可</p>
+              </div>
+            </slot>
           </div>
         </el-col>
       </el-row>
@@ -217,7 +225,9 @@ const loginForm = reactive({
   wxCode: ""
 });
 
-
+const clickAdvertise =()=>{
+  window.open("https://gitee.com/fangcaicoding/fangcai-coding-blog", '_blank');
+}
 
 const showSearchDialog = ref(false);
 const searchStr = ref('');

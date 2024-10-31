@@ -26,7 +26,7 @@
 }
 
 .layout-content-container {
-    max-width: 1290px; /* 固定最大宽度 */
+    max-width: 1200px; /* 固定最大宽度 */
     width: 100%; /* 默认宽度100%，配合max-width使内容自适应 */
     margin-top: 5px;
     border-radius: 10px;
@@ -47,7 +47,7 @@
 }
 
 .header-wrapper {
-    max-width: 1290px;
+    max-width: 1390px;
     height: 60px;
     top: 0;
     display: flex;
@@ -130,7 +130,6 @@
     padding: 10px;
     border: 1px solid #e0e0e0; /* 为区块分隔增加边框 */
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 添加阴影进行分隔 */
 }
 
 .right-sidebar-fixed h4 {
@@ -154,13 +153,30 @@
     margin: 10px auto;
     padding: 0 10px;
     position: sticky;
-    top: 340px;
+    top: 320px;
     background-color: #fff;
     border: 1px solid #e0e0e0; /* 添加边框进行块区分 */
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 添加阴影 */
 }
 
+.advertising-class {
+    background-color: #fff;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.advertising-class h4 {
+    font-size: 14px;
+    margin: 10px auto;
+}
+.advertising-class img{
+    cursor: pointer;
+}
+.advertising-class p {
+    font-size: 13px;
+    padding: 0;
+    font-weight: lighter;
+}
 
 .footer-container {
     width: 100%;
