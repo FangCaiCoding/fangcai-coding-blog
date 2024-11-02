@@ -1,8 +1,7 @@
 import axios from 'axios';
 import {ElMessage} from 'element-plus';
 import router from "../router/index.js";
-import {useUserStore} from "../stores/UserContext.js";
-import {createPinia} from 'pinia';
+import {useUserStore} from '@/stores/UserContext.js';
 
 const url = import.meta.env.VITE_API_URL;
 const api = import.meta.env.VITE_API_PATH;
@@ -68,12 +67,6 @@ axiosInst.interceptors.request.use(
 );
 
 
-// 由于在非 Vue 组件文件中使用 Pinia，需要手动设置上下文
-const pinia = createPinia();
-
-// 访问 Pinia Store
-const userStore = useUserStore(pinia);
-
 
 // 响应拦截器
 axiosInst.interceptors.response.use(
@@ -96,7 +89,8 @@ axiosInst.interceptors.response.use(
             // 请求已经发出，但是服务器响应一个状态码非 2xx 的范围
             switch (error.response.status) {
                 case 401:
-                    // todo 遗留问题，js中更新 store后，vue无法响应，需要刷新页面才能响应
+                    // 访问共享的 userStore 实例
+                    const userStore = useUserStore();
                     userStore.$reset()
                     break;
                 case  403:
