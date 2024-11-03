@@ -14,7 +14,7 @@
 
 
 <script setup>
-import {onMounted, reactive, ref} from 'vue';
+import {reactive, ref, watch} from 'vue';
 import {useRoute} from "vue-router";
 import apiService from "@/api/apiService.js";
 import router from "@/router/index.js";
@@ -52,20 +52,34 @@ const getArticle = async (articleId) => {
   await router.replace({name: 'course', params: {id: route.params.id, articleId: articleId}});
 }
 
-onMounted(async () => {
-  await apiService.getPublicCourse(route.params.id).then(res => {
-    Object.assign(courseDetail, res)
-  });
-  // 注意 articleId 是 string 类型，需要转换成 number
-  const articleId = Number(route.params.articleId);
+
+const flushData = async (courseId, articleId) => {
+  if (courseId !== courseDetail.id) {
+    await apiService.getPublicCourse(route.params.id).then(res => {
+      Object.assign(courseDetail, res)
+    });
+  }
   // 如果有文章ID参数且文章在课程详情中，则加载指定文章详情
   if (articleId && courseDetail.details.some(item => item.articleId === articleId)) {
     selectedArticleId.value = articleId;
   } else {
     selectedArticleId.value = courseDetail.details[0].articleId
   }
-});
+};
 
+
+// 监听 route.params.id 和 route.params.articleId 的变化
+watch(
+    () => ({idStr: route.params.id, articleIdStr: route.params.articleId}),
+    ({idStr, articleIdStr}) => {
+      // 注意 articleId 是 string 类型，需要转换成 number
+      const courseId = Number(idStr);
+      const articleId = Number(articleIdStr);
+      flushData(courseId, articleId)
+    },
+    // 确保在初始加载时立即执行 watch 回调。
+    {immediate: true}
+);
 
 </script>
 

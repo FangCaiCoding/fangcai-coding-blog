@@ -120,7 +120,7 @@
       <p v-for="(item, index) in searchResults"
          :key="index"
          class="search-result"
-         @click="viewArticle(item.id)"
+         @click="viewArticle(item)"
       >
         {{ index + 1 }}. {{ item.title }}</p>
     </div>
@@ -257,14 +257,15 @@ const performSearch = async () => {
   searchResults.value = pagePublicArticle.records;
 };
 
-const viewArticle = (id) => {
+const viewArticle = (article) => {
   showSearchDialog.value = false
-  // 跳转到文章详情页逻辑
-  console.log(`查看文章详情：${id}`);
   // 使用 vue-router 跳转到文章详情页
-  router.push({name: 'article', params: {id: id}})
+  if (article.courseId) {
+    router.push({name: 'course', params: {id: article.courseId, articleId: article.id}})
+  } else {
+    router.push({name: 'article', params: {id: article.id}})
+  }
 }
-
 
 // 监听父组件期望打开登录对话框的事件
 watch(
