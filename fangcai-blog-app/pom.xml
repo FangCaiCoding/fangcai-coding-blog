@@ -68,22 +68,21 @@
             <artifactId>freemarker</artifactId>
         </dependency>
     </dependencies>
-
-
     <build>
         <plugins>
             <plugin>
+                <!-- Spring Boot Maven 插件 -->
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <!-- 指定应用程序的主类 -->
                     <mainClass>cn.fangcai.blog.AppApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>
-                                repackage
-                            </goal>
+                            <!-- 设置插件目标为repackage，用于创建可执行的JAR文件 -->
+                            <goal>repackage</goal>
                         </goals>
                     </execution>
                 </executions>

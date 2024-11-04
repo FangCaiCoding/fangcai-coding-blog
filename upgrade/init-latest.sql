@@ -16,14 +16,13 @@ CREATE TABLE `article` (
                            `read_ct` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '阅读数',
                            PRIMARY KEY (`id`),
                            KEY `idx_title` (`title`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COMMENT='文章表';
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COMMENT='文章表';
 
 
 -- dev_tohero_blog.article_detail definition
 
 CREATE TABLE `article_detail` (
                                   `article_id` int(10) unsigned NOT NULL COMMENT '文章ID',
-                                  `template_id` int(10) unsigned DEFAULT NULL COMMENT '开头 模板id',
                                   `content_md` longtext COMMENT '文章内容 markdown 格式',
                                   `content` longtext COMMENT '文章内容',
                                   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -64,7 +63,7 @@ CREATE TABLE `config_wechat` (
                                  `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
                                  PRIMARY KEY (`id`),
                                  UNIQUE KEY `uk_key` (`key_str`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='微信配置类';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='微信配置类';
 
 
 -- dev_tohero_blog.course definition
@@ -97,7 +96,7 @@ CREATE TABLE `course_detail` (
                                  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
                                  `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
                                  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=282 DEFAULT CHARSET=utf8mb4 COMMENT='文章教程-详情';
+) ENGINE=InnoDB AUTO_INCREMENT=283 DEFAULT CHARSET=utf8mb4 COMMENT='文章教程-详情';
 
 
 -- dev_tohero_blog.menu definition
@@ -152,13 +151,6 @@ CREATE TABLE `role_menu` (
 ) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='角色-菜单关系表';
 
 
--- dev_tohero_blog.test definition
-
-CREATE TABLE `test` (
-                        `Column1` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
 -- dev_tohero_blog.`user` definition
 
 CREATE TABLE `user` (
@@ -176,7 +168,7 @@ CREATE TABLE `user` (
                         PRIMARY KEY (`id`),
                         UNIQUE KEY `uk_login_name` (`login_name`),
                         UNIQUE KEY `uk_wxOpenId` (`wx_open_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户表';
 
 
 -- dev_tohero_blog.user_role definition
@@ -192,7 +184,7 @@ CREATE TABLE `user_role` (
                              PRIMARY KEY (`id`),
                              KEY `idx_userId` (`user_id`),
                              KEY `idx_roleId` (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户-角色关系表';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户-角色关系表';
 
 
 -- dev_tohero_blog.website definition
@@ -216,7 +208,7 @@ CREATE TABLE `website` (
                            `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
                            PRIMARY KEY (`id`),
                            KEY `idx_cateId` (`cate_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COMMENT='资源站点信息';
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COMMENT='资源站点信息';
 
 
 -- dev_tohero_blog.website_cate definition

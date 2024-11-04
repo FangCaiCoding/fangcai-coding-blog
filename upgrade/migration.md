@@ -8,6 +8,8 @@
 alter table article  add column  `template_id` int(10) unsigned DEFAULT NULL COMMENT '开头 模板id' after `summary` ;
 -- 迁移历史数据
 update article a left join article_detail  b on a.id  = b.article_id set a.template_id = b.template_id  where a.template_id is null; 
+-- 删除被迁移了的字段
+alter table article_detail drop column `template_id`;
 
 -- 新增字段
 alter table article  add column  `read_limit_ratio` tinyint(1) unsigned DEFAULT NULL COMMENT '可直接阅读的限制比例 百分制，按行数计算' after `template_id` ;
