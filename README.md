@@ -1,4 +1,5 @@
-> 本文转载自：https://fangcaicoding.cn/article/3
+> 本文转载自：[https://fangcaicoding.cn/course/11/3](https://fangcaicoding.cn/course/11/3)
+
 
 >大家好！我是方才，目前是8人后端研发团队的负责人，**拥有6年后端经验&3年团队管理经验**，截止目前面试过近200位候选人，主导过单表上10亿、累计上100亿数据量级的业务系统的架构和核心编码。
 >
@@ -13,7 +14,13 @@
 
 ## 关于本站
 
-在线体验地址：https://fangcaicoding.cn/
+
+本站的研发文档，包括设计思路、业务架构说明、技术架构说明、部署手册等，均在 [https://fangcaicoding.cn/course/11/3](https://fangcaicoding.cn/course/11/3) 持续更新。该地址也是本开源项目的在线体验地址。
+
+
+本站代码已全部开源：
+- gitee：https://gitee.com/fangcaicoding/fangcai-coding-blog
+- github：https://github.com/FangCaiCoding/fangcai-coding-blog
 
 本站整体采用前后端分离的架构：
 
@@ -179,7 +186,8 @@ From Zero To Hero！是我写博客一来，一直坚信的铭言。
 ---
 ## 近期更新计划
 > 近期更新计划（有需要的小伙伴，记得**点赞关注**哟！）
-> 1. 零基础前端入门系列，预计10月底更新完成；
-> 2. 博客系统功能完善，实现注册登录、评论系统等功能，预计11月开源；
+> 1. `vue、router、elementplus`等前端框架入门教程，预计11中旬更新完成；
+> 2. 博客系统功能完善，实现评论系统等功能；
+> 3. 基于vue3+springboot3的前后端分离的博客系统已经开源啦，欢迎大家star！
 
 **“学编程，一定要系统化”**——若你也是系统学习的践行者，记得点赞关注，期待与你一起 From Zero To Hero！
