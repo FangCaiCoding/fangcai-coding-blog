@@ -13,7 +13,6 @@ import cn.fangcai.common.model.dto.FcResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +34,7 @@ public class UserController {
     private IUserService userService;
 
 
-    @ApiOperationSupport(order = 20)
+    @ApiOperationSupport(order = 10)
     @Operation(summary = "登录-通过账号")
     @PostMapping("loginByName")
     @FcNotCheckLogin
@@ -55,14 +54,6 @@ public class UserController {
         return FcResult.SUCCESS(userRes);
     }
 
-    @ApiOperationSupport(order = 10)
-    @Operation(summary = "用户注册")
-    @PostMapping("loginByEmail")
-    private FcResult<UserRes> loginByEmail(@RequestBody @Validated UserEmailRegisterReq registerReq) {
-        // TODO : by mfc on 2024/8/24 邮件验证码验证
-        return FcResult.SUCCESS(null);
-    }
-
 
     @ApiOperationSupport(order = 30)
     @Operation(summary = "获取当前登录者用户信息")
@@ -79,6 +70,17 @@ public class UserController {
         FcAuthUtil.logout();
         return FcResult.SUCCESS(Boolean.TRUE);
     }
+
+
+    @ApiOperationSupport(order = 50)
+    @Operation(summary = "用户注册")
+    @PostMapping("loginByEmail")
+    private FcResult<UserRes> loginByEmail(@RequestBody @Validated UserEmailRegisterReq registerReq) {
+        // TODO : by mfc on 2024/8/24 邮件验证码验证
+        return FcResult.SUCCESS(null);
+    }
+
+
 
 
 }

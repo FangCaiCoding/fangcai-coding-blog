@@ -25,7 +25,7 @@
         </div>
         <!-- 文章内容 -->
         <div class="article-content">
-          <MdPreview :editorId="id" :modelValue="article.contentMd"/>
+          <MdPreview :editorId="id" :modelValue="article.contentMd" :codeFoldable="false"/>
         </div>
         <!-- 遮罩层 -->
         <div v-if="!article.contendIsEnd" class="overlay" @click="toLogin">
@@ -40,7 +40,7 @@
     <template v-slot:right-sidebar-dynamic>
       <div class="catalog-head">
         <span style="color: goldenrod">文章目录：</span>
-        <MdCatalog class="catalog" :editorId="id" :scrollElement="scrollElement"/>
+        <MdCatalog class="catalog" :editorId="id" :offsetTop="200" :scroll-element="scrollElement"/>
       </div>
 
     </template>
@@ -49,7 +49,7 @@
 
 
 <script setup>
-import {computed, onMounted, ref, watch} from 'vue';
+import {computed, ref, watch} from 'vue';
 import {useRoute} from "vue-router";
 import apiService from "@/api/apiService.js";
 import router from "@/router/index.js";
@@ -115,6 +115,8 @@ const getArticle = async (id) => {
     article.value = {}
     await router.push('/');
   }
+  // 滚动到页面顶部
+  window.scrollTo(0, 0);
 }
 
 const editArticle = (id) => {
