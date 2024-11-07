@@ -12,12 +12,12 @@ import './components/css/article.css'
 import BackToTop from "./components/vue/backToTop.vue";
 import {createPinia} from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-import baiduAnalytics from './components/js/baiduAnalytics';
-import BasePage from "./layout/BasePage.vue";
-import AdminBasePage from "./layout/AdminBasePage.vue";
+import baiduAnalytics from '@/components/js/BaiduAnalytics';
+import BasePage from "@/layout/BasePage.vue";
+import AdminBasePage from "@/layout/AdminBasePage.vue";
 
 import { config } from 'md-editor-v3';
-import MdTargetBlankConfig from './components/js/MdTargetBlankConfig.js';
+import MdTargetBlankConfig from '@/components/js/MdTargetBlankConfig.js';
 
 // 注册 md-editor-v3 插件,所有的 url 都会增加 target="_blank"
 config({
