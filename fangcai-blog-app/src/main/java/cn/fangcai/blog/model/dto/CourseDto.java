@@ -24,6 +24,11 @@ public class CourseDto {
     @Length(max = 128, message = "教程标题不能超过128个字符")
     private String title;
 
+
+    @Schema(description = "教程视频链接")
+    @Length(max = 255, message = "教程视频链接 不能超过255个字符")
+    private String videoUrl;
+
     @Schema(description = "教程摘要")
     @NotNull(message = "教程摘要不能为空")
     @Length(max = 300, message = "教程摘要不能超过300个字符")

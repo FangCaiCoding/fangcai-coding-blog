@@ -166,17 +166,14 @@ public class CourseServiceImpl implements ICourseService {
         if (CollUtil.isEmpty(articleIdList)) {
             return new HashMap<>();
         }
-        Map<Integer, Integer> articleIdCourseIdMap = courseDetailRepository.lambdaQuery()
+        List<CourseDetail> courseDetailList = courseDetailRepository.lambdaQuery()
                 .in(CourseDetail::getArticleId, articleIdList)
-                .list()
-                .stream()
-                .collect(Collectors.toMap(CourseDetail::getArticleId,
-                        CourseDetail::getCourseId, (k1, k2) -> k2));
-        if (CollUtil.isEmpty(articleIdCourseIdMap)) {
-            return articleIdCourseIdMap;
+                .list();
+        if (CollUtil.isEmpty(courseDetailList)) {
+            return new HashMap<>();
         }
-        // 过滤掉未发布的课程
-        List<Integer> courseIdList = articleIdCourseIdMap.values().stream().distinct().toList();
+        List<Integer> courseIdList = courseDetailList.stream().map(CourseDetail::getCourseId).toList();
+        // 查询正常已发布的课程
         Set<Integer> publishedCourseIdSet = courseRepository.lambdaQuery()
                 .select(Course::getId)
                 .in(Course::getId, courseIdList)
@@ -185,8 +182,12 @@ public class CourseServiceImpl implements ICourseService {
                 .stream()
                 .map(Course::getId)
                 .collect(Collectors.toSet());
-        articleIdCourseIdMap.entrySet().removeIf(entry -> !publishedCourseIdSet.contains(entry.getValue()));
-        return articleIdCourseIdMap;
+
+        return courseDetailList
+                .stream()
+                .filter(detail -> publishedCourseIdSet.contains(detail.getCourseId()))
+                .collect(Collectors.toMap(CourseDetail::getArticleId,
+                        CourseDetail::getCourseId, (k1, k2) -> k2));
     }
 
     @Override

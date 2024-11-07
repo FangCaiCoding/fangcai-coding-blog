@@ -46,6 +46,7 @@ public class WechatServiceImpl implements IWechatService {
         String newSubscribeKey = "subscribe";
         String loginCodeKey = "666";
         String defaultKey = "default";
+        String basicKey = "basic";
         Map<String, ConfigWechat> wechatConfigMap = configService.listWechat(true)
                 .stream()
                 .collect(Collectors.toMap(ConfigWechat::getKeyStr, Function.identity(), (k1, k2) -> k2));
@@ -53,9 +54,9 @@ public class WechatServiceImpl implements IWechatService {
         if (loginCodeKey.equals(content)) {
             String captcha = RandomUtil.randomNumbers(6);
             cacheService.put(CacheKeyFactory.getWxLoginKey(captcha), wxMsgReq.getFromUserName(), 30);
-            String msg = "【方才coding】登录验证码：" + captcha + " ，请在30秒内输入。";
+            String msg = "【方才coding】登录验证码：" + captcha + " ，请在30秒内输入。\n";
             matchedConfig = new ConfigWechat();
-            matchedConfig.setMsgValue(msg);
+            matchedConfig.setMsgValue(msg + wechatConfigMap.get(basicKey).getMsgValue());
             matchedConfig.setMsgType(WechatMsgTypeEnum.TEXT.getCode());
         } else if (newSubscribeKey.equalsIgnoreCase(event)) {
             matchedConfig = wechatConfigMap.getOrDefault(newSubscribeKey, new ConfigWechat());

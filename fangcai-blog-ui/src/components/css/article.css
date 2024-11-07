@@ -34,9 +34,14 @@
 
 .catalog-head{
     margin-top: 20px;
-    overflow-x: auto;
+
 }
 .catalog {
+    overflow-x: auto;
     margin: 10px;
-    max-height: 450px;
+    max-height: 600px;
+    overflow-y: auto; /* 启用垂直滚动条 */
+    scrollbar-width: thin; /* 针对 Firefox 设置滚动条宽度 */
+    scrollbar-color: #d4d4d4 transparent; /* Firefox 滚动条颜色 */
 }
+

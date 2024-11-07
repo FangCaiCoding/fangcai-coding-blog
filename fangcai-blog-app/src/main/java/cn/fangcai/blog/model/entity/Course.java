@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,6 +34,11 @@ public class Course extends BaseEntity {
     @Schema(description = "教程名")
     @TableField("title")
     private String title;
+
+    @Schema(description = "教程视频链接")
+    @TableField("video_url")
+    private String videoUrl;
+
 
     @Schema(description = "教程头图")
     @TableField("picture")

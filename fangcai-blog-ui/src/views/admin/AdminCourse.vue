@@ -100,6 +100,9 @@
       <el-form-item label="教程名">
         <el-input v-model="course.title"></el-input>
       </el-form-item>
+      <el-form-item label="视频地址">
+        <el-input v-model="course.videoUrl"></el-input>
+      </el-form-item>
       <el-form-item label="摘要">
         <el-input type="textarea" v-model="course.summary" :rows="6"></el-input>
       </el-form-item>
@@ -170,24 +173,18 @@
       <!-- 文章别名 -->
       <el-table-column prop="articleAlias" label="文章别名" align="center">
         <template #default="scope">
-          <el-input v-model="scope.row.articleAlias" placeholder="编辑别名" @change="handleInputChange(scope.row.id)"/>
+          <el-input v-model="scope.row.articleAlias" placeholder="编辑别名" @change="editCourseArticle(scope.row)"/>
         </template>
       </el-table-column>
       <!-- 排序 -->
       <el-table-column prop="orderNum" label="顺序号" width="100" align="center">
         <template #default="scope">
-          <el-input v-model="scope.row.orderNum" @change="handleInputChange(scope.row.id)"/>
+          <el-input v-model="scope.row.orderNum" @change="editCourseArticle(scope.row)"/>
         </template>
       </el-table-column>
       <!-- 创建时间 -->
       <el-table-column prop="createTime" label="添加时间" width="180" align="center"/>
-      <!-- 操作列 -->
-      <el-table-column label="操作" width="180" align="center">
-        <template #default="scope">
-          <el-button type="primary" :disabled="!getIsEdited(scope.row.id)" link @click="editCourseArticle(scope.row)">保存
-          </el-button>
-        </template>
-      </el-table-column>
+
     </el-table>
   </el-drawer>
 
@@ -354,30 +351,27 @@ const deleteCourse = async (id) => {
   })
 }
 
-
 // 教程文章详情维护内容
 const detailDrawerVisible = ref(false);
 const courseDetails = ref([]);
 const detailTotal = ref(0);
-const isEditCourseArticleMap = ref(new Map)
+
 const viewArticle = (id) => {
   // 使用 vue-router 生成url，在新标签页打开文章详情页
   const routeUrl = router.resolve({name: 'article', params: {id}}).href;
   window.open(routeUrl, '_blank');
 }
 
-const handleInputChange = (rowId) => {
-  isEditCourseArticleMap.value.set(rowId, true);
-}
-const getIsEdited = (rowId) => {
-  return isEditCourseArticleMap.value.get(rowId);
-}
+// 更新教程文章信息
 const editCourseArticle = async (row) => {
   console.log(row)
-  await apiService.editCourseDetail(row)
+  const courseDetailId = await apiService.editCourseDetail(row);
+  if (courseDetailId > 0) {
+    ElMessage.success('教程文章信息更新成功！');
+  }
   await getCourseDetail(row.courseId);
-  isEditCourseArticleMap.value.set(row.id, false);
 }
+
 const delCourseArticle = async () => {
   ElMessageBox.confirm(
       '确定要移除所有选中的文章吗？',

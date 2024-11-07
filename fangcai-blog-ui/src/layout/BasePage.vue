@@ -4,7 +4,7 @@
     <div class="header-wrapper">
       <!-- 左侧 Logo 和标题 -->
       <div class="header-left" @click="selectNavigate('/')">
-        <img src="../assets/logo.jpg" alt="网站Logo" class="header-logo"/>
+        <img src="/logo.jpg" alt="网站Logo" class="header-logo"/>
         <h1 class="header-title">方才coding</h1>
       </div>
 
