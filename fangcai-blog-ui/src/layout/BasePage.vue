@@ -27,13 +27,12 @@
 
       <!-- 右侧 用户信息 -->
       <div class="header-right">
-        <div class="right-item" @click="openSearch">
+        <div class="right-item"  @click="openSearch" @keyup.ctrl.k="openSearch">
           <el-input
               style="width: 150px"
               size="default"
-              placeholder="搜索"
+              placeholder="搜索 ctrl+k"
               :suffix-icon="Search"
-              @click="openSearch"
           />
         </div>
         <el-button class="right-item " v-if="!userStore.isLogin()" type="primary" @click="handleAvatarClick">登录
@@ -78,7 +77,8 @@
               <!-- 第一板块：固定内容 -->
               <div class="advertising-class">
                 <h4 class="title-class">开源啦！点击图片即可直达</h4>
-                <img src="/blog_msg.png" alt="QR Code" @click="clickAdvertise" class="qr-code" style="border-radius: 5px"/>
+                <img src="/blog_msg.png" alt="QR Code" @click="clickAdvertise" class="qr-code"
+                     style="border-radius: 5px"/>
                 <p>QQ交流群：1092166080</p>
                 <p>微信交流群，扫码即可</p>
               </div>
@@ -141,7 +141,7 @@
           <p>扫码后输入 <span style="color: red; font-weight: bold; font-size: 18px;">666 </span> 获取验证码</p>
           <div style="display: flex; justify-content: center; ">
             <el-input style="width: 120px; height: 35px; margin-right: 10px;"
-                      v-model="loginForm.wxCode" placeholder="输入验证码"></el-input>
+                      v-model="loginForm.wxCode" placeholder="输入验证码" @keydown.enter="loginByWxCode"></el-input>
             <el-button style="margin: auto 0; height: 30px;" type="primary" @click="loginByWxCode">登录</el-button>
           </div>
         </div>
@@ -152,12 +152,12 @@
         <el-form v-model="loginForm">
           <!-- 用户名 -->
           <el-form-item label="账号：">
-            <el-input v-model="loginForm.loginName" placeholder="输入用户名"></el-input>
+            <el-input v-model="loginForm.loginName" placeholder="输入用户名" @keydown.enter="loginByName"></el-input>
           </el-form-item>
 
           <!-- 密码 -->
           <el-form-item label="密码：">
-            <el-input type="password" v-model="loginForm.password" placeholder="输入密码"></el-input>
+            <el-input type="password" v-model="loginForm.password" placeholder="输入密码" @keydown.enter="loginByName"></el-input>
           </el-form-item>
           <!-- 登录按钮 -->
           <div style="display: flex">
@@ -178,7 +178,7 @@
 </template>
 
 <script setup>
-import {defineProps, nextTick, reactive, ref, watch} from "vue";
+import {defineProps, nextTick, onMounted, reactive, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
 import {Search} from "@element-plus/icons-vue";
@@ -225,7 +225,7 @@ const loginForm = reactive({
   wxCode: ""
 });
 
-const clickAdvertise =()=>{
+const clickAdvertise = () => {
   window.open("https://gitee.com/fangcaicoding/fangcai-coding-blog", '_blank');
 }
 
@@ -321,6 +321,22 @@ const selectNavigate = (key) => {
   activeIndex.value = key;
   router.push(key);
 };
+
+
+
+onMounted(() => {
+  console.log("mounted")
+  // 在全局监听键盘事件
+  window.addEventListener('keydown', handleKeydown);
+})
+const handleKeydown = (event) => {
+  // 监听 ctrl+k 打开搜索框
+  if (event.key === 'k' && event.ctrlKey) {
+    // 阻止默认行为，例如浏览器的快捷键
+    event.preventDefault();
+    openSearch();
+  }
+}
 
 </script>
 

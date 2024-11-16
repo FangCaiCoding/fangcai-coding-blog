@@ -1,7 +1,8 @@
 <template>
 
   <!--  会和子组件 BasePage 通信，发起登录事件，并监听登录成功后的回调-->
-  <BasePage :showLeftSidebar="baseArticleProps.showLeftSidebar" :show-login-event="showLoginEvent" @loginSuccess="getArticle(article.id)">
+  <BasePage :showLeftSidebar="baseArticleProps.showLeftSidebar" :show-login-event="showLoginEvent"
+            @loginSuccess="getArticle(article.id)">
     <template v-slot:left-sidebar-dynamic>
       <slot name="left-sidebar-dynamic"></slot>
     </template>
@@ -49,7 +50,7 @@
 
 
 <script setup>
-import {computed, ref, watch} from 'vue';
+import {computed, onMounted, ref, watch} from 'vue';
 import {useRoute} from "vue-router";
 import apiService from "@/api/apiService.js";
 import router from "@/router/index.js";
@@ -65,6 +66,7 @@ const scrollElement = document.documentElement;
 const showLoginEvent = ref(false)
 const route = useRoute();
 
+
 // 定义props
 const baseArticleProps = defineProps({
   // 接受父组件传值，穿透至下一个子组件，即 BasePage
@@ -72,7 +74,7 @@ const baseArticleProps = defineProps({
     type: Boolean,
     default: false
   },
-  articleId:{
+  articleId: {
     type: Number,
     default: null
   }
@@ -143,6 +145,26 @@ const copy = async () => {
     ElMessage.success('文章内容复制成功！')
   } catch (e) {
     ElMessage.error('复制失败！')
+  }
+}
+
+
+onMounted(() => {
+  console.log("mounted")
+  // 在全局监听键盘事件
+  window.addEventListener('keydown', handleKeydown);
+})
+const handleKeydown = async (event) => {
+  // 监听 ctrl+k 打开搜索框
+  if (event.key === 'c' && event.ctrlKey) {
+    if (!userStore.isLogin()) {
+      // 阻止默认行为，例如浏览器的快捷键
+      event.preventDefault();
+      // 打开登录对话框
+      toLogin();
+    } else {
+      ElMessage.success('内容复制成功！')
+    }
   }
 }
 
