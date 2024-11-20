@@ -10,6 +10,7 @@ import cn.fangcai.common.auth.service.IAuthService;
 import cn.fangcai.common.model.exception.FcBusinessException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -19,6 +20,7 @@ import java.util.Set;
 
 
 @Component
+@Slf4j
 public class AuthInterceptor implements HandlerInterceptor {
 
     @Autowired
@@ -31,8 +33,8 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
         try {
             FcAuthContext.initContext();
-        } catch (FcBusinessException ignored) {
-
+        } catch (FcBusinessException exception) {
+            log.debug("auth context init failed,{}", exception.toString());
         }
         this.assertIsLogin(handlerMethod);
         this.assertAuthCode(handlerMethod);

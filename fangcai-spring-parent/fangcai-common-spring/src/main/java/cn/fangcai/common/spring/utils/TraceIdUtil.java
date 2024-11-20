@@ -1,5 +1,6 @@
 package cn.fangcai.common.spring.utils;
 
+import cn.hutool.core.util.StrUtil;
 import org.slf4j.MDC;
 import org.springframework.util.StringUtils;
 
@@ -28,7 +29,7 @@ public class TraceIdUtil {
 
     public static String getOrInitTraceId() {
         String traceId = MDC.get(MDC_KEY);
-        if (StringUtils.hasText(traceId)) {
+        if (StrUtil.isBlank(traceId)) {
             traceId = initTraceId();
         }
         return traceId;

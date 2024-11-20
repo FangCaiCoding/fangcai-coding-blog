@@ -2,7 +2,6 @@ package cn.fangcai.blog.service.impl;
 
 import cn.fangcai.blog.config.BlogAppProperties;
 import cn.fangcai.blog.consts.BlogErrorCodeEnum;
-import cn.fangcai.blog.service.ICacheService;
 import cn.fangcai.blog.mapper.UserMapper;
 import cn.fangcai.blog.mapper.UserRoleMapper;
 import cn.fangcai.blog.mapstruct.UserConverter;
@@ -10,6 +9,7 @@ import cn.fangcai.blog.model.entity.User;
 import cn.fangcai.blog.model.entity.UserRole;
 import cn.fangcai.blog.model.req.UserLoginReq;
 import cn.fangcai.blog.model.res.UserRes;
+import cn.fangcai.blog.service.ICacheService;
 import cn.fangcai.blog.service.IRoleService;
 import cn.fangcai.blog.service.IUserService;
 import cn.fangcai.blog.uitls.CacheKeyFactory;
@@ -18,7 +18,9 @@ import cn.fangcai.common.auth.service.IAuthService;
 import cn.fangcai.common.auth.utils.FcPWDUtil;
 import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,7 @@ import java.util.Set;
  * @since 2023-03-21
  */
 @Service
+@Slf4j
 public class UserServiceImpl implements IUserService, IAuthService {
 
     @Autowired
@@ -56,6 +59,11 @@ public class UserServiceImpl implements IUserService, IAuthService {
         return UserConverter.INSTANCE.userToRes(user);
     }
 
+    @Override
+    public UserRes getByLoginName(String loginName) {
+        User user = userRepository.lambdaQuery().eq(User::getLoginName, loginName).one();
+        return UserConverter.INSTANCE.userToRes(user);
+    }
 
     @Override
     public UserRes loginByName(UserLoginReq loginReq) {
@@ -85,7 +93,7 @@ public class UserServiceImpl implements IUserService, IAuthService {
                 .eq(User::getWxOpenId, wxOpenId)
                 .one();
         if (user == null) {
-            return this.register(wxOpenId);
+            return this.register(wxOpenId, wxOpenId, RandomUtil.randomString(16));
         }
         if (!user.getEnabled()) {
             throw new FcBusinessException(BlogErrorCodeEnum.USER_UN_ENABLED);
@@ -124,17 +132,21 @@ public class UserServiceImpl implements IUserService, IAuthService {
     }
 
 
-    private UserRes register(String wxOpenId) {
+    @Override
+    public UserRes register(String loginName, String wxOpenId, String password) {
+        if (StrUtil.isBlank(loginName) || StrUtil.isBlank(password) || StrUtil.isBlank(wxOpenId)) {
+            log.warn("register 参数不完整，loginName:{}, wxOpenId:{}, password:{}", loginName, wxOpenId, password);
+            return null;
+        }
         User newUser = new User();
         newUser.setWxOpenId(wxOpenId);
-        newUser.setLoginName(wxOpenId);
+        newUser.setLoginName(loginName);
         newUser.setNickName(LocalDate.now().getMonthValue() + "月，遇见你");
         newUser.setPassword("tempStr");
         userRepository.save(newUser);
         userRepository.lambdaUpdate()
                 .eq(User::getId, newUser.getId())
-                .set(User::getPassword, FcPWDUtil.encrypt(newUser.getId().toString(),
-                        RandomUtil.randomString(16)))
+                .set(User::getPassword, FcPWDUtil.encrypt(newUser.getId().toString(), password))
                 .update();
         // 注册默认角色
         UserRole userRole = new UserRole();

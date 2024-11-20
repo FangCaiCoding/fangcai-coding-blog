@@ -1,7 +1,9 @@
 package cn.fangcai.blog;
 
+import cn.fangcai.blog.service.IUserService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -21,11 +23,11 @@ public class AppApplication {
         SpringApplication app = new SpringApplication(AppApplication.class);
         ConfigurableApplicationContext application = app.run(args);
         Environment env = application.getEnvironment();
-        log.info("\n----------------------------------------------------------\n\t" +
+        log.error("\n----------------------------------------------------------\n\t" +
                         "Application '{}' is running! Access URLs:\n\t" +
                         "Local: \t\thttp://localhost:{}\n\t" +
                         "External: \thttp://{}:{}\n\t" +
-                        "Doc: \t\thttp://{}:{}{}/doc.html\n" +
+                        "接口文档地址:\thttp://{}:{}{}/doc.html\n" +
                         "----------------------------------------------------------",
                 env.getProperty("spring.application.name"),
                 env.getProperty("server.port"),

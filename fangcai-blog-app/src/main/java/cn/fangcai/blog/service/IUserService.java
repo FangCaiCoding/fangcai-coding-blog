@@ -20,7 +20,12 @@ public interface IUserService {
 
     UserRes getById(Integer userId);
 
+    UserRes getByLoginName(String loginName);
+
     UserRes loginByName(UserLoginReq loginReq);
 
     UserRes loginByWxCode(String wxCode);
+
+
+    UserRes register(String loginName, String wxOpenId, String password);
 }

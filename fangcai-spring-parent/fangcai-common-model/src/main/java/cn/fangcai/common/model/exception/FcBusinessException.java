@@ -31,4 +31,13 @@ public class FcBusinessException extends RuntimeException implements IError {
         return getMessage();
     }
 
+    @Override
+    public String toString() {
+        return "FcBusinessException{" +
+                "httpStatus=" + httpStatus +
+                ", errorCode='" + errorCode +
+                ", message=" + getMessage() + '\'' +
+                '}';
+    }
+
 }
