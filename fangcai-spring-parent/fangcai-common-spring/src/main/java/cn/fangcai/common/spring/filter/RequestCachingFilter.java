@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * @author MouFangCai
  * @date 2024/9/11 22:41
- * @description
+ * @description 过滤器链路配置
  */
 public class RequestCachingFilter extends OncePerRequestFilter {
 
@@ -27,8 +27,10 @@ public class RequestCachingFilter extends OncePerRequestFilter {
             if (StrUtil.isNotBlank(traceId)) {
                 TraceIdUtil.setTraceId(traceId);
             } else {
+                // 生成traceId
                 TraceIdUtil.initTraceId();
             }
+            // 缓存请求体
             ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(request);
             filterChain.doFilter(wrappedRequest, response);
         } finally {

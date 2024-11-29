@@ -9,15 +9,15 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>fangcai-common-spring</artifactId>
+    <artifactId>fangcai-log-starter</artifactId>
+
 
     <dependencies>
         <dependency>
             <groupId>cn.fangcai.common</groupId>
-            <artifactId>fangcai-auth-starter</artifactId>
+            <artifactId>fangcai-common-model</artifactId>
         </dependency>
-
-
     </dependencies>
+
 
 </project>

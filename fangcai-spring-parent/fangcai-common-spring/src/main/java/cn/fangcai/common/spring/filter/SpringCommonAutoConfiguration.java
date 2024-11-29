@@ -8,7 +8,7 @@ import org.springframework.core.Ordered;
 /**
  * @author MouFangCai
  * @date 2024/9/11 22:42
- * @description
+ * @description 注册过滤器
  */
 @Configuration
 public class SpringCommonAutoConfiguration {

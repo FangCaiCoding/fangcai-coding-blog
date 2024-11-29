@@ -2,13 +2,10 @@ package cn.fangcai.blog.controller.admin;
 
 import cn.fangcai.blog.model.req.website.WebSitePageReq;
 import cn.fangcai.blog.model.req.website.WebsiteSaveReq;
-import cn.fangcai.blog.model.res.website.WebsiteCateRes;
-import cn.fangcai.blog.model.res.website.WebsiteListRes;
 import cn.fangcai.blog.model.res.website.WebsiteRes;
 import cn.fangcai.blog.service.IWebsiteService;
-import cn.fangcai.common.auth.FcAuthContext;
-import cn.fangcai.common.auth.ano.FcCheckAuth;
-import cn.fangcai.common.auth.ano.FcNotCheckLogin;
+import cn.fangcai.starter.auth.FcAuthContext;
+import cn.fangcai.starter.auth.ano.FcCheckAuth;
 import cn.fangcai.common.model.dto.FcPageRes;
 import cn.fangcai.common.model.dto.FcResult;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,8 +13,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * <p>

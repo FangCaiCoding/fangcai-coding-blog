@@ -9,15 +9,21 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>fangcai-common-spring</artifactId>
+    <artifactId>fangcai-auth-starter</artifactId>
+
 
     <dependencies>
         <dependency>
             <groupId>cn.fangcai.common</groupId>
-            <artifactId>fangcai-auth-starter</artifactId>
+            <artifactId>fangcai-common-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk18on</artifactId>
+            <version>1.78.1</version>
         </dependency>
 
-
     </dependencies>
+
 
 </project>

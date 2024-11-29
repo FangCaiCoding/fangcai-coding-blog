@@ -3,7 +3,7 @@ package cn.fangcai.blog.controller.admin;
 import cn.fangcai.blog.model.entity.ConfigWechat;
 import cn.fangcai.blog.model.req.wx.ConfigWechatSaveReq;
 import cn.fangcai.blog.service.IConfigService;
-import cn.fangcai.common.auth.ano.FcCheckAuth;
+import cn.fangcai.starter.auth.ano.FcCheckAuth;
 import cn.fangcai.common.model.dto.FcResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

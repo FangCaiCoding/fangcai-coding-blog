@@ -25,7 +25,8 @@
     </properties>
 
     <modules>
-        <module>fangcai-common-auth</module>
+        <module>fangcai-auth-starter</module>
+        <module>fangcai-log-starter</module>
         <module>fangcai-common-model</module>
         <module>fangcai-common-spring</module>
     </modules>
@@ -46,7 +47,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.fangcai.common</groupId>
-                <artifactId>fangcai-common-auth</artifactId>
+                <artifactId>fangcai-auth-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

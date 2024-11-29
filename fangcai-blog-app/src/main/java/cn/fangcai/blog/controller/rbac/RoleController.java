@@ -1,7 +1,7 @@
 package cn.fangcai.blog.controller.rbac;
 
 import cn.fangcai.blog.service.IRoleService;
-import cn.fangcai.common.auth.ano.FcCheckAuth;
+import cn.fangcai.starter.auth.ano.FcCheckAuth;
 import cn.fangcai.common.model.dto.FcResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

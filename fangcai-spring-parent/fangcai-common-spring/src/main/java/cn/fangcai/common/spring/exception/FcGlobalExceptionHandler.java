@@ -1,9 +1,8 @@
 package cn.fangcai.common.spring.exception;
 
 
-import cn.fangcai.common.auth.utils.SpringMVCUtil;
+import cn.fangcai.starter.auth.utils.SpringMVCUtil;
 import cn.fangcai.common.model.dto.FcResult;
-import cn.fangcai.common.auth.enums.AuthErrorCodeEnum;
 import cn.fangcai.common.model.enums.FcErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.fangcai.common.model.exception.FcException;
@@ -23,6 +22,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
+
+/**
+ * @author MouFangCai
+ * @date 2024/9/20 21:30
+ * @description 全局异常处理器
+ */
 
 @RestControllerAdvice
 @Order(999)
@@ -96,9 +101,8 @@ public class FcGlobalExceptionHandler {
             clErrorCode = ((FcBusinessException) e).getErrorCode();
         }
         logger.error("ErrorFlag=【{}】,path=【{}】,param=【{}】，body=【{}】, code = {}, errorCode = {},message = {}"
-                , e.getClass().getSimpleName(),
-                request.getRequestURI(), SpringMVCUtil.getRequestParam(), SpringMVCUtil.getRequestBody()
-                , statusCode, clErrorCode, e.getMessage(), e);
+                , e.getClass().getSimpleName(), request.getRequestURI(), SpringMVCUtil.getRequestParam(),
+                SpringMVCUtil.getRequestBody(), statusCode, clErrorCode, e.getMessage(), e);
     }
 
 

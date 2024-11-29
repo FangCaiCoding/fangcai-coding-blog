@@ -3,7 +3,7 @@ package cn.fangcai.blog.controller;
 import cn.fangcai.blog.model.res.website.WebsiteCateRes;
 import cn.fangcai.blog.model.res.website.WebsiteListRes;
 import cn.fangcai.blog.service.IWebsiteService;
-import cn.fangcai.common.auth.ano.FcNotCheckLogin;
+import cn.fangcai.starter.auth.ano.FcNotCheckLogin;
 import cn.fangcai.common.model.dto.FcResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
