@@ -17,23 +17,28 @@ public @interface FcLog {
     /**
      * 描述
      */
-    public String desc() ;
+    public String desc();
+
+    /**
+     * 业务标识分类
+     */
+    public String businessFlag() default "";
 
     /**
      * 行为类型
      */
-    public ActionType businessType() default ActionType.OTHER;
+    public ActionType actionType() default ActionType.OTHER;
 
 
     /**
      * 是否保存请求的参数
      */
-    public boolean isSaveRequestData() default true;
+    public boolean isSaveReqData() default true;
 
     /**
      * 是否保存响应的参数
      */
-    public boolean isSaveResponseData() default false;
+    public boolean isSaveRespData() default false;
 
     /**
      * 排除指定的请求参数

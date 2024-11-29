@@ -1,49 +1,23 @@
-package cn.fangcai.starter.log.utils;
+package cn.fangcai.starter.auth.utils;
 
-
-import cn.fangcai.starter.log.config.FcLogProperties;
-import cn.fangcai.starter.auth.enums.AuthErrorCodeEnum;
-import cn.fangcai.common.model.exception.FcBusinessException;
+import cn.fangcai.common.model.uitls.SpringMVCUtil;
+import cn.fangcai.starter.auth.config.AuthProperties;
 import cn.hutool.core.util.StrUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
-
 /**
  * @author MouFangCai
- * @date 2024/8/19 22:16
+ * @date 2024/11/29 23:57
  * @description
  */
 @Slf4j
-public class LoginHttpUtil {
-
-    public static void setLoginSession(UserTokenDto userTokenDto) {
-        setLoginCookie(userTokenDto);
-    }
-
-    public static UserTokenDto getUserToken() throws FcBusinessException {
-        String token = getCookie(FcLogProperties.TOKEN_NAME);
-        if (StrUtil.isBlank(token)) {
-            throw new FcBusinessException(AuthErrorCodeEnum.USER_NOT_LOGIN);
-        }
-        return FcJWTUtil.parserToken(token);
-    }
+public class CookieUtil {
 
 
-    public static void delLoginSession() {
-        deleteCookieByName(FcLogProperties.TOKEN_NAME);
-    }
-
-
-    private static void setLoginCookie(UserTokenDto tokenDto) {
-        String token = FcJWTUtil.createToken(tokenDto);
-        createCookie(FcLogProperties.TOKEN_NAME, token, FcLogProperties.COOKIE_MAX_AGE);
-    }
-
-
-    private static String getCookie(String key) {
+    public static String getCookie(String key) {
         HttpServletRequest request = SpringMVCUtil.getRequest();
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
@@ -58,23 +32,23 @@ public class LoginHttpUtil {
     }
 
 
-    private static Cookie createCookie(String cookieName,
-                                       String token,
-                                       Integer maxAge) {
+    public static Cookie createCookie(String cookieName,
+                                      String token,
+                                      Integer maxAge) {
         HttpServletRequest request = SpringMVCUtil.getRequest();
         HttpServletResponse response = SpringMVCUtil.getResponse();
 
         Cookie cookie = new Cookie(cookieName, token);
-        cookie.setMaxAge(maxAge == null ? FcLogProperties.COOKIE_MAX_AGE : maxAge);
+        cookie.setMaxAge(maxAge == null ? AuthProperties.COOKIE_MAX_AGE : maxAge);
 
         // 设置了HttpOnly属性，那么通过js脚本将无法读取到cookie信息，这样能有效的防止XSS攻击
         cookie.setHttpOnly(true);
-        cookie.setSecure(FcLogProperties.COOKIE_SECURE);
+        cookie.setSecure(AuthProperties.COOKIE_SECURE);
         String host = request.getServerName();
         log.debug("login------------host:" + host);
         cookie.setDomain(host);
-        if (StrUtil.isNotEmpty(FcLogProperties.COOKIE_DOMAIN)) {
-            cookie.setDomain(FcLogProperties.COOKIE_DOMAIN);
+        if (StrUtil.isNotEmpty(AuthProperties.COOKIE_DOMAIN)) {
+            cookie.setDomain(AuthProperties.COOKIE_DOMAIN);
         }
         cookie.setPath("/");
         response.addCookie(cookie);
@@ -89,7 +63,7 @@ public class LoginHttpUtil {
         return cookie;
     }
 
-    private static int deleteCookieByName(String cookieName) {
+    public static int deleteCookieByName(String cookieName) {
         HttpServletRequest request = SpringMVCUtil.getRequest();
         HttpServletResponse response = SpringMVCUtil.getResponse();
         int delCount = 0;

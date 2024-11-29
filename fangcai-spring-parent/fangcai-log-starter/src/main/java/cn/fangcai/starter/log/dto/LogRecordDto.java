@@ -62,7 +62,7 @@ public class LogRecordDto {
     /**
      * 请求参数
      */
-    private String reqParam;
+    private String reqData;
 
     /**
      * 响应参数

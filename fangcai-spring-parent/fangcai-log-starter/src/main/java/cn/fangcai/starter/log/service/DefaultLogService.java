@@ -12,7 +12,7 @@ import java.util.List;
  * @description
  */
 @Slf4j
-public class DefaultLogService implements ILogService {
+public class DefaultLogService implements IFcLogService {
 
 
     @Override

@@ -17,6 +17,13 @@ public class AuthProperties {
      */
     public static String CLIENT_IP_HEADER;
 
+
+    /**
+     * 客户端 cookie 名
+     */
+    public static String CLIENT_COOKIE_NAME;
+
+
     /**
      * 密码 加密的 sm4 key
      */
@@ -28,9 +35,9 @@ public class AuthProperties {
     public static Integer LOGIN_ERROR_COUNT_LIMIT;
 
     /**
-     * cookie 和 header 名
+     * 鉴权的  cookie 和 header 名
      */
-    public static String TOKEN_NAME;
+    public static String AUTH_TOKEN_NAME;
 
 
 
@@ -77,6 +84,14 @@ public class AuthProperties {
     public void setClientIpHeader(String clientIpHeader) {
         CLIENT_IP_HEADER = clientIpHeader;
     }
+
+    @Value("${fangcai.auth.clientCookieName:FC_CLIENT_ID}")
+    public void setClientCookieName(String clientCookieName) {
+        CLIENT_COOKIE_NAME = clientCookieName;
+    }
+
+
+
     @Value("${fangcai.auth.pwd_sm4_key:@qwr0987+dMDdf89}")
     public void setPwdSm4Key(String pwdSm4Key) {
         PWD_SM4_KEY = pwdSm4Key;
@@ -89,7 +104,7 @@ public class AuthProperties {
 
     @Value("${fangcai.auth.token_name:FC_USER_TOKEN}")
     public void setTokenName(String tokenName) {
-        TOKEN_NAME = tokenName;
+        AUTH_TOKEN_NAME = tokenName;
     }
 
 

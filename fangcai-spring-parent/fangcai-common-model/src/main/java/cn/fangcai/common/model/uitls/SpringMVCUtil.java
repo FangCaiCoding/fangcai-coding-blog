@@ -5,7 +5,6 @@ import cn.fangcai.common.model.enums.FcErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcException;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.PatternPool;
-import cn.hutool.core.net.Ipv4Util;
 import cn.hutool.core.util.StrUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -86,29 +85,54 @@ public class SpringMVCUtil {
      */
     public static String getClientIp(String headerName) {
         HttpServletRequest request = getRequest();
-        String ipAddress = "127.0.0.1";
-
-
         try {
-            /**
-             * 考虑一些网关  默认携带真实ip的header
-             *   第一个 是原始的访问 IP  第二个 是 代理的 转发的 IP
-             *  header=[x-original-forwarded-for],value= 113.204.230.202, 172.20.2.0
-             */
-            ipAddress = request.getHeader(headerName);
-            if (StrUtil.isBlank(ipAddress)) {
-                return ipAddress;
+            // 优先从指定的header头获取
+            String ip = request.getHeader(headerName);
+            if (StrUtil.isBlank(ip)) {
+                ip = request.getHeader("x-forwarded-for");
             }
-            if (ipAddress.contains(",")) {
-                ipAddress = ipAddress.split(",")[0];
+            if (StrUtil.isBlank(ip)) {
+                ip = request.getHeader("Proxy-Client-IP");
             }
-            if (!isIpv4(ipAddress) || Ipv4Util.isInnerIP(ipAddress)) {
-                ipAddress = "127.0.0.1";
+            if (StrUtil.isBlank(ip)) {
+                ip = request.getHeader("X-Forwarded-For");
             }
+            if (StrUtil.isBlank(ip)) {
+                ip = request.getHeader("WL-Proxy-Client-IP");
+            }
+            if (StrUtil.isBlank(ip)) {
+                ip = request.getHeader("X-Real-IP");
+            }
+            if (StrUtil.isBlank(ip)) {
+                ip = request.getRemoteAddr();
+            }
+            return "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : getMultistageReverseProxyIp(ip);
         } catch (Exception e) {
             log.error("getClientIp Error!", e);
         }
-        return ipAddress;
+        return "unknown";
+    }
+
+
+    /**
+     * 从多级反向代理中获得第一个非unknown IP地址
+     *
+     * @param ip 获得的IP地址
+     *
+     * @return 第一个非unknown IP地址
+     */
+    private static String getMultistageReverseProxyIp(String ip) {
+        // 多级反向代理检测
+        if (ip != null && ip.indexOf(",") > 0) {
+            final String[] ips = ip.trim().split(",");
+            for (String subIp : ips) {
+                if (isIpv4(subIp)) {
+                    ip = subIp;
+                    break;
+                }
+            }
+        }
+        return StrUtil.subPre(ip, 256);
     }
 
     private static Boolean isIpv4(String strIp) {

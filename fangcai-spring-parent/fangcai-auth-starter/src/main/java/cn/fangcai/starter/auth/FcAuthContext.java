@@ -1,22 +1,23 @@
 package cn.fangcai.starter.auth;
 
+import cn.fangcai.common.model.exception.FcBusinessException;
+import cn.fangcai.common.model.uitls.SpringMVCUtil;
 import cn.fangcai.starter.auth.dto.UserAuthInfo;
 import cn.fangcai.starter.auth.dto.UserTokenDto;
 import cn.fangcai.starter.auth.service.IAuthService;
 import cn.fangcai.starter.auth.utils.LoginHttpUtil;
-import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.hutool.extra.spring.SpringUtil;
 
 /**
  * @author MouFangCai
  * @date 2024/8/19 22:16
- * @description
+ * @description 授权相关上下文
  */
 public class FcAuthContext {
     private static final ThreadLocal<Object> USER_INFO = new ThreadLocal<>();
 
 
-    public static void initContext() throws FcBusinessException{
+    public static void initContext() throws FcBusinessException {
         UserTokenDto userToken = LoginHttpUtil.getUserToken();
         IAuthService authService = SpringUtil.getBean(IAuthService.class);
         Object authInfo = authService.getById(userToken.getUserId());
@@ -49,7 +50,6 @@ public class FcAuthContext {
     public static Integer getUserIdAsInt() {
         return Integer.parseInt(getUserIdAsStr());
     }
-
 
     public static void clearContext() {
         USER_INFO.remove();
