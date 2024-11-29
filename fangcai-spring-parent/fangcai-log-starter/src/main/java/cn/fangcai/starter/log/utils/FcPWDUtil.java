@@ -1,6 +1,6 @@
-package cn.fangcai.starter.auth.utils;
+package cn.fangcai.starter.log.utils;
 
-import cn.fangcai.starter.auth.config.AuthProperties;
+import cn.fangcai.starter.log.config.FcLogProperties;
 import cn.fangcai.common.model.enums.FcErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcException;
 import cn.hutool.core.util.HexUtil;
@@ -16,7 +16,7 @@ import cn.hutool.crypto.symmetric.SM4;
  * @description 密码工具类 slat+sm4+随机次数sm3
  */
 public class FcPWDUtil {
-    private static final SM4 SM4 = new SM4(AuthProperties.PWD_SM4_KEY.getBytes());
+    private static final SM4 SM4 = new SM4(FcLogProperties.PWD_SM4_KEY.getBytes());
 
     private static final String SPLIT = ":";
 

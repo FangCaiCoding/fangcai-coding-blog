@@ -17,6 +17,15 @@
             <groupId>cn.fangcai.common</groupId>
             <artifactId>fangcai-common-model</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.fangcai.common</groupId>
+            <artifactId>fangcai-auth-starter</artifactId>
+        </dependency>
+        <!-- SpringBoot 拦截器 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
     </dependencies>
 
 

@@ -1,7 +1,7 @@
-package cn.fangcai.starter.auth.utils;
+package cn.fangcai.starter.log.utils;
 
 
-import cn.fangcai.starter.auth.config.AuthProperties;
+import cn.fangcai.starter.log.config.FcLogProperties;
 import cn.fangcai.common.model.enums.FcErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcException;
 import cn.hutool.core.collection.CollUtil;
@@ -96,7 +96,7 @@ public class SpringMVCUtil {
              *   第一个 是原始的访问 IP  第二个 是 代理的 转发的 IP
              *  header=[x-original-forwarded-for],value= 113.204.230.202, 172.20.2.0
              */
-            ipAddress = request.getHeader(AuthProperties.CLIENT_IP_HEADER);
+            ipAddress = request.getHeader(FcLogProperties.CLIENT_IP_HEADER);
             if (StrUtil.isBlank(ipAddress)) {
                 return ipAddress;
             }

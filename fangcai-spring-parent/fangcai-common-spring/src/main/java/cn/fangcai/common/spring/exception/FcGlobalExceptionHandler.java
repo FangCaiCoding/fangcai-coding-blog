@@ -1,7 +1,7 @@
 package cn.fangcai.common.spring.exception;
 
 
-import cn.fangcai.starter.auth.utils.SpringMVCUtil;
+import cn.fangcai.common.model.uitls.SpringMVCUtil;
 import cn.fangcai.common.model.dto.FcResult;
 import cn.fangcai.common.model.enums.FcErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcBusinessException;

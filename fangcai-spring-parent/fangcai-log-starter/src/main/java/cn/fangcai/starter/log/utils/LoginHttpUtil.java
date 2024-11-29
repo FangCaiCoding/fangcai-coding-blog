@@ -1,8 +1,7 @@
-package cn.fangcai.starter.auth.utils;
+package cn.fangcai.starter.log.utils;
 
 
-import cn.fangcai.starter.auth.config.AuthProperties;
-import cn.fangcai.starter.auth.dto.UserTokenDto;
+import cn.fangcai.starter.log.config.FcLogProperties;
 import cn.fangcai.starter.auth.enums.AuthErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.hutool.core.util.StrUtil;
@@ -25,7 +24,7 @@ public class LoginHttpUtil {
     }
 
     public static UserTokenDto getUserToken() throws FcBusinessException {
-        String token = getCookie(AuthProperties.TOKEN_NAME);
+        String token = getCookie(FcLogProperties.TOKEN_NAME);
         if (StrUtil.isBlank(token)) {
             throw new FcBusinessException(AuthErrorCodeEnum.USER_NOT_LOGIN);
         }
@@ -34,13 +33,13 @@ public class LoginHttpUtil {
 
 
     public static void delLoginSession() {
-        deleteCookieByName(AuthProperties.TOKEN_NAME);
+        deleteCookieByName(FcLogProperties.TOKEN_NAME);
     }
 
 
     private static void setLoginCookie(UserTokenDto tokenDto) {
         String token = FcJWTUtil.createToken(tokenDto);
-        createCookie(AuthProperties.TOKEN_NAME, token, AuthProperties.COOKIE_MAX_AGE);
+        createCookie(FcLogProperties.TOKEN_NAME, token, FcLogProperties.COOKIE_MAX_AGE);
     }
 
 
@@ -66,16 +65,16 @@ public class LoginHttpUtil {
         HttpServletResponse response = SpringMVCUtil.getResponse();
 
         Cookie cookie = new Cookie(cookieName, token);
-        cookie.setMaxAge(maxAge == null ? AuthProperties.COOKIE_MAX_AGE : maxAge);
+        cookie.setMaxAge(maxAge == null ? FcLogProperties.COOKIE_MAX_AGE : maxAge);
 
         // 设置了HttpOnly属性，那么通过js脚本将无法读取到cookie信息，这样能有效的防止XSS攻击
         cookie.setHttpOnly(true);
-        cookie.setSecure(AuthProperties.COOKIE_SECURE);
+        cookie.setSecure(FcLogProperties.COOKIE_SECURE);
         String host = request.getServerName();
         log.debug("login------------host:" + host);
         cookie.setDomain(host);
-        if (StrUtil.isNotEmpty(AuthProperties.COOKIE_DOMAIN)) {
-            cookie.setDomain(AuthProperties.COOKIE_DOMAIN);
+        if (StrUtil.isNotEmpty(FcLogProperties.COOKIE_DOMAIN)) {
+            cookie.setDomain(FcLogProperties.COOKIE_DOMAIN);
         }
         cookie.setPath("/");
         response.addCookie(cookie);

@@ -1,7 +1,7 @@
-package cn.fangcai.starter.auth.config;
+package cn.fangcai.starter.log.config;
 
-import cn.fangcai.starter.auth.service.DefaultLogService;
-import cn.fangcai.starter.auth.service.ILogService;
+import cn.fangcai.starter.log.service.DefaultLogService;
+import cn.fangcai.starter.log.service.ILogService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

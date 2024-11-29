@@ -1,4 +1,4 @@
-package cn.fangcai.starter.auth.config;
+package cn.fangcai.starter.log.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @description 全局变量 上下文
  */
 @Component
-public class AuthProperties {
+public class FcLogProperties {
 
 
     /**

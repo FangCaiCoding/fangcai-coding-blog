@@ -1,4 +1,4 @@
-package cn.fangcai.starter.auth.ano;
+package cn.fangcai.starter.log.ano;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,11 +8,11 @@ import java.lang.annotation.Target;
 /**
  * @author MouFangCai
  * @date 2024/8/19 22:20
- * @description 用于检查权限的注解
+ * @description 日志注解
  */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Log {
+public @interface FcLog {
 
     /**
      * 描述
@@ -28,7 +28,7 @@ public @interface Log {
     /**
      * 是否保存请求的参数
      */
-    public boolean isSaveRequestData() default false;
+    public boolean isSaveRequestData() default true;
 
     /**
      * 是否保存响应的参数
