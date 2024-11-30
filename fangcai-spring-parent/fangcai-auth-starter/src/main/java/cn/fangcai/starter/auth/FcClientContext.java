@@ -4,17 +4,16 @@ import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.fangcai.common.model.uitls.SpringMVCUtil;
 import cn.fangcai.starter.auth.config.AuthProperties;
 import cn.fangcai.starter.auth.dto.ClientInfo;
-import cn.fangcai.starter.auth.dto.UserTokenDto;
-import cn.fangcai.starter.auth.service.IAuthService;
 import cn.fangcai.starter.auth.utils.CookieUtil;
-import cn.fangcai.starter.auth.utils.LoginHttpUtil;
-import cn.hutool.extra.spring.SpringUtil;
+import cn.fangcai.starter.auth.utils.FcJWTUtil;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author MouFangCai
  * @date 2024/8/19 22:16
  * @description
  */
+@Slf4j
 public class FcClientContext {
 
     private static final ThreadLocal<ClientInfo> CLIENT_INFO = new ThreadLocal<>();
@@ -23,7 +22,12 @@ public class FcClientContext {
     public static void initContext() throws FcBusinessException {
         ClientInfo clientInfo = new ClientInfo();
         String clientIdJwt = CookieUtil.getCookie(AuthProperties.CLIENT_COOKIE_NAME);
-        //TODO : by mfc on 2024/11/30 待编写
+        try {
+            String clientId = FcJWTUtil.parseToken(clientIdJwt, String.class);
+            clientInfo.setClientId(clientId);
+        } catch (Exception e) {
+            log.warn("FcClientContext get clientId error!Msg={}", e.getMessage());
+        }
         clientInfo.setClientIp(SpringMVCUtil.getClientIp(AuthProperties.CLIENT_IP_HEADER));
         CLIENT_INFO.set(clientInfo);
     }

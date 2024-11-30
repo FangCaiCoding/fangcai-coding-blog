@@ -1,10 +1,10 @@
 package cn.fangcai.starter.auth.utils;
 
 
+import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.fangcai.starter.auth.config.AuthProperties;
 import cn.fangcai.starter.auth.dto.UserTokenDto;
 import cn.fangcai.starter.auth.enums.AuthErrorCodeEnum;
-import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,7 +26,7 @@ public class LoginHttpUtil {
         if (StrUtil.isBlank(token)) {
             throw new FcBusinessException(AuthErrorCodeEnum.USER_NOT_LOGIN);
         }
-        return FcJWTUtil.parserToken(token);
+        return FcJWTUtil.parseToken(token, UserTokenDto.class);
     }
 
 

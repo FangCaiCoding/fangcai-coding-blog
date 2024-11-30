@@ -2,11 +2,11 @@ package cn.fangcai.starter.log.aop;
 
 import cn.fangcai.common.model.uitls.SpringMVCUtil;
 import cn.fangcai.starter.auth.FcAuthContext;
+import cn.fangcai.starter.auth.FcClientContext;
 import cn.fangcai.starter.log.ano.FcLog;
 import cn.fangcai.starter.log.dto.LogRecordDto;
 import cn.fangcai.starter.log.service.IFcLogService;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.ssh.JschUtil;
 import cn.hutool.json.JSONUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -104,8 +104,8 @@ public class LogAspect {
                                      Object result) {
         LogRecordDto logRecord = new LogRecordDto();
         logRecord.setUserId(FcAuthContext.getUserIdAsStr());
-        logRecord.setClientId(FcAuthContext.getClientIp());
-        logRecord.setClientId(FcAuthContext.getClientIp());
+        logRecord.setClientId(FcClientContext.getClientIp());
+        logRecord.setClientId(FcClientContext.getClientIp());
         logRecord.setDesc(fcLog.desc());
         logRecord.setActionType(fcLog.actionType().name());
         logRecord.setBusinessFlag(fcLog.businessFlag());

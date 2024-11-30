@@ -1,13 +1,14 @@
 package cn.fangcai.starter.auth.interceptor;
 
 
+import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.fangcai.starter.auth.FcAuthContext;
 import cn.fangcai.starter.auth.FcAuthUtil;
+import cn.fangcai.starter.auth.FcClientContext;
 import cn.fangcai.starter.auth.ano.FcCheckAuth;
 import cn.fangcai.starter.auth.ano.FcNotCheckLogin;
 import cn.fangcai.starter.auth.enums.AuthErrorCodeEnum;
 import cn.fangcai.starter.auth.service.IAuthService;
-import cn.fangcai.common.model.exception.FcBusinessException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             return true;
         }
         try {
+            FcClientContext.initContext();
             FcAuthContext.initContext();
         } catch (FcBusinessException exception) {
             log.debug("auth context init failed,{}", exception.toString());
@@ -46,6 +48,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         try {
             HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
         } finally {
+            FcClientContext.clearContext();
             FcAuthContext.clearContext();
         }
     }

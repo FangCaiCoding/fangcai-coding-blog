@@ -1,11 +1,10 @@
 package cn.fangcai.starter.auth.utils;
 
 
-import cn.fangcai.starter.auth.config.AuthProperties;
-import cn.fangcai.starter.auth.dto.UserTokenDto;
-import cn.fangcai.starter.auth.enums.AuthErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.fangcai.common.model.exception.FcException;
+import cn.fangcai.starter.auth.config.AuthProperties;
+import cn.fangcai.starter.auth.enums.AuthErrorCodeEnum;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.crypto.SmUtil;
 import cn.hutool.crypto.symmetric.SM4;
@@ -30,27 +29,27 @@ import java.util.Date;
 public class FcJWTUtil {
 
 
-    private final static String JWT_CLAIM_NAME = "UserToken";
+    private final static String JWT_USER_CLAIM_NAME = "UserToken";
     private static final JWTSigner jwtSigner = JWTSignerUtil.hs512(AuthProperties.JWT_SECRET_KEY.getBytes());
     private static final SM4 sm4 = SmUtil.sm4(AuthProperties.JWT_SM4_KEY.getBytes());
 
     /**
      * 使用HS256签名算法和生成的signingKey最终的Token,claims中是有效载荷
      *
-     * @param userToken
+     * @param jwtClaim 负载内容
      *
      * @return token
      */
-    public static String createToken(UserTokenDto userToken) {
-        if (userToken == null) {
+    public static String createToken(Object jwtClaim) {
+        if (jwtClaim == null) {
             throw new FcException(AuthErrorCodeEnum.JWT_CLAIM_IS_EMPTY);
         }
-        String tokenStr = sm4.encryptHex(JSONUtil.toJsonStr(userToken));
+        String tokenStr = sm4.encryptHex(JSONUtil.toJsonStr(jwtClaim));
         LocalDateTime localDateTime = LocalDateTime.now().plusDays(AuthProperties.JWT_EXP_DAYS);
         Date expiresAt = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
 
         return JWT.create()
-                .setPayload(JWT_CLAIM_NAME, tokenStr)
+                .setPayload(JWT_USER_CLAIM_NAME, tokenStr)
                 .setSigner(jwtSigner)
                 .setExpiresAt(expiresAt)
                 .setIssuedAt(new Date())
@@ -65,7 +64,7 @@ public class FcJWTUtil {
      *
      * @return UserTokenDto
      */
-    public static UserTokenDto parserToken(String token) throws FcBusinessException {
+    public static <T> T parseToken(String token, Class<T> targetClass) throws FcBusinessException {
         boolean verify = false;
         try {
             verify = JWTUtil.verify(token, jwtSigner);
@@ -76,9 +75,9 @@ public class FcJWTUtil {
         if (!verify) {
             throw new FcBusinessException(AuthErrorCodeEnum.JWT_TOKEN_ERROR);
         }
-        String tokenEncryptStr = (String) JWTUtil.parseToken(token).getPayload(JWT_CLAIM_NAME);
+        String tokenEncryptStr = (String) JWTUtil.parseToken(token).getPayload(JWT_USER_CLAIM_NAME);
         String tokenStr = sm4.decryptStr(JSONUtil.toJsonStr(tokenEncryptStr), CharsetUtil.CHARSET_UTF_8);
-        return JSONUtil.toBean(tokenStr, UserTokenDto.class);
+        return JSONUtil.toBean(tokenStr, targetClass);
     }
 
 
@@ -88,13 +87,6 @@ public class FcJWTUtil {
      * @param token
      */
     public static void invalidToken(String token) {
-        boolean verify = JWTUtil.verify(token, jwtSigner);
-        if (!verify) {
-            return;
-        }
-        String tokenEncryptStr = (String) JWTUtil.parseToken(token).getPayload(JWT_CLAIM_NAME);
-        String tokenStr = sm4.decryptStr(JSONUtil.toJsonStr(tokenEncryptStr), CharsetUtil.CHARSET_UTF_8);
-        UserTokenDto tokenDto = JSONUtil.toBean(tokenStr, UserTokenDto.class);
         // TODO : by mfc on 2024/8/21
     }
 
