@@ -1,13 +1,6 @@
 import axiosInst from "./axiosInst.js";
 
 
-const loginByName = (loginReq = {}) => {
-    return axiosInst.post("/user/loginByName", loginReq);
-}
-const loginByWxCode = (loginReq = {}) => {
-    return axiosInst.post("/user/loginByWxCode", loginReq);
-}
-
 const pagePublicArticle = (pageReq = {}) => {
     return axiosInst.post("/article/public/page", pageReq);
 }
@@ -123,8 +116,6 @@ const clickSite = (id) => {
 }
 
 export default {
-    loginByName,
-    loginByWxCode,
     pagePublicArticle,
     getPublicArticle,
     editArticle,

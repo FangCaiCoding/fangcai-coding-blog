@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @author MouFangCai
- * @date 2024/8/25 8:59
+ * @date 2024/11/30 22:11
  * @description
  */
 @Configuration
-public class AuthServiceConfig {
+public class FcAuthAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(value = IAuthService.class)

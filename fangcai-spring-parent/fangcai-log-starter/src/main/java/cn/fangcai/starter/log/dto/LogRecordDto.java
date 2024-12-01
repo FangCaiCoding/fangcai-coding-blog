@@ -36,7 +36,7 @@ public class LogRecordDto {
     /**
      * 描述，示例：阅读文章
      */
-    private String desc;
+    private String logDesc;
 
     /**
      * 行为类型 {@link cn.fangcai.starter.log.ano.FcLog.ActionType}

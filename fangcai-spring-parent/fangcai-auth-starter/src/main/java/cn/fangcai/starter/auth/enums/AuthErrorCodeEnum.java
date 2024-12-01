@@ -21,7 +21,7 @@ public enum AuthErrorCodeEnum implements IError {
 
     USER_NOT_LOGIN(HttpStatus.UNAUTHORIZED.value(), "215", "未登录!请先登录"),
 
-    JWT_TOKEN_ERROR(HttpStatus.UNAUTHORIZED.value(), "216", "未登录!请先登录"),
+    JWT_TOKEN_ERROR(HttpStatus.UNAUTHORIZED.value(), "216", "token解析失败！"),
 
     AUTH_INFO_INIT_FAIL(HttpStatus.UNAUTHORIZED.value(), "217", "未登录!请先登录"),
 

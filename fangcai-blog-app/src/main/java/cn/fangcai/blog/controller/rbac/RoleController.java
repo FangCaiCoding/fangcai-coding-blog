@@ -1,8 +1,9 @@
 package cn.fangcai.blog.controller.rbac;
 
 import cn.fangcai.blog.service.IRoleService;
-import cn.fangcai.starter.auth.ano.FcCheckAuth;
 import cn.fangcai.common.model.dto.FcResult;
+import cn.fangcai.starter.auth.ano.FcCheckAuth;
+import cn.fangcai.starter.log.ano.FcLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,8 @@ public class RoleController {
     @DeleteMapping("/{id}")
     @Operation(summary = "删除角色")
     @FcCheckAuth(values = "role:del")
+    @FcLog(desc = "删除角色", actionType = FcLog.ActionType.DELETE)
     public FcResult<Boolean> delById(@PathVariable Integer id) {
         return FcResult.SUCCESS(roleService.delById(id));
     }
-
-
 }

@@ -36,6 +36,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <version>3.0.2</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -55,7 +60,6 @@
                 <artifactId>fangcai-common-model</artifactId>
                 <version>${revision}</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 

@@ -1,5 +1,6 @@
 import {reactive} from 'vue'
 import {defineStore} from 'pinia'
+import userApi from "@/api/userApi.js";
 
 /*
   定义一个基于 Pinia 的 Store
@@ -24,6 +25,18 @@ export const useUserStore = defineStore('userContext', () => {
         const isLogin = () => {
             return userContext.id !== undefined;
         }
+
+        /**
+         * 初始化上下文
+         */
+        const initContext = () => {
+            console.debug("initContext start!")
+            userApi.getUserInfo().then(userInfo => {
+                    login(userInfo);
+                }
+            )
+        }
+
         const $reset = () => {
             userContext.id = undefined;
             // 清理本地存储中的持久化内容
@@ -32,6 +45,7 @@ export const useUserStore = defineStore('userContext', () => {
         return {
             userContext,
             login,
+            initContext,
             isLogin,
             $reset,
         }
@@ -39,4 +53,5 @@ export const useUserStore = defineStore('userContext', () => {
     {
         //持久化存储到 localStorage 中
         persist: true
-    })
+    }
+)

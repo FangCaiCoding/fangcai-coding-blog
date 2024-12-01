@@ -6,6 +6,7 @@ import cn.fangcai.starter.auth.FcClientContext;
 import cn.fangcai.starter.log.ano.FcLog;
 import cn.fangcai.starter.log.dto.LogRecordDto;
 import cn.fangcai.starter.log.service.IFcLogService;
+import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import jakarta.annotation.Resource;
@@ -18,6 +19,8 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /**
@@ -41,14 +44,14 @@ public class LogAspect {
     /**
      * 计算操作消耗时间
      */
-    private static final ThreadLocal<Long> TIME_THREADLOCAL = new NamedThreadLocal<Long>("Cost Time");
+    private static final ThreadLocal<LocalDateTime> TIME_THREADLOCAL = new NamedThreadLocal<LocalDateTime>("Cost Time");
 
     /**
      * 处理请求前执行
      */
     @Before(value = "@annotation(fcLog)")
     public void boBefore(JoinPoint joinPoint, FcLog fcLog) {
-        TIME_THREADLOCAL.set(System.currentTimeMillis());
+        TIME_THREADLOCAL.set(LocalDateTime.now());
     }
 
     /**
@@ -80,11 +83,14 @@ public class LogAspect {
                 logRecord.setSuccess(false);
                 logRecord.setErrorMsg(StrUtil.subPre(e.getMessage(), 1024));
             }
-            logRecord.setCostTime(System.currentTimeMillis() - TIME_THREADLOCAL.get());
+            LocalDateTime startTime = TIME_THREADLOCAL.get();
+            logRecord.setOperateTime(startTime);
+            long costTime = LocalDateTimeUtil.between(startTime, LocalDateTime.now(), ChronoUnit.MILLIS);
+            logRecord.setCostTime(costTime);
             // 保存数据库,后续可优化为异步+缓冲池+批量入库
             fcLogService.batchSaveLog(List.of(logRecord));
-        } catch (Exception exp) {
-            log.error("handleLog Error!", e);
+        } catch (Exception logError) {
+            log.error("handleLog Error!", logError);
         } finally {
             TIME_THREADLOCAL.remove();
         }
@@ -104,9 +110,9 @@ public class LogAspect {
                                      Object result) {
         LogRecordDto logRecord = new LogRecordDto();
         logRecord.setUserId(FcAuthContext.getUserIdAsStr());
-        logRecord.setClientId(FcClientContext.getClientIp());
-        logRecord.setClientId(FcClientContext.getClientIp());
-        logRecord.setDesc(fcLog.desc());
+        logRecord.setClientId(FcClientContext.getClientId());
+        logRecord.setClientIp(FcClientContext.getClientIp());
+        logRecord.setLogDesc(fcLog.desc());
         logRecord.setActionType(fcLog.actionType().name());
         logRecord.setBusinessFlag(fcLog.businessFlag());
 

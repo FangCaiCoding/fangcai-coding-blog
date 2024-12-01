@@ -45,7 +45,7 @@ public class CookieUtil {
         cookie.setHttpOnly(true);
         cookie.setSecure(AuthProperties.COOKIE_SECURE);
         String host = request.getServerName();
-        log.debug("login------------host:" + host);
+        log.debug("createCookie------------host:" + host);
         cookie.setDomain(host);
         if (StrUtil.isNotEmpty(AuthProperties.COOKIE_DOMAIN)) {
             cookie.setDomain(AuthProperties.COOKIE_DOMAIN);

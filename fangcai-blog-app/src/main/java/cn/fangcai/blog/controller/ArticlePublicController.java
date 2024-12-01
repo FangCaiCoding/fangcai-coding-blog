@@ -10,11 +10,12 @@ import cn.fangcai.blog.model.res.CourseRes;
 import cn.fangcai.blog.service.IArticleService;
 import cn.fangcai.blog.service.ICourseService;
 import cn.fangcai.blog.uitls.FcStrUtil;
-import cn.fangcai.starter.auth.FcAuthUtil;
-import cn.fangcai.starter.auth.ano.FcNotCheckLogin;
 import cn.fangcai.common.model.dto.FcPageRes;
 import cn.fangcai.common.model.dto.FcResult;
 import cn.fangcai.common.model.exception.FcBusinessException;
+import cn.fangcai.starter.auth.FcAuthUtil;
+import cn.fangcai.starter.auth.ano.FcNotCheckLogin;
+import cn.fangcai.starter.log.ano.FcLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,10 @@ public class ArticlePublicController {
     @Autowired
     private ICourseService courseService;
 
+
     @Operation(summary = "获取文章详情")
     @GetMapping("/{id}")
+    @FcLog(desc = "阅读文章", actionType = FcLog.ActionType.SELECT)
     public FcResult<ArticleDetailRes> getDetail(@PathVariable Integer id) {
         ArticleDetailRes detail = articleService.getDetail(id, true);
         if (detail == null || !StatusEnum.PUBLISHED.getCode().equals(detail.getStatus())) {
@@ -57,6 +60,7 @@ public class ArticlePublicController {
 
     @Operation(summary = "分页查询文章")
     @PostMapping("/page")
+    @FcLog(desc = "分页查询文章", actionType = FcLog.ActionType.SELECT)
     public FcResult<FcPageRes<ArticleRes>> pageArticle(@RequestBody @Validated ArticlePageReq pageReq) {
         pageReq.setStatus(StatusEnum.PUBLISHED.getCode());
         return FcResult.SUCCESS(articleService.pageArticle(pageReq));
@@ -65,6 +69,7 @@ public class ArticlePublicController {
 
     @Operation(summary = "获取文章教程")
     @GetMapping("/course/{id}")
+    @FcLog(desc = "获取文章教程", actionType = FcLog.ActionType.SELECT)
     public FcResult<CourseRes> getById(@PathVariable Integer id) {
         CourseRes courseRes = courseService.getById(id);
         if (courseRes == null || !StatusEnum.PUBLISHED.getCode().equals(courseRes.getStatus())) {
@@ -76,6 +81,7 @@ public class ArticlePublicController {
 
     @Operation(summary = "分页查询教程")
     @PostMapping("/course/page")
+    @FcLog(desc = "分页查询教程", actionType = FcLog.ActionType.SELECT)
     public FcResult<FcPageRes<CourseRes>> pageCourse(@RequestBody @Validated CoursePageReq pageReq) {
         pageReq.setStatus(StatusEnum.PUBLISHED.getCode());
         return FcResult.SUCCESS(courseService.pageCourse(pageReq));

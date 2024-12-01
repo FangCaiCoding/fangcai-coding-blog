@@ -16,8 +16,8 @@ public class DefaultLogService implements IFcLogService {
 
 
     @Override
-    public Boolean batchSaveLog(List<LogRecordDto> logs) {
-        log.warn("Log is not persisted！DefaultLogService batchSaveLog!\n {}", JSONUtil.toJsonStr(logs));
+    public Boolean batchSaveLog(List<LogRecordDto> logList) {
+        log.warn("Log is not persisted！DefaultLogService batchSaveLog!\n {}", JSONUtil.toJsonStr(logList));
         return Boolean.FALSE;
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 public class MybatisPlusGer {
 
-    private static final List<String> tables = Arrays.asList("config_wechat");
+    private static final List<String> tables = Arrays.asList("log_record");
 
     public static void main(String[] args) {
         String dbUrl = args[0];

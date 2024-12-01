@@ -14,9 +14,9 @@ public interface IFcLogService {
 
     /**
      * 批量保存日志
-     * @param logs
+     * @param logList
      * @return
      */
-    Boolean batchSaveLog(List<LogRecordDto> logs);
+    Boolean batchSaveLog(List<LogRecordDto> logList);
 
 }

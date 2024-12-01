@@ -16,8 +16,9 @@ import baiduAnalytics from '@/components/js/BaiduAnalytics';
 import BasePage from "@/layout/BasePage.vue";
 import AdminBasePage from "@/layout/AdminBasePage.vue";
 
-import { config } from 'md-editor-v3';
+import {config} from 'md-editor-v3';
 import MdTargetBlankConfig from '@/components/js/MdTargetBlankConfig.js';
+import {useUserStore} from "@/stores/UserContext.js";
 
 // 注册 md-editor-v3 插件,所有的 url 都会增加 target="_blank"
 config({
@@ -41,9 +42,13 @@ app.component('AdminBasePage', AdminBasePage);
 app.use(ElementPlus, {locale: zhCn})
 
 // 使用插件时传递 router 实例
-app.use(baiduAnalytics, { router });
+app.use(baiduAnalytics, {router});
 // 确保在插件注册之后监听路由变化
 app.use(router);
+
+// 每次应用实例初始化时，进行用户上下文初始化
+const userContext = useUserStore();
+userContext.initContext();
 
 app.mount('#app')
 

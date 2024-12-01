@@ -1,12 +1,8 @@
 package cn.fangcai.blog.service;
 
 
-
-import cn.fangcai.blog.model.req.UserEmailRegisterReq;
 import cn.fangcai.blog.model.req.UserLoginReq;
 import cn.fangcai.blog.model.res.UserRes;
-
-import java.util.List;
 
 /**
  * <p>

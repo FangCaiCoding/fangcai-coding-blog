@@ -27,7 +27,7 @@
 
       <!-- 右侧 用户信息 -->
       <div class="header-right">
-        <div class="right-item"  @click="openSearch" @keyup.ctrl.k="openSearch">
+        <div class="right-item" @click="openSearch" @keyup.ctrl.k="openSearch">
           <el-input
               style="width: 150px"
               size="default"
@@ -157,7 +157,8 @@
 
           <!-- 密码 -->
           <el-form-item label="密码：">
-            <el-input type="password" v-model="loginForm.password" placeholder="输入密码" @keydown.enter="loginByName"></el-input>
+            <el-input type="password" v-model="loginForm.password" placeholder="输入密码"
+                      @keydown.enter="loginByName"></el-input>
           </el-form-item>
           <!-- 登录按钮 -->
           <div style="display: flex">
@@ -184,6 +185,7 @@ import {ElMessage} from "element-plus";
 import {Search} from "@element-plus/icons-vue";
 import apiService from "../api/apiService.js";
 import {useUserStore} from "@/stores/UserContext.js";
+import userApi from "@/api/userApi.js";
 
 // 定义props
 const basePageProps = defineProps({
@@ -295,7 +297,7 @@ const sendLoginSuccessEvent = () => {
 
 // 登录逻辑
 const loginByWxCode = async () => {
-  const userRes = await apiService.loginByWxCode({
+  const userRes = await userApi.loginByWxCode({
     wxCode: loginForm.wxCode
   })
   userStore.login(userRes)
@@ -306,7 +308,7 @@ const loginByWxCode = async () => {
 
 // 登录逻辑
 const loginByName = async () => {
-  const userRes = await apiService.loginByName({
+  const userRes = await userApi.loginByName({
     loginName: loginForm.loginName,
     password: loginForm.password
   })
@@ -321,7 +323,6 @@ const selectNavigate = (key) => {
   activeIndex.value = key;
   router.push(key);
 };
-
 
 
 onMounted(() => {

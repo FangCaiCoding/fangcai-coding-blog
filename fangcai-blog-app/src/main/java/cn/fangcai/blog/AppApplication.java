@@ -1,9 +1,7 @@
 package cn.fangcai.blog;
 
-import cn.fangcai.blog.service.IUserService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -14,8 +12,7 @@ import java.net.InetAddress;
 
 @Slf4j
 @SpringBootApplication
-@ComponentScan("cn.fangcai.common.*")
-@ComponentScan("cn.fangcai.blog.*")
+@ComponentScan(basePackages = "cn.fangcai.*")
 public class AppApplication {
 
     @SneakyThrows

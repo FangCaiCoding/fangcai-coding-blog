@@ -77,7 +77,10 @@ public class FcJWTUtil {
         }
         String tokenEncryptStr = (String) JWTUtil.parseToken(token).getPayload(JWT_USER_CLAIM_NAME);
         String tokenStr = sm4.decryptStr(JSONUtil.toJsonStr(tokenEncryptStr), CharsetUtil.CHARSET_UTF_8);
-        return JSONUtil.toBean(tokenStr, targetClass);
+        if (JSONUtil.isTypeJSON(tokenStr)) {
+            return JSONUtil.toBean(tokenStr, targetClass);
+        }
+        return (T)tokenStr;
     }
 
 

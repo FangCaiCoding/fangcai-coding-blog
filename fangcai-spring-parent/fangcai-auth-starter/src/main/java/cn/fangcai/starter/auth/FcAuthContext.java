@@ -1,11 +1,11 @@
 package cn.fangcai.starter.auth;
 
 import cn.fangcai.common.model.exception.FcBusinessException;
-import cn.fangcai.common.model.uitls.SpringMVCUtil;
 import cn.fangcai.starter.auth.dto.UserAuthInfo;
 import cn.fangcai.starter.auth.dto.UserTokenDto;
 import cn.fangcai.starter.auth.service.IAuthService;
 import cn.fangcai.starter.auth.utils.LoginHttpUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 
 /**
@@ -35,21 +35,36 @@ public class FcAuthContext {
 
     public static Object getUserId() {
         UserAuthInfo authInfo = getAuthInfo();
+        if (authInfo == null) {
+            return null;
+        }
         return authInfo.getId();
     }
 
     public static String getUserIdAsStr() {
         UserAuthInfo authInfo = getAuthInfo();
+        if (authInfo == null) {
+            return null;
+        }
         return String.valueOf(authInfo.getId());
     }
 
     public static Long getUserIdAsLong() {
-        return Long.parseLong(getUserIdAsStr());
+        String userIdAsStr = getUserIdAsStr();
+        if (StrUtil.isBlank(userIdAsStr)) {
+            return null;
+        }
+        return Long.parseLong(userIdAsStr);
     }
 
     public static Integer getUserIdAsInt() {
-        return Integer.parseInt(getUserIdAsStr());
+        String userIdAsStr = getUserIdAsStr();
+        if (StrUtil.isBlank(userIdAsStr)) {
+            return null;
+        }
+        return Integer.parseInt(userIdAsStr);
     }
+
 
     public static void clearContext() {
         USER_INFO.remove();

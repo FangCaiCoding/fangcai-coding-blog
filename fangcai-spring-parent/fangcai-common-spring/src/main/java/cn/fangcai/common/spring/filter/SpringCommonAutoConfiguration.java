@@ -12,7 +12,7 @@ import org.springframework.core.Ordered;
  */
 @Configuration
 public class SpringCommonAutoConfiguration {
-    @Bean(name = "clSpringCommonRequestCachingFilterRegistration")
+    @Bean(name = "fcSpringCommonRequestCachingFilterRegistration")
     public FilterRegistrationBean<RequestCachingFilter> requestCachingFilterRegistration() {
         FilterRegistrationBean<RequestCachingFilter> registration = new FilterRegistrationBean<>(new RequestCachingFilter());
         registration.setOrder(Ordered.HIGHEST_PRECEDENCE);

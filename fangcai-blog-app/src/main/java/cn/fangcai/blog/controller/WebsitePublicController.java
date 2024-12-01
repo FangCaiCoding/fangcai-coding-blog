@@ -5,6 +5,7 @@ import cn.fangcai.blog.model.res.website.WebsiteListRes;
 import cn.fangcai.blog.service.IWebsiteService;
 import cn.fangcai.starter.auth.ano.FcNotCheckLogin;
 import cn.fangcai.common.model.dto.FcResult;
+import cn.fangcai.starter.log.ano.FcLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class WebsitePublicController {
      */
     @Operation(summary = "获取所有公开的站点")
     @GetMapping("/list/all")
+    @FcLog(desc = "获取站点列表", actionType = FcLog.ActionType.SELECT)
     public FcResult<List<WebsiteListRes>> listPublicAll() {
         return FcResult.SUCCESS(websiteService.listPublicAll());
     }
@@ -46,6 +48,7 @@ public class WebsitePublicController {
 
     @Operation(summary = "点击网站")
     @PutMapping("/click/{id}")
+    @FcLog(desc = "访问站点", actionType = FcLog.ActionType.SELECT)
     public FcResult<Boolean> clickWebsite(@PathVariable Integer id) {
         return FcResult.SUCCESS(websiteService.clickWebsite(id));
     }
