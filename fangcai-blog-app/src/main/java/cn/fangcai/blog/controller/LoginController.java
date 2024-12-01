@@ -1,10 +1,10 @@
 package cn.fangcai.blog.controller;
 
 
-import cn.fangcai.blog.model.req.UserLoginByWxReq;
-import cn.fangcai.blog.model.req.UserLoginReq;
-import cn.fangcai.blog.model.res.UserRes;
-import cn.fangcai.blog.service.IUserService;
+import cn.fangcai.blog.core.model.req.UserLoginByWxReq;
+import cn.fangcai.blog.core.model.req.UserLoginReq;
+import cn.fangcai.blog.core.model.res.UserRes;
+import cn.fangcai.blog.core.service.IUserService;
 import cn.fangcai.common.model.dto.FcResult;
 import cn.fangcai.starter.auth.FcAuthContext;
 import cn.fangcai.starter.auth.FcAuthUtil;

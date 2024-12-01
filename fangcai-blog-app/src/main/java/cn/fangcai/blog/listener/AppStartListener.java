@@ -1,7 +1,7 @@
 package cn.fangcai.blog.listener;
 
-import cn.fangcai.blog.model.res.UserRes;
-import cn.fangcai.blog.service.IUserService;
+import cn.fangcai.blog.core.model.res.UserRes;
+import cn.fangcai.blog.core.service.IUserService;
 import cn.hutool.core.util.RandomUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

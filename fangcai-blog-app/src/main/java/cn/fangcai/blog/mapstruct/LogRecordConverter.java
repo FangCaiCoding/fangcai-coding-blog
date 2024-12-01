@@ -1,8 +1,6 @@
 package cn.fangcai.blog.mapstruct;
 
-import cn.fangcai.blog.model.entity.LogRecord;
-import cn.fangcai.blog.model.entity.User;
-import cn.fangcai.blog.model.res.UserRes;
+import cn.fangcai.blog.core.model.entity.LogRecord;
 import cn.fangcai.starter.log.dto.LogRecordDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

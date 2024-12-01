@@ -1,9 +1,9 @@
 package cn.fangcai.blog.controller.admin;
 
-import cn.fangcai.blog.model.req.website.WebSitePageReq;
-import cn.fangcai.blog.model.req.website.WebsiteSaveReq;
-import cn.fangcai.blog.model.res.website.WebsiteRes;
-import cn.fangcai.blog.service.IWebsiteService;
+import cn.fangcai.blog.core.model.req.website.WebSitePageReq;
+import cn.fangcai.blog.core.model.req.website.WebsiteSaveReq;
+import cn.fangcai.blog.core.model.res.website.WebsiteRes;
+import cn.fangcai.blog.core.service.IWebsiteService;
 import cn.fangcai.starter.auth.FcAuthContext;
 import cn.fangcai.starter.auth.ano.FcCheckAuth;
 import cn.fangcai.common.model.dto.FcPageRes;

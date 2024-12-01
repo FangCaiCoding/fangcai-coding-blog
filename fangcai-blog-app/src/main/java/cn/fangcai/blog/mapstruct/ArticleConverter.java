@@ -1,14 +1,12 @@
 package cn.fangcai.blog.mapstruct;
 
-import cn.fangcai.blog.model.entity.Article;
-import cn.fangcai.blog.model.entity.ArticleDetail;
-import cn.fangcai.blog.model.entity.ArticleTemplate;
-import cn.fangcai.blog.model.entity.User;
-import cn.fangcai.blog.model.req.ArticleSaveReq;
-import cn.fangcai.blog.model.res.ArticleDetailRes;
-import cn.fangcai.blog.model.res.ArticleRes;
-import cn.fangcai.blog.model.res.ArticleTemplateRes;
-import cn.fangcai.blog.model.res.UserRes;
+import cn.fangcai.blog.core.model.entity.Article;
+import cn.fangcai.blog.core.model.entity.ArticleDetail;
+import cn.fangcai.blog.core.model.entity.ArticleTemplate;
+import cn.fangcai.blog.core.model.req.ArticleSaveReq;
+import cn.fangcai.blog.core.model.res.ArticleDetailRes;
+import cn.fangcai.blog.core.model.res.ArticleRes;
+import cn.fangcai.blog.core.model.res.ArticleTemplateRes;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

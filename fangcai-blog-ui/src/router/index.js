@@ -54,6 +54,14 @@ const routes = [
         name: 'adminWebSite',
         component: () => import('@/views/admin/AdminWebsite.vue')
     },
+    {
+        path: '/admin/logs',
+        name: 'adminLogs',
+        component: () => import('@/views/admin/AdminLogs.vue')
+    },
+
+
+
 
 
     // 添加以下配置来处理所有不存在的路径

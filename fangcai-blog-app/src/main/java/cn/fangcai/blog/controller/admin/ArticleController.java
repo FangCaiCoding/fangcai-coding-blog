@@ -1,12 +1,12 @@
 package cn.fangcai.blog.controller.admin;
 
-import cn.fangcai.blog.model.req.ArticlePageReq;
-import cn.fangcai.blog.model.req.ArticleSaveReq;
-import cn.fangcai.blog.model.req.ArticleTemplatePageReq;
-import cn.fangcai.blog.model.res.ArticleDetailRes;
-import cn.fangcai.blog.model.res.ArticleRes;
-import cn.fangcai.blog.model.res.ArticleTemplateRes;
-import cn.fangcai.blog.service.IArticleService;
+import cn.fangcai.blog.core.model.req.ArticlePageReq;
+import cn.fangcai.blog.core.model.req.ArticleSaveReq;
+import cn.fangcai.blog.core.model.req.ArticleTemplatePageReq;
+import cn.fangcai.blog.core.model.res.ArticleDetailRes;
+import cn.fangcai.blog.core.model.res.ArticleRes;
+import cn.fangcai.blog.core.model.res.ArticleTemplateRes;
+import cn.fangcai.blog.core.service.IArticleService;
 import cn.fangcai.starter.auth.FcAuthContext;
 import cn.fangcai.starter.auth.ano.FcCheckAuth;
 import cn.fangcai.common.model.dto.FcPageRes;

@@ -1,11 +1,11 @@
 package cn.fangcai.blog.mapstruct;
 
-import cn.fangcai.blog.model.entity.Course;
-import cn.fangcai.blog.model.entity.CourseDetail;
-import cn.fangcai.blog.model.req.CourseDetailSaveReq;
-import cn.fangcai.blog.model.req.CourseSaveReq;
-import cn.fangcai.blog.model.res.CourseDetailRes;
-import cn.fangcai.blog.model.res.CourseRes;
+import cn.fangcai.blog.core.model.entity.Course;
+import cn.fangcai.blog.core.model.entity.CourseDetail;
+import cn.fangcai.blog.core.model.req.CourseDetailSaveReq;
+import cn.fangcai.blog.core.model.req.CourseSaveReq;
+import cn.fangcai.blog.core.model.res.CourseDetailRes;
+import cn.fangcai.blog.core.model.res.CourseRes;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

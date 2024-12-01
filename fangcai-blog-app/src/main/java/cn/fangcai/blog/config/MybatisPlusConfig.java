@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2023/3/21 22:03
  * @description
  */
-@MapperScan("cn.fangcai.blog.mapper")
+@MapperScan("cn.fangcai.blog.core.mapper")
 @Configuration
 public class MybatisPlusConfig {
     @Bean(name = "MybatisPlusInterceptor")

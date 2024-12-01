@@ -1,10 +1,10 @@
 package cn.fangcai.blog.mapstruct;
 
-import cn.fangcai.blog.model.entity.Website;
-import cn.fangcai.blog.model.entity.WebsiteCate;
-import cn.fangcai.blog.model.req.website.WebsiteSaveReq;
-import cn.fangcai.blog.model.res.website.WebsiteCateRes;
-import cn.fangcai.blog.model.res.website.WebsiteRes;
+import cn.fangcai.blog.core.model.entity.Website;
+import cn.fangcai.blog.core.model.entity.WebsiteCate;
+import cn.fangcai.blog.core.model.req.website.WebsiteSaveReq;
+import cn.fangcai.blog.core.model.res.website.WebsiteCateRes;
+import cn.fangcai.blog.core.model.res.website.WebsiteRes;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

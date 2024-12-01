@@ -31,6 +31,12 @@
             </el-icon>
             <span>友链管理</span>
           </el-menu-item>
+          <el-menu-item index="/admin/logs">
+            <el-icon>
+              <Document/>
+            </el-icon>
+            <span>用户日志</span>
+          </el-menu-item>
           <el-menu-item index="/admin/setting">
             <el-icon>
               <Setting/>
@@ -81,10 +87,10 @@ const currentPage = computed(() => {
   const path = route.path;
   return path === '/admin/article' ? '文章管理' :
       path === '/admin/course' ? '教程管理' :
-      path === '/admin/website' ? '友链管理' :
-          path === '/admin/setting' ? '网站设置' :
-              path === '/admin/user' ? '用户列表' :
-                  path === '/admin/auth' ? '用户权限' : '其他页面';
+          path === '/admin/website' ? '友链管理' :
+              path === '/admin/setting' ? '网站设置' :
+                  path === '/admin/user' ? '用户列表' :
+                      path === '/admin/auth' ? '用户权限' : '其他页面';
 })
 
 // 菜单选择处理

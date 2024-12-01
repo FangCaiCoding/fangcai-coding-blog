@@ -1,10 +1,8 @@
 package cn.fangcai.blog.mapstruct;
 
-import cn.fangcai.blog.model.entity.User;
-import cn.fangcai.blog.model.req.UserEmailRegisterReq;
-import cn.fangcai.blog.model.res.UserRes;
+import cn.fangcai.blog.core.model.entity.User;
+import cn.fangcai.blog.core.model.res.UserRes;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;

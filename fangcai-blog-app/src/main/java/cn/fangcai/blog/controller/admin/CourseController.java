@@ -1,11 +1,11 @@
 package cn.fangcai.blog.controller.admin;
 
 
-import cn.fangcai.blog.model.req.CourseDetailSaveReq;
-import cn.fangcai.blog.model.req.CoursePageReq;
-import cn.fangcai.blog.model.req.CourseSaveReq;
-import cn.fangcai.blog.model.res.CourseRes;
-import cn.fangcai.blog.service.ICourseService;
+import cn.fangcai.blog.core.model.req.CourseDetailSaveReq;
+import cn.fangcai.blog.core.model.req.CoursePageReq;
+import cn.fangcai.blog.core.model.req.CourseSaveReq;
+import cn.fangcai.blog.core.model.res.CourseRes;
+import cn.fangcai.blog.core.service.ICourseService;
 import cn.fangcai.starter.auth.FcAuthContext;
 import cn.fangcai.starter.auth.ano.FcCheckAuth;
 import cn.fangcai.common.model.dto.FcPageRes;

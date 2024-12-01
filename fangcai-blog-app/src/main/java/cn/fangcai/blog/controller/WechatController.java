@@ -2,9 +2,9 @@ package cn.fangcai.blog.controller;
 
 import cn.fangcai.blog.config.BlogAppProperties;
 import cn.fangcai.blog.consts.BlogErrorCodeEnum;
-import cn.fangcai.blog.model.req.wx.WxTxtMsgReq;
-import cn.fangcai.blog.model.res.wx.WxBaseMsgRes;
-import cn.fangcai.blog.service.IWechatService;
+import cn.fangcai.blog.core.model.req.wx.WxTxtMsgReq;
+import cn.fangcai.blog.core.model.res.wx.WxBaseMsgRes;
+import cn.fangcai.blog.core.service.IWechatService;
 import cn.fangcai.starter.auth.ano.FcNotCheckLogin;
 import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.hutool.core.util.ArrayUtil;

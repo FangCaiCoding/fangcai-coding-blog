@@ -1,7 +1,7 @@
 package cn.fangcai.blog.mapstruct;
 
-import cn.fangcai.blog.model.entity.ConfigWechat;
-import cn.fangcai.blog.model.req.wx.ConfigWechatSaveReq;
+import cn.fangcai.blog.core.model.entity.ConfigWechat;
+import cn.fangcai.blog.core.model.req.wx.ConfigWechatSaveReq;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

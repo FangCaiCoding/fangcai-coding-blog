@@ -2,13 +2,13 @@ package cn.fangcai.blog.controller;
 
 import cn.fangcai.blog.consts.BlogErrorCodeEnum;
 import cn.fangcai.blog.consts.StatusEnum;
-import cn.fangcai.blog.model.req.ArticlePageReq;
-import cn.fangcai.blog.model.req.CoursePageReq;
-import cn.fangcai.blog.model.res.ArticleDetailRes;
-import cn.fangcai.blog.model.res.ArticleRes;
-import cn.fangcai.blog.model.res.CourseRes;
-import cn.fangcai.blog.service.IArticleService;
-import cn.fangcai.blog.service.ICourseService;
+import cn.fangcai.blog.core.model.req.ArticlePageReq;
+import cn.fangcai.blog.core.model.req.CoursePageReq;
+import cn.fangcai.blog.core.model.res.ArticleDetailRes;
+import cn.fangcai.blog.core.model.res.ArticleRes;
+import cn.fangcai.blog.core.model.res.CourseRes;
+import cn.fangcai.blog.core.service.IArticleService;
+import cn.fangcai.blog.core.service.ICourseService;
 import cn.fangcai.blog.uitls.FcStrUtil;
 import cn.fangcai.common.model.dto.FcPageRes;
 import cn.fangcai.common.model.dto.FcResult;
@@ -69,7 +69,7 @@ public class ArticlePublicController {
 
     @Operation(summary = "获取文章教程")
     @GetMapping("/course/{id}")
-    @FcLog(desc = "获取文章教程", actionType = FcLog.ActionType.SELECT)
+    @FcLog(desc = "阅读教程", actionType = FcLog.ActionType.SELECT)
     public FcResult<CourseRes> getById(@PathVariable Integer id) {
         CourseRes courseRes = courseService.getById(id);
         if (courseRes == null || !StatusEnum.PUBLISHED.getCode().equals(courseRes.getStatus())) {

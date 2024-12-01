@@ -1,6 +1,6 @@
 package cn.fangcai.blog.generator;
 
-import cn.fangcai.blog.model.entity.base.BaseEntity;
+import cn.fangcai.blog.core.model.entity.base.BaseEntity;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +24,9 @@ public class MybatisPlusGer {
         String userName = args[1];
         String password = args[2];
 
-        log.error("dbUrl = {}",dbUrl);
-        log.error("userName = {}",userName);
-        log.error("password = {}",password);
+        log.error("dbUrl = {}", dbUrl);
+        log.error("userName = {}", userName);
+        log.error("password = {}", password);
         FastAutoGenerator.create(dbUrl + "?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&serverTimezone=GMT%2B8",
                         userName, password)
                 .globalConfig(builder -> builder
@@ -36,7 +36,7 @@ public class MybatisPlusGer {
                         .enableSpringdoc()
                 )
                 .packageConfig(builder -> builder
-                        .parent("cn.fangcai.blog")
+                        .parent("cn.fangcai.blog.core")
                         .entity("model.entity")
                         .mapper("mapper")
                         .service("service")
@@ -49,6 +49,10 @@ public class MybatisPlusGer {
                         .superClass(BaseEntity.class)
                         .enableTableFieldAnnotation()
                         .enableActiveRecord()
+                        .disableSerialVersionUID()
+                        .enableRemoveIsPrefix()
+                        // 不生成 controller
+                        .controllerBuilder().disable()
                 )
                 .strategyConfig(builder -> builder.addInclude(tables))
                 .templateEngine(new FreemarkerTemplateEngine())

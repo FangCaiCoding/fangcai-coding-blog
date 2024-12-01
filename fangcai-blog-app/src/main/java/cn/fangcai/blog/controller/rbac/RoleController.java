@@ -1,6 +1,6 @@
 package cn.fangcai.blog.controller.rbac;
 
-import cn.fangcai.blog.service.IRoleService;
+import cn.fangcai.blog.core.service.IRoleService;
 import cn.fangcai.common.model.dto.FcResult;
 import cn.fangcai.starter.auth.ano.FcCheckAuth;
 import cn.fangcai.starter.log.ano.FcLog;
