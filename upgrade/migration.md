@@ -2,6 +2,31 @@
 
 ## 1.1.20241129
 1. 增加日志功能，记录用户操作；
+2. 前端用户会话初始化机制更改；
+```sql
+
+CREATE TABLE `log_record` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id` varchar(64) DEFAULT NULL COMMENT '用户ID',
+  `client_id` varchar(64) DEFAULT NULL COMMENT '客户端ID',
+  `client_ip` varchar(255) DEFAULT NULL COMMENT '客户端IP',
+  `log_desc` varchar(255) DEFAULT NULL COMMENT '描述，示例：阅读文章',
+  `action_type` varchar(255) DEFAULT NULL COMMENT '行为类型',
+  `business_flag` varchar(255) DEFAULT NULL COMMENT '业务标识，由业务自己记录',
+  `req_uri` varchar(255) DEFAULT NULL COMMENT '请求的 uri，比如 /admin/article',
+  `req_method` varchar(50) DEFAULT NULL COMMENT '请求的方法：Post、Get等',
+  `req_data` varchar(1024) DEFAULT NULL COMMENT '请求参数',
+  `res_data` varchar(1024) DEFAULT NULL COMMENT '响应参数',
+  `is_success` tinyint(1) DEFAULT NULL COMMENT '请求是否成功',
+  `error_msg` varchar(1024) DEFAULT NULL COMMENT '错误消息',
+  `cost_time` bigint(20) DEFAULT NULL COMMENT '耗时时间，单位 ms',
+  `operate_time` datetime DEFAULT NULL COMMENT '操作时间',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_userId` (`user_id`),
+  KEY `idx_clientId` (`client_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='日志记录表';
+```
 
 
 ## 1.1.20241107
