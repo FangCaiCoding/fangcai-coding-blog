@@ -47,11 +47,11 @@
                 size="large">
         <el-table-column prop="id" label="编号" width="80"/>
         <el-table-column prop="userId" label="用户ID" width="80"/>
-        <el-table-column prop="clientId" label="客户端ID" width="120"/>
+        <el-table-column prop="clientId" label="客户端ID" min-width="120"/>
         <el-table-column prop="clientIp" label="客户端IP" width="150"/>
         <el-table-column prop="ipAddress" label="IP地址" width="150"/>
-        <el-table-column prop="logDesc" label="用户行为" width="130"/>
-        <el-table-column prop="referer" label="请求源" width="200">
+        <el-table-column prop="logDesc" label="用户行为" min-width="130"/>
+        <el-table-column prop="referer" label="请求源" min-width="200">
           <template #default="scope">
             <el-link type="primary" :underline="false" href="{{ scope.row.referer }}" target="_blank">
               {{ scope.row.referer }}
