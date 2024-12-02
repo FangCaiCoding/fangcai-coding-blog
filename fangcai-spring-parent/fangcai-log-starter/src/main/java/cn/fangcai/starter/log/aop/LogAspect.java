@@ -78,6 +78,7 @@ public class LogAspect {
     protected void handleLog(final JoinPoint joinPoint, FcLog fcLog, final Exception e, Object result) {
         try {
             LogRecordDto logRecord = this.initByFcLog(joinPoint, fcLog, result);
+            logRecord.setReferer(SpringMVCUtil.getRequest().getHeader("Referer"));
             logRecord.setSuccess(true);
             if (e != null) {
                 logRecord.setSuccess(false);

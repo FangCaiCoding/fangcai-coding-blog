@@ -32,6 +32,11 @@ public class LogRecordDto {
      */
     private String clientIp;
 
+    /**
+     * 请求来源
+     */
+    private String referer;
+
 
     /**
      * 描述，示例：阅读文章

@@ -31,6 +31,9 @@ CREATE TABLE `log_record`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='日志记录表';
 
+alter table log_record
+    add column `referer` varchar(255) COMMENT '请求来源' after `req_uri`;
+
 -- add 菜单和角色权限
 INSERT INTO menu
 (id, name, menu_type, order_num, route_key, menu_key, auth_code_list, is_enabled, operator, is_uk_deleted)

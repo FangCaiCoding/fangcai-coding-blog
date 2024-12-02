@@ -41,6 +41,9 @@ public class LogRecord {
     @TableField("client_ip")
     private String clientIp;
 
+    @Schema(description = "请求来源")
+    @TableField("referer")
+    private String referer;
 
     @Schema(description = "客户端IP归属地")
     @TableField("ip_address")

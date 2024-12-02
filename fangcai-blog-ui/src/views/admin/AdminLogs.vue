@@ -47,11 +47,17 @@
                 size="large">
         <el-table-column prop="id" label="编号" width="80"/>
         <el-table-column prop="userId" label="用户ID" width="80"/>
-        <el-table-column prop="clientId" label="客户端ID" width="190"/>
+        <el-table-column prop="clientId" label="客户端ID" width="120"/>
         <el-table-column prop="clientIp" label="客户端IP" width="150"/>
-        <el-table-column prop="ipAddress" label="IP地址" width="190"/>
-        <el-table-column prop="logDesc" label="用户行为" width="150"/>
-        <el-table-column prop="reqData" label="参数"/>
+        <el-table-column prop="ipAddress" label="IP地址" width="150"/>
+        <el-table-column prop="logDesc" label="用户行为" width="130"/>
+        <el-table-column prop="referer" label="请求源" width="200">
+          <template #default="scope">
+            <el-link type="primary" :underline="false" href="{{ scope.row.referer }}" target="_blank">
+              {{ scope.row.referer }}
+            </el-link>
+          </template>
+        </el-table-column>
         <el-table-column prop="operateTime" label="操作日期" width="180"/>
         <el-table-column label="操作" width="100">
           <template #default="scope">
@@ -101,6 +107,7 @@ const logDetails = ref({
   actionType: "",
   businessFlag: "",
   reqUri: "",
+  referer: "",
   reqMethod: "",
   reqData: "",
   resData: "",
@@ -121,6 +128,7 @@ const logFieldLabels = {
   actionType: "行为类型",
   businessFlag: "业务标识",
   reqUri: "请求URI",
+  referer: "请求源",
   reqMethod: "请求方法",
   reqData: "请求参数",
   resData: "响应参数",
@@ -133,7 +141,7 @@ const logFieldLabels = {
 const searchParams = reactive({
   userId: '',
   clientId: '',
-  logDesc:'',
+  logDesc: '',
   operateTimeRange: []
 });
 const headerRowStyle = {
