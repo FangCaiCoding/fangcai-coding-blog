@@ -67,7 +67,6 @@ axiosInst.interceptors.request.use(
 );
 
 
-
 // 响应拦截器
 axiosInst.interceptors.response.use(
     (response) => {
@@ -100,8 +99,16 @@ axiosInst.interceptors.response.use(
                         router.push('/');
                     }, 2000);
                     break;
+                case 502:
+                    message = '站点升级运维中，预计30s后可正常访问！'
+                    break;
                 default:
-                    message = `${error.response.data.message}`;
+                    if (error.response.data) {
+                        message = `${error.response.data.message}`;
+                    } else {
+                        // 服务器无响应，可能是网络问题
+                        message = '站点升级运维中，预计30s后可正常访问！'
+                    }
             }
         } else {
             message = window.navigator.onLine ? '请求失败，请稍后重试' : '网络已断开';
