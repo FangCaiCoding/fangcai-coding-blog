@@ -53,7 +53,7 @@
         <el-table-column prop="logDesc" label="用户行为" min-width="130"/>
         <el-table-column prop="referer" label="请求源" min-width="200">
           <template #default="scope">
-            <el-link type="primary" :underline="false" href="{{ scope.row.referer }}" target="_blank">
+            <el-link type="primary" :underline="false" :href="scope.row.referer" target="_blank">
               {{ scope.row.referer }}
             </el-link>
           </template>
