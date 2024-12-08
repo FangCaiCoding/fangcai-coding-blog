@@ -34,7 +34,7 @@
 import {onMounted, ref} from 'vue'
 import {useRouter} from 'vue-router'
 import {ElMessage} from "element-plus";
-import apiService from "@/api/apiService.js";
+import articleApi from "@/api/articleApi.js";
 
 const router = useRouter()
 // 定义响应式数据
@@ -70,7 +70,7 @@ async function loadMoreArticles() {
   if (listScrollDisabled.value || loading.value) return;
   loading.value = true;  // 设置加载状态为true
   try {
-    const pagePublicArticle = await apiService.pagePublicArticle({
+    const pagePublicArticle = await articleApi.pagePublicArticle({
       page: currentPage.value,
       pageSize: pageSize,
     });

@@ -43,7 +43,7 @@
             </el-icon>
             <span>网站设置</span>
           </el-menu-item>
-          <el-sub-menu>
+          <el-sub-menu index="/admin/user">
             <template #title>
               <el-icon>
                 <User/>

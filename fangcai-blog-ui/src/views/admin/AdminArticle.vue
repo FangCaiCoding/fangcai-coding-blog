@@ -120,6 +120,7 @@ import {useRouter} from 'vue-router';
 import apiService from '@/api/apiService';
 import {ElMessage, ElMessageBox} from "element-plus";
 import {Hide, Search, View} from "@element-plus/icons-vue";
+import articleApi from "@/api/articleApi.js";
 
 
 const currentPage = ref(1);  // 当前加载的页码
@@ -146,7 +147,7 @@ const article = ref({
 const loadArticles = async (page = 1) => {
   currentPage.value = page;
   const trimmedQuery = searchStr.value.trim();
-  const pagePublicArticle = await apiService.pageArticle({
+  const pagePublicArticle = await articleApi.pageArticle({
     page: currentPage.value,
     pageSize: pageSize,
     title: trimmedQuery
@@ -173,7 +174,7 @@ const editArticle = (row) => {
 }
 
 const saveArticle = async () => {
-  const articleId = await apiService.editArticle(article.value);
+  const articleId = await articleApi.editArticle(article.value);
   if (articleId > 0) {
     ElMessage.success('文章保存成功！');
     drawerVisible.value = false;
@@ -182,7 +183,7 @@ const saveArticle = async () => {
 }
 
 const uptArticleStatus = async (id, status) => {
-  await apiService.uptArticleStatus(id, status);
+  await articleApi.uptArticleStatus(id, status);
   ElMessage.success('发布状态更新成功！');
 }
 
@@ -194,7 +195,7 @@ const editContent = (id) => {
 };
 
 const initOrderNum = async () => {
-  await apiService.initArticleOrderNum();
+  await articleApi.initArticleOrderNum();
   ElMessage.success('顺序号已按当前排序重新生成！');
   await loadArticles();
 }
@@ -212,7 +213,7 @@ const deleteArticle = async (id) => {
       }
   ).then(() => {
     // 用户确认删除，调用 API 删除文章
-    apiService.deleteArticle(id).then((isSuccess) => {
+    articleApi.deleteArticle(id).then((isSuccess) => {
       if (isSuccess) {
         ElMessage({
           type: 'success',

@@ -251,7 +251,7 @@ const performSearch = async () => {
     searchResults.value = [];
     return;
   }
-  const pagePublicArticle = await apiService.pagePublicArticle({
+  const pagePublicArticle = await articleApi.pagePublicArticle({
     page: 1,
     pageSize: 50,
     title: trimmedQuery

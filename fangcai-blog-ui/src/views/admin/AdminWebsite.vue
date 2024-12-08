@@ -174,6 +174,7 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import {Hide, Search, View} from "@element-plus/icons-vue";
 
 const currentPage = ref(1);
+const pageSize = ref(10);
 const totalSites = ref(0);
 
 const router = useRouter();
@@ -211,7 +212,7 @@ const loadSites = async (page = 1) => {
   const trimmedQuery = searchDto.title.trim();
   const pageSite = await apiService.pageWebsite({
     page: currentPage.value,
-    pageSize: 10,
+    pageSize: pageSize.value,
     title: trimmedQuery,
     status: searchDto.status,
     cateId: searchDto.cateId

@@ -68,6 +68,7 @@ import 'md-editor-v3/lib/style.css';
 import {ElMessage} from 'element-plus';
 import apiService from "@/api/apiService.js";
 import {useRoute} from "vue-router";
+import articleApi from "@/api/articleApi.js";
 
 const route = useRoute();
 const dialogVisible = ref(false);
@@ -123,9 +124,9 @@ const saveArticle = async () => {
     article.readLimitRatio = null;
   }
   if (article.id > 0) {
-    article.id = await apiService.editArticle(article);
+    article.id = await articleApi.editArticle(article);
   } else {
-    article.id = await apiService.addArticle(article);
+    article.id = await articleApi.addArticle(article);
   }
   dialogVisible.value = false; // 关闭弹窗
   if (article.id > 0) {
@@ -143,7 +144,7 @@ onMounted(async () => {
     return;
   }
   // 这里可以进行数据请求，加载文章详情
-  const newArticle = await apiService.getArticle(route.query.id);
+  const newArticle = await articleApi.getArticle(route.query.id);
   Object.assign(article, newArticle);  // 逐个更新 article 对象的属性
   article.openLimit = article.readLimitRatio > 0 && article.readLimitRatio < 100;
 });

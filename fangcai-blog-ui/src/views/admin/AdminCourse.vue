@@ -411,7 +411,7 @@ const allArticles = ref([]);
 // 加载所有可选文章
 const loadAllArticles = async () => {
   allArticles.value = [];
-  const pagePublicArticle = await apiService.pageArticle({
+  const pagePublicArticle = await articleApi.pageArticle({
     page: 1,
     pageSize: 1000,
     excludeCourseId: course.value.id,

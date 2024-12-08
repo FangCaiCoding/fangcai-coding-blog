@@ -52,13 +52,13 @@
 <script setup>
 import {computed, onMounted, ref, watch} from 'vue';
 import {useRoute} from "vue-router";
-import apiService from "@/api/apiService.js";
 import router from "@/router/index.js";
 import {MdCatalog, MdPreview} from 'md-editor-v3';
 import 'md-editor-v3/lib/preview.css';
 import {useUserStore} from "@/stores/UserContext.js";
 import useClipboard from 'vue-clipboard3'
 import {ElMessage} from "element-plus";
+import articleApi from "@/api/articleApi.js";
 
 const userStore = useUserStore()
 const id = 'article-preview-only';
@@ -112,7 +112,7 @@ watch(
     {deep: true}
 )
 const getArticle = async (id) => {
-  article.value = await apiService.getPublicArticle(id);
+  article.value = await articleApi.getPublicArticle(id);
   if (article.value == null) {
     article.value = {}
     await router.push('/');
