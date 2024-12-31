@@ -16,7 +16,7 @@ CREATE TABLE `article` (
                            `read_ct` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '阅读数',
                            PRIMARY KEY (`id`),
                            KEY `idx_title` (`title`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COMMENT='文章表';
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COMMENT='文章表';
 
 
 -- dev_tohero_blog.article_detail definition
@@ -45,7 +45,7 @@ CREATE TABLE `article_template` (
                                     `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
                                     PRIMARY KEY (`id`),
                                     KEY `idx_title` (`title`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COMMENT='文章通用内容模板表';
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COMMENT='文章通用内容模板表';
 
 
 -- dev_tohero_blog.config_wechat definition
@@ -63,7 +63,7 @@ CREATE TABLE `config_wechat` (
                                  `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
                                  PRIMARY KEY (`id`),
                                  UNIQUE KEY `uk_key` (`key_str`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='微信配置类';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='微信配置类';
 
 
 -- dev_tohero_blog.course definition
@@ -72,6 +72,7 @@ CREATE TABLE `course` (
                           `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
                           `user_id` int(11) unsigned NOT NULL COMMENT '用户ID',
                           `title` varchar(128) NOT NULL DEFAULT '' COMMENT '教程名',
+                          `video_url` varchar(255) DEFAULT NULL COMMENT '教程视频链接',
                           `picture` varchar(255) NOT NULL DEFAULT '' COMMENT '教程头图',
                           `summary` varchar(300) NOT NULL DEFAULT '' COMMENT '教程摘要',
                           `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态：0-未发布，1-已发布',
@@ -81,7 +82,7 @@ CREATE TABLE `course` (
                           `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
                           `read_ct` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '阅读数',
                           PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COMMENT='文章教程';
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COMMENT='文章教程';
 
 
 -- dev_tohero_blog.course_detail definition
@@ -96,7 +97,35 @@ CREATE TABLE `course_detail` (
                                  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
                                  `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
                                  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=283 DEFAULT CHARSET=utf8mb4 COMMENT='文章教程-详情';
+) ENGINE=InnoDB AUTO_INCREMENT=325 DEFAULT CHARSET=utf8mb4 COMMENT='文章教程-详情';
+
+
+-- dev_tohero_blog.log_record definition
+
+CREATE TABLE `log_record` (
+                              `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+                              `user_id` varchar(64) DEFAULT NULL COMMENT '用户ID',
+                              `client_id` varchar(64) DEFAULT NULL COMMENT '客户端ID',
+                              `client_ip` varchar(255) DEFAULT NULL COMMENT '客户端IP',
+                              `ip_address` varchar(255) DEFAULT NULL COMMENT '客户端IP归属地',
+                              `log_desc` varchar(255) DEFAULT NULL COMMENT '描述，示例：阅读文章',
+                              `action_type` varchar(255) DEFAULT NULL COMMENT '行为类型',
+                              `business_flag` varchar(255) DEFAULT NULL COMMENT '业务标识，由业务自己记录',
+                              `req_uri` varchar(255) DEFAULT NULL COMMENT '请求的 uri，比如 /admin/article',
+                              `referer` varchar(255) DEFAULT NULL COMMENT '请求来源',
+                              `req_method` varchar(50) DEFAULT NULL COMMENT '请求的方法：Post、Get等',
+                              `req_data` varchar(1024) DEFAULT NULL COMMENT '请求参数',
+                              `res_data` varchar(1024) DEFAULT NULL COMMENT '响应参数',
+                              `is_success` tinyint(1) DEFAULT NULL COMMENT '请求是否成功',
+                              `error_msg` varchar(1024) DEFAULT NULL COMMENT '错误消息',
+                              `cost_time` bigint(20) DEFAULT NULL COMMENT '耗时时间，单位 ms',
+                              `operate_time` datetime DEFAULT NULL COMMENT '操作时间',
+                              `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                              PRIMARY KEY (`id`),
+                              KEY `idx_userId` (`user_id`),
+                              KEY `idx_clientId` (`client_id`),
+                              KEY `idx_operateTime` (`operate_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=3122 DEFAULT CHARSET=utf8mb4 COMMENT='日志记录表';
 
 
 -- dev_tohero_blog.menu definition
@@ -116,7 +145,7 @@ CREATE TABLE `menu` (
                         `is_uk_deleted` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，其他-删除',
                         PRIMARY KEY (`id`),
                         UNIQUE KEY `uk_menuKeyAndDeleted` (`menu_key`,`is_uk_deleted`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='菜单（权限）列表';
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='菜单（权限）列表';
 
 
 -- dev_tohero_blog.`role` definition
@@ -148,7 +177,17 @@ CREATE TABLE `role_menu` (
                              PRIMARY KEY (`id`),
                              KEY `idx_roleId` (`role_id`),
                              KEY `idx_menuId` (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='角色-菜单关系表';
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='角色-菜单关系表';
+
+
+-- dev_tohero_blog.test definition
+
+CREATE TABLE `test` (
+                        `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+                        `name` varchar(2) DEFAULT '' COMMENT '分类名',
+                        `name2` varchar(5) DEFAULT '' COMMENT '分类名2',
+                        PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='资源站点分类';
 
 
 -- dev_tohero_blog.`user` definition
@@ -168,7 +207,7 @@ CREATE TABLE `user` (
                         PRIMARY KEY (`id`),
                         UNIQUE KEY `uk_login_name` (`login_name`),
                         UNIQUE KEY `uk_wxOpenId` (`wx_open_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户表';
 
 
 -- dev_tohero_blog.user_role definition
@@ -184,7 +223,7 @@ CREATE TABLE `user_role` (
                              PRIMARY KEY (`id`),
                              KEY `idx_userId` (`user_id`),
                              KEY `idx_roleId` (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户-角色关系表';
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户-角色关系表';
 
 
 -- dev_tohero_blog.website definition
@@ -208,7 +247,7 @@ CREATE TABLE `website` (
                            `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
                            PRIMARY KEY (`id`),
                            KEY `idx_cateId` (`cate_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COMMENT='资源站点信息';
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COMMENT='资源站点信息';
 
 
 -- dev_tohero_blog.website_cate definition
@@ -223,32 +262,3 @@ CREATE TABLE `website_cate` (
                                 `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
                                 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='资源站点分类';
-
-
-
-
--- dev_tohero_blog.log_record definition
-
-CREATE TABLE `log_record` (
-                              `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-                              `user_id` varchar(64) DEFAULT NULL COMMENT '用户ID',
-                              `client_id` varchar(64) DEFAULT NULL COMMENT '客户端ID',
-                              `client_ip` varchar(255) DEFAULT NULL COMMENT '客户端IP',
-                              `ip_address` varchar(255) DEFAULT NULL COMMENT '客户端IP归属地',
-                              `log_desc` varchar(255) DEFAULT NULL COMMENT '描述，示例：阅读文章',
-                              `action_type` varchar(255) DEFAULT NULL COMMENT '行为类型',
-                              `business_flag` varchar(255) DEFAULT NULL COMMENT '业务标识，由业务自己记录',
-                              `req_uri` varchar(255) DEFAULT NULL COMMENT '请求的 uri，比如 /admin/article',
-                              `req_method` varchar(50) DEFAULT NULL COMMENT '请求的方法：Post、Get等',
-                              `req_data` varchar(1024) DEFAULT NULL COMMENT '请求参数',
-                              `res_data` varchar(1024) DEFAULT NULL COMMENT '响应参数',
-                              `is_success` tinyint(1) DEFAULT NULL COMMENT '请求是否成功',
-                              `error_msg` varchar(1024) DEFAULT NULL COMMENT '错误消息',
-                              `cost_time` bigint(20) DEFAULT NULL COMMENT '耗时时间，单位 ms',
-                              `operate_time` datetime DEFAULT NULL COMMENT '操作时间',
-                              `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                              PRIMARY KEY (`id`),
-                              KEY `idx_userId` (`user_id`),
-                              KEY `idx_clientId` (`client_id`),
-                              KEY `idx_operateTime` (`operate_time`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='日志记录表';

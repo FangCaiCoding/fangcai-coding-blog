@@ -1,56 +1,61 @@
-INSERT INTO `menu`
-VALUES (1, '新增文章', 3, 1, '/article', 'article:add', '[\"article:add\"]', 1, '2024-10-26 10:42:21',
+INSERT INTO menu (id, name, menu_type, order_num, route_key, menu_key, auth_code_list, is_enabled, create_time,
+                  update_time, operator, is_uk_deleted)
+VALUES (1, '新增文章', 3, 1, '/article', 'article:add', '["article:add"]', 1, '2024-10-26 10:42:21',
         '2024-10-26 10:42:21', 1, 0),
-       (2, '编辑文章', 3, 2, '/article', 'article:edit', '[\"article:edit\"]', 1, '2024-10-26 10:42:21',
+       (2, '编辑文章', 3, 2, '/article', 'article:edit', '["article:edit"]', 1, '2024-10-26 10:42:21',
         '2024-10-26 10:42:21', 1, 0),
-       (3, '获取文章详情', 3, 3, '/article/{id}', 'article:detail', '[\"article:detail\"]', 1, '2024-10-26 10:42:21',
+       (3, '获取文章详情', 3, 3, '/article/{id}', 'article:detail', '["article:detail"]', 1, '2024-10-26 10:42:21',
         '2024-10-26 10:42:21', 1, 0),
-       (4, '分页查询文章', 3, 4, '/article/page', 'article:page', '[\"article:page\"]', 1, '2024-10-26 10:42:21',
+       (4, '分页查询文章', 3, 4, '/article/page', 'article:page', '["article:page"]', 1, '2024-10-26 10:42:21',
         '2024-10-26 10:42:21', 1, 0),
-       (5, '删除文章', 3, 5, '/article/{id}', 'article:del', '[\"article:del\"]', 1, '2024-10-26 10:42:21',
+       (5, '删除文章', 3, 5, '/article/{id}', 'article:del', '["article:del"]', 1, '2024-10-26 10:42:21',
         '2024-10-26 10:42:21', 1, 0),
-       (6, '修改文章状态', 3, 6, '/article/status/{id}/{status}', 'article:status', '[\"article:status\"]', 1,
+       (6, '修改文章状态', 3, 6, '/article/status/{id}/{status}', 'article:status', '["article:status"]', 1,
         '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
-       (7, '重置顺序号', 3, 7, '/article/initOrderNum', 'article:initOrderNum', '[\"article:initOrderNum\"]', 1,
+       (7, '重置顺序号', 3, 7, '/article/initOrderNum', 'article:initOrderNum', '["article:initOrderNum"]', 1,
         '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
-       (8, '分页查询文章模板', 3, 8, '/article/template/page', 'article:template:page', '[\"article:template:page\"]',
-        1, '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
-       (9, '新增文章教程', 3, 9, '/course', 'course:add', '[\"course:add\"]', 1, '2024-10-26 10:42:21',
-        '2024-10-26 10:42:21', 1, 0),
-       (10, '编辑文章教程', 3, 10, '/course', 'course:edit', '[\"course:edit\"]', 1, '2024-10-26 10:42:21',
-        '2024-10-26 10:42:21', 1, 0),
-       (11, '获取文章教程', 3, 11, '/course/{id}', 'course:get', '[\"course:get\"]', 1, '2024-10-26 10:42:21',
-        '2024-10-26 10:42:21', 1, 0),
-       (12, '分页查询文章教程', 3, 12, '/course/page', 'course:page', '[\"course:page\"]', 1, '2024-10-26 10:42:21',
-        '2024-10-26 10:42:21', 1, 0),
-       (13, '删除文章教程', 3, 13, '/course/{id}', 'course:del', '[\"course:del\"]', 1, '2024-10-26 10:42:21',
-        '2024-10-26 10:42:21', 1, 0),
-       (14, '修改文章教程顺序', 3, 14, '/course/orderNum/{id}', 'course:orderNum', '[\"course:orderNum\"]', 1,
+       (8, '分页查询文章模板', 3, 8, '/article/template/page', 'article:template:page', '["article:template:page"]', 1,
         '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
-       (15, '新增文章教程详情', 3, 15, '/course/detail', 'course:addDetail', '[\"course:addDetail\"]', 1,
-        '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
-       (16, '编辑文章教程详情', 3, 16, '/course/detail', 'course:editDetail', '[\"course:editDetail\"]', 1,
-        '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
-       (17, '删除文章教程详情', 3, 17, '/course/detail', 'course:delDetail', '[\"course:delDetail\"]', 1,
-        '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
-       (18, '新增网站信息', 3, 18, '/website', 'website:save', '[\"website:save\"]', 1, '2024-10-26 10:42:21',
+       (9, '新增文章教程', 3, 9, '/course', 'course:add', '["course:add"]', 1, '2024-10-26 10:42:21',
         '2024-10-26 10:42:21', 1, 0),
-       (19, '更新网站状态', 3, 19, '/website/uptStatus/{id}/{status}', 'website:uptStatus', '[\"website:uptStatus\"]',
-        1, '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
-       (20, '删除网站信息', 3, 20, '/website/{id}', 'website:delete', '[\"website:delete\"]', 1, '2024-10-26 10:42:21',
+       (10, '编辑文章教程', 3, 10, '/course', 'course:edit', '["course:edit"]', 1, '2024-10-26 10:42:21',
         '2024-10-26 10:42:21', 1, 0),
-       (21, '分页查询网站信息', 3, 21, '/website/page', 'website:page', '[\"website:page\"]', 1, '2024-10-26 10:42:21',
+       (11, '获取文章教程', 3, 11, '/course/{id}', 'course:get', '["course:get"]', 1, '2024-10-26 10:42:21',
         '2024-10-26 10:42:21', 1, 0),
-       (22, '删除角色', 3, 21, 'role', 'role:del', '[\"role:del\"]', 1, '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1,
-        0);
+       (12, '分页查询文章教程', 3, 12, '/course/page', 'course:page', '["course:page"]', 1, '2024-10-26 10:42:21',
+        '2024-10-26 10:42:21', 1, 0),
+       (13, '删除文章教程', 3, 13, '/course/{id}', 'course:del', '["course:del"]', 1, '2024-10-26 10:42:21',
+        '2024-10-26 10:42:21', 1, 0),
+       (14, '修改文章教程顺序', 3, 14, '/course/orderNum/{id}', 'course:orderNum', '["course:orderNum"]', 1,
+        '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
+       (15, '新增文章教程详情', 3, 15, '/course/detail', 'course:addDetail', '["course:addDetail"]', 1,
+        '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
+       (16, '编辑文章教程详情', 3, 16, '/course/detail', 'course:editDetail', '["course:editDetail"]', 1,
+        '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
+       (17, '删除文章教程详情', 3, 17, '/course/detail', 'course:delDetail', '["course:delDetail"]', 1,
+        '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
+       (18, '新增网站信息', 3, 18, '/website', 'website:save', '["website:save"]', 1, '2024-10-26 10:42:21',
+        '2024-10-26 10:42:21', 1, 0),
+       (19, '更新网站状态', 3, 19, '/website/uptStatus/{id}/{status}', 'website:uptStatus', '["website:uptStatus"]', 1,
+        '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1, 0),
+       (20, '删除网站信息', 3, 20, '/website/{id}', 'website:delete', '["website:delete"]', 1, '2024-10-26 10:42:21',
+        '2024-10-26 10:42:21', 1, 0),
+       (21, '分页查询网站信息', 3, 21, '/website/page', 'website:page', '["website:page"]', 1, '2024-10-26 10:42:21',
+        '2024-10-26 10:42:21', 1, 0),
+       (22, '删除角色', 3, 21, 'role', 'role:del', '["role:del"]', 1, '2024-10-26 10:42:21', '2024-10-26 10:42:21', 1,
+        0),
+       (23, '用户日志查询', 2, 12, '/admin/logs', 'logRecord:page', '["logRecord:page"]', 1, '2024-12-01 22:02:27',
+        '2024-12-01 22:02:27', 1, 0);
 
 
-INSERT INTO `role`
+
+INSERT INTO `role` (id, name, order_num, is_enabled, create_time, update_time, operator, is_uk_deleted)
 VALUES (1, '超级管理员', 1, 1, '2024-10-26 10:42:49', '2024-10-26 22:35:22', 2, 0),
        (2, '默认角色', 999, 1, '2024-10-26 10:42:49', '2024-10-26 18:20:11', 2, 0);
 
 
-INSERT INTO `role_menu`
+
+INSERT INTO role_menu (id, role_id, menu_id, create_time, update_time, operator, is_deleted)
 VALUES (33, 1, 1, '2024-10-26 18:19:48', '2024-10-26 18:19:48', 2, 0),
        (34, 1, 2, '2024-10-26 18:19:48', '2024-10-26 18:19:48', 2, 0),
        (35, 1, 3, '2024-10-26 18:19:48', '2024-10-26 18:19:48', 2, 0),
@@ -72,11 +77,12 @@ VALUES (33, 1, 1, '2024-10-26 18:19:48', '2024-10-26 18:19:48', 2, 0),
        (51, 1, 19, '2024-10-26 18:19:48', '2024-10-26 18:19:48', 2, 0),
        (52, 1, 20, '2024-10-26 18:19:48', '2024-10-26 18:19:48', 2, 0),
        (53, 1, 21, '2024-10-26 18:19:48', '2024-10-26 18:19:48', 2, 0),
-       (54, 1, 22, '2024-10-26 18:19:48', '2024-10-26 18:19:48', 2, 0);
+       (54, 1, 22, '2024-10-26 18:19:48', '2024-10-26 18:19:48', 2, 0),
+       (64, 1, 23, '2024-10-26 18:19:48', '2024-10-26 18:19:48', 2, 0);
 
 
 
-INSERT INTO `website_cate`
+INSERT INTO website_cate (id, user_id, name, order_num, create_time, update_time, is_deleted)
 VALUES (1, 2, '推荐', 1, '2024-10-18 16:46:56', '2024-10-20 23:41:49', 0),
        (2, 2, '后端', 2, '2024-10-18 16:47:10', '2024-10-18 16:47:18', 0),
        (3, 2, '工具网站', 4, '2024-10-18 16:47:18', '2024-10-20 23:43:41', 0),
