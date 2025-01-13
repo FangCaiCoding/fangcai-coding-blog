@@ -136,7 +136,7 @@ const saveArticle = async () => {
 
 
 const onHtmlChanged = (htmlContent) => {
-  article.content = htmlContent
+  // article.content = htmlContent
 };
 
 onMounted(async () => {
