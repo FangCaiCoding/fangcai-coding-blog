@@ -6,8 +6,8 @@ import cn.fangcai.blog.core.mapper.UserMapper;
 import cn.fangcai.blog.core.mapper.UserRoleMapper;
 import cn.fangcai.blog.core.model.entity.User;
 import cn.fangcai.blog.core.model.entity.UserRole;
-import cn.fangcai.blog.core.model.req.UserLoginReq;
 import cn.fangcai.blog.core.model.req.UserEditReq;
+import cn.fangcai.blog.core.model.req.UserLoginReq;
 import cn.fangcai.blog.core.model.res.UserRes;
 import cn.fangcai.blog.core.service.ICacheService;
 import cn.fangcai.blog.core.service.IRoleService;
@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -142,7 +141,8 @@ public class UserServiceImpl implements IUserService, IAuthService {
         User newUser = new User();
         newUser.setWxOpenId(wxOpenId);
         newUser.setLoginName(loginName);
-        newUser.setNickName(LocalDate.now().getMonthValue() + "月，遇见你");
+        newUser.setNickName("你好^~^");
+        newUser.setAvatarStr("你好^~^");
         newUser.setPassword("tempStr");
         userRepository.save(newUser);
         userRepository.lambdaUpdate()

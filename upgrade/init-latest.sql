@@ -189,7 +189,6 @@ CREATE TABLE `test` (
                         PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='资源站点分类';
 
-
 -- dev_tohero_blog.`user` definition
 
 CREATE TABLE `user` (
@@ -207,8 +206,7 @@ CREATE TABLE `user` (
                         PRIMARY KEY (`id`),
                         UNIQUE KEY `uk_login_name` (`login_name`),
                         UNIQUE KEY `uk_wxOpenId` (`wx_open_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户表';
-
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户表';
 
 -- dev_tohero_blog.user_role definition
 
