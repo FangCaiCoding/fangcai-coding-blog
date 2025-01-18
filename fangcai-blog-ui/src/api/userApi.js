@@ -10,8 +10,14 @@ const loginByWxCode = (loginReq = {}) => {
 const getUserInfo = () => {
     return axiosInst.get("/login/getUser")
 }
+
+const editUser =(editUserReq = {})=>{
+    return axiosInst.put("/user/editUser",editUserReq)
+
+}
 export default {
     loginByName,
     loginByWxCode,
-    getUserInfo
+    getUserInfo,
+    editUser
 }

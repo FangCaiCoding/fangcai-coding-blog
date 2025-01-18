@@ -1,4 +1,12 @@
 # 升级记录
+## 1.1.2025118
+1. 增加用户头像文字编辑功能；
+
+```sql
+alter table `user` add  `avatar_str` varchar(32) DEFAULT ""  COMMENT '头像文字,优先级低于头像图片'  after `avatar` ;
+-- 初始化数据
+update user  set avatar_str = nick_name  where avatar_str = "";
+```
 
 ## 1.1.20241129
 1. 增加日志功能，记录用户操作；

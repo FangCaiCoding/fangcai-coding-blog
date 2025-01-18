@@ -14,6 +14,7 @@ export const useUserStore = defineStore('userContext', () => {
             loginName: "",
             nickName: "",
             avatar: "",
+            avatarStr: "",
         })
 
         const login = (user) => {
@@ -21,6 +22,7 @@ export const useUserStore = defineStore('userContext', () => {
             userContext.loginName = user.loginName;
             userContext.nickName = user.nickName;
             userContext.avatar = user.avatar;
+            userContext.avatarStr = user.avatarStr;
         }
         const isLogin = () => {
             return userContext.id !== undefined;

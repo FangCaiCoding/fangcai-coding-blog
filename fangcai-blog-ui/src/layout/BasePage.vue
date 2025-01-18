@@ -43,7 +43,7 @@
             class="right-item user-avatar"
             @click="handleAvatarClick"
         >
-          {{ userStore.userContext.nickName.substring(0, 7) }}
+          {{ userStore.userContext.avatarStr }}
         </el-avatar>
       </div>
     </div>
@@ -176,6 +176,36 @@
       <el-link href="privacy-policy" target="_blank">隐私政策</el-link>
     </div>
   </el-dialog>
+
+  <!-- 编辑用户昵称和头像弹窗 -->
+  <el-dialog v-model="showEditUserDialog" title="编辑个人信息" width="500px" :close-on-click-modal="false">
+    <!-- 头像部分 -->
+    <div style="text-align: center; margin-bottom: 20px;">
+      <el-avatar
+          :src="uptUser.avatar"
+          class="right-item user-avatar"
+      >
+        {{ uptUser.avatarStr }}
+      </el-avatar>
+    </div>
+
+    <!-- 昵称部分 -->
+    <el-form label-width="100px">
+      <el-form-item label="昵称：">
+        <el-input v-model="uptUser.nickName" placeholder="请输入昵称"></el-input>
+      </el-form-item>
+      <el-form-item label="头像文字：">
+        <el-input v-model="uptUser.avatarStr" placeholder="请输入头像文字"></el-input>
+      </el-form-item>
+    </el-form>
+
+    <!-- 操作按钮 -->
+    <div style="text-align: center; margin-top: 20px;">
+      <el-button @click="showEditUserDialog = false">取消</el-button>
+      <el-button type="primary" @click="toEditUser()">保存</el-button>
+    </div>
+  </el-dialog>
+
 </template>
 
 <script setup>
@@ -226,6 +256,22 @@ const loginForm = reactive({
   password: "",
   wxCode: ""
 });
+
+const showEditUserDialog = ref(false)
+const uptUser = ref({
+  nickName: "",
+  avatarStr: ""
+});
+
+const toEditUser = async () => {
+  const isOk = await userApi.editUser(uptUser.value);
+  if (isOk) {
+    ElMessage.success("保存成功！");
+    showEditUserDialog.value = false;
+    userStore.initContext();
+  }
+}
+
 
 const clickAdvertise = () => {
   window.open("https://gitee.com/fangcaicoding/fangcai-coding-blog", '_blank');
@@ -284,9 +330,10 @@ const handleAvatarClick = () => {
   if (!userStore.isLogin()) {
     showLoginDialog.value = true;
   } else {
-    ElMessage.success("你已是登录状态！");
+    uptUser.value.avatarStr = userStore.userContext.avatarStr;
+    uptUser.value.nickName = userStore.userContext.nickName;
+    showEditUserDialog.value = true;
   }
-  // 登录状态下可以进行其他用户操作
 };
 
 const emit = defineEmits(["loginSuccess"])

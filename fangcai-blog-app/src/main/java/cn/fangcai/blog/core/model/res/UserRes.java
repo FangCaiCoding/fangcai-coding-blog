@@ -1,6 +1,5 @@
 package cn.fangcai.blog.core.model.res;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,6 +32,9 @@ public class UserRes {
 
     @Schema(description = "头像")
     private String avatar;
+
+    @Schema(description = "头像文字（显示优先级低于头像）")
+    private String avatarStr;
 
     @Schema(description = "是否启用")
     private Boolean enabled;

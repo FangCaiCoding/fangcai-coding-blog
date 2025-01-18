@@ -218,9 +218,8 @@
     margin-left: 20px;
 }
 
-
 .user-avatar {
-    align-content: center;
+    align-items: center; /* 使用align-items代替align-content，因为align-content用于多行弹性盒模型 */
     justify-content: center;
     text-align: center;
     background-color: white;
@@ -230,8 +229,11 @@
     width: 40px;
     height: 40px;
     font-size: 11px;
+    display: flex; /* 添加display: flex，使align-items和justify-content生效 */
+    padding: 5px; /* 添加padding，使文本距离边框有固定距离，可根据实际需求调整 */
+    box-sizing: border-box; /* 添加box-sizing: border-box，使padding包含在width和height内 */
+    font-weight: bold; /* 添加font-weight: bold，使文字加粗 */
 }
-
 .search-input {
     height: 40px;
     font-size: 18px;

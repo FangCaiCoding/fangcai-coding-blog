@@ -2,21 +2,22 @@ package cn.fangcai.blog.core.service.impl;
 
 import cn.fangcai.blog.config.BlogAppProperties;
 import cn.fangcai.blog.consts.BlogErrorCodeEnum;
-import cn.fangcai.blog.core.model.entity.User;
-import cn.fangcai.blog.core.model.entity.UserRole;
-import cn.fangcai.blog.core.model.res.UserRes;
 import cn.fangcai.blog.core.mapper.UserMapper;
 import cn.fangcai.blog.core.mapper.UserRoleMapper;
-import cn.fangcai.blog.mapstruct.UserConverter;
+import cn.fangcai.blog.core.model.entity.User;
+import cn.fangcai.blog.core.model.entity.UserRole;
 import cn.fangcai.blog.core.model.req.UserLoginReq;
+import cn.fangcai.blog.core.model.req.UserEditReq;
+import cn.fangcai.blog.core.model.res.UserRes;
 import cn.fangcai.blog.core.service.ICacheService;
 import cn.fangcai.blog.core.service.IRoleService;
 import cn.fangcai.blog.core.service.IUserService;
+import cn.fangcai.blog.mapstruct.UserConverter;
 import cn.fangcai.blog.uitls.CacheKeyFactory;
+import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.fangcai.starter.auth.dto.UserAuthInfo;
 import cn.fangcai.starter.auth.service.IAuthService;
 import cn.fangcai.starter.auth.utils.FcPWDUtil;
-import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -155,6 +156,15 @@ public class UserServiceImpl implements IUserService, IAuthService {
         userRole.setOperator(newUser.getId());
         userRoleRepository.save(userRole);
         return UserConverter.INSTANCE.userToRes(newUser);
+    }
+
+    @Override
+    public Boolean editUser(UserEditReq uptReq) {
+        return userRepository.lambdaUpdate()
+                .set(User::getNickName, uptReq.getNickName())
+                .set(User::getAvatarStr, uptReq.getAvatarStr())
+                .eq(User::getId, uptReq.getUserId())
+                .update();
     }
 
     @Repository

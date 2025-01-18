@@ -41,6 +41,9 @@ public class User extends BaseEntity {
     @Schema(description = "头像")
     private String avatar;
 
+    @Schema(description = "头像文字（显示优先级低于头像）")
+    private String avatarStr;
+
     @Schema(description = "密码")
     private String password;
 

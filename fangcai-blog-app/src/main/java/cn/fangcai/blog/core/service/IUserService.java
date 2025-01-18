@@ -1,6 +1,7 @@
 package cn.fangcai.blog.core.service;
 
 
+import cn.fangcai.blog.core.model.req.UserEditReq;
 import cn.fangcai.blog.core.model.res.UserRes;
 import cn.fangcai.blog.core.model.req.UserLoginReq;
 
@@ -24,4 +25,7 @@ public interface IUserService {
 
 
     UserRes register(String loginName, String wxOpenId, String password);
+
+    Boolean editUser(UserEditReq uptReq);
+
 }
