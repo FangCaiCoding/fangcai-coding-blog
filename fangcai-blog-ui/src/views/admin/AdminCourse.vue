@@ -201,6 +201,15 @@
     <div class="toolbar">
       <p>文章总数：{{ allArticles.length }}</p>
       <div class="button-group">
+        <el-input
+            style="width: 200px"
+            size=""
+            v-model="titleQueryStr"
+            clearable
+            placeholder="根据名称搜索"
+            :prefix-icon="Search"
+            @input="loadArticlesByQuery(titleQueryStr)"
+        />
         <el-badge :value="selectedDataList.length" :show-zero="false">
           <el-button type="primary" @click="addSelectedArticles" :disabled="selectedDataList.length ===0">确定添加
           </el-button>
@@ -408,11 +417,13 @@ const addCourseArticleDrawerVisible = ref(false);
 // 已选中的数据
 const selectedDataList = ref([]);
 const allArticles = ref([]);
+const titleQueryStr = ref("")
 
 // 加载所有可选文章
-const loadAllArticles = async () => {
+const loadArticlesByQuery = async (titleQueryStr) => {
   allArticles.value = [];
   const pagePublicArticle = await articleApi.pageArticle({
+    title: titleQueryStr,
     page: 1,
     pageSize: 1000,
     excludeCourseId: course.value.id,
@@ -449,7 +460,7 @@ const addSelectedArticles = async () => {
 // 新增文章
 const toAddCourseArticle = () => {
   // 加载所有文章列表
-  loadAllArticles();
+  loadArticlesByQuery("");
   selectedDataList.value = []
   addCourseArticleDrawerVisible.value = true;
 };
