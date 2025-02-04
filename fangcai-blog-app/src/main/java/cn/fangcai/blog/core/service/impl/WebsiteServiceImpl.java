@@ -80,7 +80,8 @@ public class WebsiteServiceImpl implements IWebsiteService {
         List<WebsiteRes> websiteRes = WebSiteConverter.INSTANCE.entityToListRes(page.getRecords());
         List<Integer> cateIdList = websiteRes.stream().map(WebsiteRes::getCateId).toList();
         if (!cateIdList.isEmpty()) {
-            Map<Integer, String> cateIdAndNameMap = websiteCateRepository.listByIds(cateIdList).stream().collect(Collectors.toMap(WebsiteCate::getId, WebsiteCate::getName));
+            Map<Integer, String> cateIdAndNameMap = websiteCateRepository.listByIds(cateIdList)
+                    .stream().collect(Collectors.toMap(WebsiteCate::getId, WebsiteCate::getName));
             websiteRes.forEach(website -> website.setCateName(cateIdAndNameMap.get(website.getCateId())));
         }
         return new FcPageRes<WebsiteRes>(pageReq)
