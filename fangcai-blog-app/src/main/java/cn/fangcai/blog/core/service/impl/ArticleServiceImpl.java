@@ -3,7 +3,7 @@ package cn.fangcai.blog.core.service.impl;
 import cn.fangcai.blog.core.model.entity.Article;
 import cn.fangcai.blog.core.model.entity.ArticleDetail;
 import cn.fangcai.blog.core.model.entity.ArticleTemplate;
-import cn.fangcai.blog.core.model.entity.base.BaseEntity;
+import cn.fangcai.blog.core.model.entity.base.BaseEntityWithDel;
 import cn.fangcai.blog.core.model.res.ArticleDetailRes;
 import cn.fangcai.blog.core.model.res.ArticleRes;
 import cn.fangcai.blog.core.model.res.ArticleTemplateRes;
@@ -173,7 +173,7 @@ public class ArticleServiceImpl implements IArticleService {
     public FcPageRes<ArticleTemplateRes> pageArticleTemplate(ArticleTemplatePageReq pageReq) {
         Page<ArticleTemplate> page = teamRepository.lambdaQuery()
                 .like(StrUtil.isNotBlank(pageReq.getTitle()), ArticleTemplate::getTitle, pageReq.getTitle())
-                .orderByDesc(BaseEntity::getCreateTime, ArticleTemplate::getId)
+                .orderByDesc(BaseEntityWithDel::getCreateTime, ArticleTemplate::getId)
                 .page(new Page<>(pageReq.getPage(), pageReq.getPageSize()));
         return new FcPageRes<ArticleTemplateRes>(pageReq)
                 .total(page.getTotal())

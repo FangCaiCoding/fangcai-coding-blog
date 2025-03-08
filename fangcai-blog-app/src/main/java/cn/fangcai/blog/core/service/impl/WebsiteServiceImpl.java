@@ -2,6 +2,8 @@ package cn.fangcai.blog.core.service.impl;
 
 import cn.fangcai.blog.consts.BlogErrorCodeEnum;
 import cn.fangcai.blog.consts.StatusEnum;
+import cn.fangcai.blog.core.mapper.WebsiteCateMapper;
+import cn.fangcai.blog.core.mapper.WebsiteMapper;
 import cn.fangcai.blog.core.model.entity.Website;
 import cn.fangcai.blog.core.model.entity.WebsiteCate;
 import cn.fangcai.blog.core.model.req.website.WebSitePageReq;
@@ -9,10 +11,8 @@ import cn.fangcai.blog.core.model.req.website.WebsiteSaveReq;
 import cn.fangcai.blog.core.model.res.website.WebsiteCateRes;
 import cn.fangcai.blog.core.model.res.website.WebsiteListRes;
 import cn.fangcai.blog.core.model.res.website.WebsiteRes;
-import cn.fangcai.blog.core.mapper.WebsiteCateMapper;
-import cn.fangcai.blog.core.mapper.WebsiteMapper;
-import cn.fangcai.blog.mapstruct.WebSiteConverter;
 import cn.fangcai.blog.core.service.IWebsiteService;
+import cn.fangcai.blog.mapstruct.WebSiteConverter;
 import cn.fangcai.common.model.dto.FcPageRes;
 import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.hutool.core.util.StrUtil;
@@ -98,33 +98,34 @@ public class WebsiteServiceImpl implements IWebsiteService {
                 .stream()
                 .map(WebSiteConverter.INSTANCE::entityToRes)
                 .toList();
-        if (!webSiteList.isEmpty()) {
-            List<Integer> cateIdList = webSiteList.stream().map(WebsiteRes::getCateId).toList();
-            List<WebsiteCate> cateList = websiteCateRepository.lambdaQuery()
-                    .in(WebsiteCate::getId, cateIdList)
-                    .orderByAsc(WebsiteCate::getOrderNum)
-                    .list();
-
-            // 按 cateId 分组，并且每个 List<WebsiteRes> 按 orderNum 升序排序
-            Map<Integer, List<WebsiteRes>> cateIdAndSiteMap = webSiteList.stream()
-                    .collect(Collectors.groupingBy(WebsiteRes::getCateId,
-                            Collectors.collectingAndThen(Collectors.toList(),
-                                    list -> list.stream()
-                                            .sorted(Comparator.comparing(WebsiteRes::getOrderNum))
-                                            .collect(Collectors.toList())
-                            )));
-
-            return cateList.stream()
-                    .map(cate -> {
-                        WebsiteListRes res = new WebsiteListRes();
-                        res.setCateId(cate.getId());
-                        res.setCateName(cate.getName());
-                        res.setWebsiteList(cateIdAndSiteMap.get(cate.getId()));
-                        return res;
-                    })
-                    .collect(Collectors.toList());
+        if (webSiteList.isEmpty()) {
+            return new ArrayList<>();
         }
-        return new ArrayList<>();
+        List<Integer> cateIdList = webSiteList.stream().map(WebsiteRes::getCateId).toList();
+        List<WebsiteCate> cateList = websiteCateRepository.lambdaQuery()
+                .in(WebsiteCate::getId, cateIdList)
+                .orderByAsc(WebsiteCate::getOrderNum)
+                .list();
+
+        // 按 cateId 分组，并且每个 List<WebsiteRes> 按 orderNum 升序排序
+        Map<Integer, List<WebsiteRes>> cateIdAndSiteMap = webSiteList.stream()
+                .collect(Collectors.groupingBy(WebsiteRes::getCateId,
+                        Collectors.collectingAndThen(Collectors.toList(),
+                                list -> list.stream()
+                                        .sorted(Comparator.comparing(WebsiteRes::getOrderNum))
+                                        .collect(Collectors.toList())
+                        )));
+
+        return cateList.stream()
+                .map(cate -> {
+                    WebsiteListRes res = new WebsiteListRes();
+                    res.setCateId(cate.getId());
+                    res.setCateName(cate.getName());
+                    res.setWebsiteList(cateIdAndSiteMap.get(cate.getId()));
+                    return res;
+                })
+                .collect(Collectors.toList());
+
     }
 
 

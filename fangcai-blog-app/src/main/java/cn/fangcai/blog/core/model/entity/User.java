@@ -1,6 +1,6 @@
 package cn.fangcai.blog.core.model.entity;
 
-import cn.fangcai.blog.core.model.entity.base.BaseEntity;
+import cn.fangcai.blog.core.model.entity.base.BaseEntityWithDel;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @TableName(value = "user", autoResultMap = true)
 @Schema(description = "用户表")
-public class User extends BaseEntity {
+public class User extends BaseEntityWithDel {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;

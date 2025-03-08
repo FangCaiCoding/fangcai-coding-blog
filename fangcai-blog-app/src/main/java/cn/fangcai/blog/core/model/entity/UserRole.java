@@ -1,6 +1,6 @@
 package cn.fangcai.blog.core.model.entity;
 
-import cn.fangcai.blog.core.model.entity.base.BaseEntity;
+import cn.fangcai.blog.core.model.entity.base.BaseEntityWithDel;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -21,7 +21,7 @@ import lombok.Setter;
 @Setter
 @TableName("user_role")
 @Schema(name = "UserRole", description = "用户-角色关系表")
-public class UserRole extends BaseEntity {
+public class UserRole extends BaseEntityWithDel {
 
 
     @TableId(value = "id", type = IdType.AUTO)

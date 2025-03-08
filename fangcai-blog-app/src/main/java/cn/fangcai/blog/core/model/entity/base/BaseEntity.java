@@ -3,9 +3,9 @@ package cn.fangcai.blog.core.model.entity.base;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
@@ -16,13 +16,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @Schema(description = "基础的entity")
-public class BaseEntity {
-
-    @Schema(description = "删除状态，0未删除，1删除")
-    @TableField(value = "is_deleted")
-    @TableLogic(value = "0", delval = "1")
-    private Boolean deleted;
-
+public class BaseEntity  {
 
     @Schema(description = "创建时间")
     @TableField(value = "create_time",insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)

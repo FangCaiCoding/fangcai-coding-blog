@@ -44,7 +44,7 @@ public class ArticlePublicController {
 
     @Operation(summary = "获取文章详情")
     @GetMapping("/{id}")
-    @FcLog(desc = "阅读文章", actionType = FcLog.ActionType.SELECT)
+    @FcLog(desc = "阅读文章: %s", respEl = "data.title", actionType = FcLog.ActionType.SELECT)
     public FcResult<ArticleDetailRes> getDetail(@PathVariable Integer id) {
         ArticleDetailRes detail = articleService.getDetail(id, true);
         if (detail == null || !StatusEnum.PUBLISHED.getCode().equals(detail.getStatus())) {
@@ -69,7 +69,7 @@ public class ArticlePublicController {
 
     @Operation(summary = "获取文章教程")
     @GetMapping("/course/{id}")
-    @FcLog(desc = "阅读教程", actionType = FcLog.ActionType.SELECT)
+    @FcLog(desc = "阅读教程：%s", respEl = "data.title", actionType = FcLog.ActionType.SELECT)
     public FcResult<CourseRes> getById(@PathVariable Integer id) {
         CourseRes courseRes = courseService.getById(id);
         if (courseRes == null || !StatusEnum.PUBLISHED.getCode().equals(courseRes.getStatus())) {

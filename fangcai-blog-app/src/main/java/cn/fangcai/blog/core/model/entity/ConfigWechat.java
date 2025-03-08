@@ -1,6 +1,6 @@
 package cn.fangcai.blog.core.model.entity;
 
-import cn.fangcai.blog.core.model.entity.base.BaseEntity;
+import cn.fangcai.blog.core.model.entity.base.BaseEntityWithDel;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -21,7 +21,7 @@ import lombok.Setter;
 @Setter
 @TableName("config_wechat")
 @Schema(name = "ConfigWechat", description = "微信配置类")
-public class ConfigWechat extends BaseEntity {
+public class ConfigWechat extends BaseEntityWithDel {
 
 
     @TableId(value = "id", type = IdType.AUTO)

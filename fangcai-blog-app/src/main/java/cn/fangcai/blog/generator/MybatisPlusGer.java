@@ -1,6 +1,6 @@
 package cn.fangcai.blog.generator;
 
-import cn.fangcai.blog.core.model.entity.base.BaseEntity;
+import cn.fangcai.blog.core.model.entity.base.BaseEntityWithDel;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,10 @@ import java.util.List;
 @Slf4j
 public class MybatisPlusGer {
 
-    private static final List<String> tables = Arrays.asList("log_record");
+    private static final List<String> tables = Arrays.asList("paper",
+            "paper_cate",
+            "paper_question",
+            "question");
 
     public static void main(String[] args) {
         String dbUrl = args[0];
@@ -46,7 +49,7 @@ public class MybatisPlusGer {
                 .strategyConfig(builder -> builder
                         .entityBuilder()
                         .enableLombok()
-                        .superClass(BaseEntity.class)
+                        .superClass(BaseEntityWithDel.class)
                         .enableTableFieldAnnotation()
                         .enableActiveRecord()
                         .disableSerialVersionUID()

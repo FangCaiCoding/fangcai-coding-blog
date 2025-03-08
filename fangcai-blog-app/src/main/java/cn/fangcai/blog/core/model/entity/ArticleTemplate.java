@@ -1,6 +1,6 @@
 package cn.fangcai.blog.core.model.entity;
 
-import cn.fangcai.blog.core.model.entity.base.BaseEntity;
+import cn.fangcai.blog.core.model.entity.base.BaseEntityWithDel;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -21,7 +21,7 @@ import lombok.Setter;
 @Setter
 @TableName("article_template")
 @Schema(name = "ArticleTemplate", description = "文章通用内容模板表")
-public class ArticleTemplate extends BaseEntity {
+public class ArticleTemplate extends BaseEntityWithDel {
 
 
     @Schema(description = "主键ID")

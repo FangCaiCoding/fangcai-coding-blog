@@ -1,6 +1,6 @@
 package cn.fangcai.blog.core.model.res;
 
-import cn.fangcai.blog.core.model.entity.base.BaseEntity;
+import cn.fangcai.blog.core.model.entity.base.BaseEntityWithDel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Schema(name = "ArticleTemplate", description = "文章通用内容模板表")
-public class ArticleTemplateRes extends BaseEntity {
+public class ArticleTemplateRes extends BaseEntityWithDel {
 
 
     @Schema(description = "主键ID")

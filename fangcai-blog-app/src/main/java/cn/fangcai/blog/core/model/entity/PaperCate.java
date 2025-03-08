@@ -11,32 +11,29 @@ import lombok.Setter;
 
 /**
  * <p>
- * 角色-菜单关系表
+ * 试卷分类表
  * </p>
  *
  * @author MouFangCai
- * @since 2024-10-26
+ * @since 2025-03-08
  */
 @Getter
 @Setter
-@TableName("role_menu")
-@Schema(name = "RoleMenu", description = "角色-菜单关系表")
-public class RoleMenu extends BaseEntityWithDel {
+@TableName("paper_cate")
+@Schema(name = "PaperCate", description = "试卷分类表")
+public class PaperCate extends BaseEntityWithDel {
 
-
+    @Schema(description = "主键")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @Schema(description = "角色 id")
-    @TableField("role_id")
-    private Integer roleId;
+    @Schema(description = "分类名称")
+    @TableField("name")
+    private String name;
 
-    @Schema(description = "菜单 id")
-    @TableField("menu_id")
-    private Integer menuId;
+    @Schema(description = "顺序号,升序排序")
+    @TableField("order_num")
+    private Integer orderNum;
 
-    @Schema(description = "操作者-用户ID")
-    @TableField("operator")
-    private Integer operator;
 
 }

@@ -1,6 +1,6 @@
 package cn.fangcai.blog.core.model.res.website;
 
-import cn.fangcai.blog.core.model.entity.base.BaseEntity;
+import cn.fangcai.blog.core.model.entity.base.BaseEntityWithDel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,7 +19,7 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @Setter
 @Schema(description = "资源站点信息")
-public class WebsiteRes extends BaseEntity {
+public class WebsiteRes extends BaseEntityWithDel {
 
     @Schema(description = "主键ID")
     private Integer id;

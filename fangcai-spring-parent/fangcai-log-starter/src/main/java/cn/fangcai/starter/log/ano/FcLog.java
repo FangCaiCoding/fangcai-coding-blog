@@ -15,9 +15,15 @@ import java.lang.annotation.Target;
 public @interface FcLog {
 
     /**
-     * 描述
+     * 描述，支持占位符填充，比如：阅读文章 %s
      */
     public String desc();
+
+    /**
+     * 响应值的表达式 ，比如：文章名称：data.title，会title的值作为参数传给desc
+     * @return
+     */
+    public String respEl() default "";
 
     /**
      * 业务标识分类

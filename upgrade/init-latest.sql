@@ -260,3 +260,64 @@ CREATE TABLE `website_cate` (
                                 `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
                                 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='资源站点分类';
+
+
+-- dev_tohero_blog.paper definition
+
+CREATE TABLE `paper` (
+                         `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+                         `paper_cate_id` int(11) unsigned NOT NULL COMMENT '试卷分类ID',
+                         `name` varchar(128) NOT NULL COMMENT '试卷名称',
+                         `order_num` int(11) unsigned NOT NULL DEFAULT '999' COMMENT '顺序号,升序排序',
+                         `question_total` int(11) DEFAULT '0' COMMENT '题目总数',
+                         `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态：0-未发布，1-已发布',
+                         `read_ct` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '阅读数',
+                         `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                         `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                         `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
+                         PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='试卷表';
+
+
+-- dev_tohero_blog.paper_cate definition
+
+CREATE TABLE `paper_cate` (
+                              `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+                              `name` varchar(32) NOT NULL COMMENT '分类名称',
+                              `order_num` int(11) unsigned NOT NULL DEFAULT '999' COMMENT '顺序号,升序排序',
+                              `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                              `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                              `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
+                              PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='试卷分类表';
+
+
+-- dev_tohero_blog.paper_question definition
+
+CREATE TABLE `paper_question` (
+                                  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+                                  `paper_id` int(11) unsigned NOT NULL COMMENT '试卷ID',
+                                  `question_id` int(11) unsigned NOT NULL COMMENT '题目ID',
+                                  `question_alias` varchar(128) DEFAULT NULL COMMENT '题目别名',
+                                  `order_num` int(11) unsigned NOT NULL DEFAULT '999' COMMENT '顺序号,升序排序',
+                                  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                                  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                                  PRIMARY KEY (`id`),
+                                  UNIQUE KEY `uk_paperId_questionId` (`paper_id`,`question_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='试卷题目关系表';
+
+
+-- dev_tohero_blog.question definition
+
+CREATE TABLE `question` (
+                            `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+                            `name` varchar(128) NOT NULL COMMENT '题目名称',
+                            `intro` longtext COMMENT '题目介绍',
+                            `answer` longtext COMMENT '答案',
+                            `analysis` longtext COMMENT '解析',
+                            `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                            `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                            `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
+                            `read_ct` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '阅读数',
+                            PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='题目表';

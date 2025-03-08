@@ -9,6 +9,7 @@ import cn.fangcai.starter.log.service.IFcLogService;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.jayway.jsonpath.JsonPath;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -113,20 +114,37 @@ public class LogAspect {
         logRecord.setUserId(FcAuthContext.getUserIdAsStr());
         logRecord.setClientId(FcClientContext.getClientId());
         logRecord.setClientIp(FcClientContext.getClientIp());
-        logRecord.setLogDesc(fcLog.desc());
+
         logRecord.setActionType(fcLog.actionType().name());
         logRecord.setBusinessFlag(fcLog.businessFlag());
 
         logRecord.setReqUri(SpringMVCUtil.getRequest().getRequestURI());
         logRecord.setReqMethod(SpringMVCUtil.getRequest().getMethod());
+
+        String resultJson = JSONUtil.toJsonStr(result);
+        String respEl = fcLog.respEl();
+        String logDesc = fcLog.desc();
+        if (StrUtil.isNotBlank(respEl) && StrUtil.isNotBlank(resultJson)) {
+            Object param = JsonPath.parse(resultJson).read("$." + respEl);
+            logDesc = fcLog.desc().formatted(param);
+        }
+        logRecord.setLogDesc(logDesc);
+        // 解析JSON获取字段值
         if (fcLog.isSaveReqData()) {
             Object[] args = joinPoint.getArgs();
             logRecord.setReqData(StrUtil.subPre(JSONUtil.toJsonStr(args), 512));
         }
         if (fcLog.isSaveRespData()) {
-            logRecord.setReqData(StrUtil.subPre(JSONUtil.toJsonStr(result), 512));
+            logRecord.setResData(StrUtil.subPre(resultJson, 512));
         }
         return logRecord;
+    }
+
+    public static void main(String[] args) {
+        String json = "{\"code\":200,\"msg\":\"success\",\"data\":{\"id\":1,\"name\":\"张三\"}}";
+        Object param = JsonPath.parse(json).read("$.data.name");
+        System.out.println(param);
+        System.out.println("测试 name=%s".formatted(param));
     }
 
 }
