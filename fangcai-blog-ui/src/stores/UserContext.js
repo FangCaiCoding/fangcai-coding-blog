@@ -10,11 +10,12 @@ import userApi from "@/api/userApi.js";
 export const useUserStore = defineStore('userContext', () => {
         //定义一个响应式对象，存储用户信息
         const userContext = reactive({
-            id: undefined,
+            id: 0,
             loginName: "",
             nickName: "",
             avatar: "",
             avatarStr: "",
+            showLoginDialog: false,
         })
 
         const login = (user) => {
@@ -25,7 +26,11 @@ export const useUserStore = defineStore('userContext', () => {
             userContext.avatarStr = user.avatarStr;
         }
         const isLogin = () => {
-            return userContext.id !== undefined;
+            return userContext.id > 0;
+        }
+
+        const switchLoginDialog = (show) => {
+            userContext.showLoginDialog = show;
         }
 
         /**
@@ -40,7 +45,7 @@ export const useUserStore = defineStore('userContext', () => {
         }
 
         const $reset = () => {
-            userContext.id = undefined;
+            userContext.id = 0;
             // 清理本地存储中的持久化内容
             localStorage.removeItem('userContext');
         }
@@ -50,6 +55,7 @@ export const useUserStore = defineStore('userContext', () => {
             initContext,
             isLogin,
             $reset,
+            switchLoginDialog
         }
     },
     {

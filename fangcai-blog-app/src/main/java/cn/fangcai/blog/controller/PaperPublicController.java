@@ -24,7 +24,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/paper/public")
 @Tag(name = "题库相关的API，前端使用")
-@FcNotCheckLogin
 public class PaperPublicController {
 
     @Autowired
@@ -33,6 +32,7 @@ public class PaperPublicController {
 
     @Operation(summary = "获取所有题库分类")
     @GetMapping("/cate/all")
+    @FcNotCheckLogin
     public FcResult<List<PaperCateRes>> listAllCate() {
         return FcResult.SUCCESS(paperService.listAllCate());
     }
@@ -40,6 +40,7 @@ public class PaperPublicController {
     @Operation(summary = "获取所有公开的题库-允许cateId为空")
     @GetMapping("/list/all")
     @FcLog(desc = "获取题库列表", actionType = FcLog.ActionType.SELECT)
+    @FcNotCheckLogin
     public FcResult<List<PaperListRes>> listPublicAll(@RequestParam(required = false) Integer cateId) {
         return FcResult.SUCCESS(paperService.listPaperByCate(cateId, StatusEnum.PUBLISHED));
     }
@@ -47,15 +48,19 @@ public class PaperPublicController {
 
     @Operation(summary = "获取题库详情")
     @GetMapping("/detail/{id}")
+    @FcNotCheckLogin
     @FcLog(desc = "查询题库详情：%s", respEl = "data.name", actionType = FcLog.ActionType.SELECT)
     public FcResult<PaperDetailRes> getPaperDetail(@PathVariable Integer id) {
+        paperService.incrPaperReadCt(id);
         return FcResult.SUCCESS(paperService.getPaperDetail(id, StatusEnum.PUBLISHED));
     }
 
     @Operation(summary = "获取题目的问题")
     @GetMapping("/question/{questionId}")
+    @FcNotCheckLogin
     @FcLog(desc = "查看题目：%s", respEl = "data.name", actionType = FcLog.ActionType.SELECT)
     public FcResult<QuestionRes> getQuestion(@PathVariable Integer questionId) {
+        paperService.incrQuestionReadCt(questionId);
         return FcResult.SUCCESS(paperService.getQuestion(questionId));
     }
 

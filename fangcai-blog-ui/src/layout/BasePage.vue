@@ -18,6 +18,7 @@
         <el-menu-item index="/">首页</el-menu-item>
         <el-menu-item index="/courses">教程</el-menu-item>
         <el-menu-item index="/website">资源</el-menu-item>
+        <el-menu-item index="/papers">软考真题</el-menu-item>
       </el-menu>
 
       <!-- 中央 副标题 -->
@@ -67,9 +68,11 @@
         <!--右侧边栏-->
         <el-col :xs="0" :sm="showRightSidebar?5:0">
           <!-- 第一板块：固定内容 -->
-          <div class="right-sidebar-fixed">
-            <h4>{{ fixedTitle }}</h4>
-            <img :src="qrCodeUrl" alt="QR Code" class="qr-code"/>
+          <div class="right-sidebar-top">
+            <slot name="right-top-sidebar-dynamic">
+              <h4>{{ fixedTitle }}</h4>
+              <img :src="qrCodeUrl" alt="QR Code" class="qr-code"/>
+            </slot>
           </div>
           <!-- 第二板块：动态内容 -->
           <div class="right-sidebar-dynamic">
@@ -130,7 +133,8 @@
   </el-dialog>
 
   <!-- 登录弹窗 -->
-  <el-dialog v-model="showLoginDialog" title="登录享受更多权益" width="500px" :close-on-click-modal="false">
+  <el-dialog v-model="showLoginDialog" title="登录享受更多权益" width="500px" :close-on-click-modal="false"
+  @close="userStore.switchLoginDialog(false)">
     <!-- Tab Navigation for Different Login Options -->
     <el-tabs type="card">
       <el-tab-pane label="微信登录">
@@ -209,7 +213,7 @@
 </template>
 
 <script setup>
-import {defineProps, nextTick, onMounted, reactive, ref, watch} from "vue";
+import {computed, defineProps, nextTick, onMounted, reactive, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
 import {Search} from "@element-plus/icons-vue";
@@ -248,8 +252,11 @@ const router = useRouter();
 const route = useRoute();
 const activeIndex = ref(route.path);
 
-// 登录弹窗
+// 登录弹窗-业务控制的状态
 const showLoginDialog = ref(false);
+// 用户上下文的登录弹窗状态
+const userContextShowLogin = computed(() => userStore.userContext.showLoginDialog);
+
 
 const loginForm = reactive({
   loginName: "",
@@ -315,11 +322,12 @@ const viewArticle = (article) => {
   }
 }
 
-// 监听父组件期望打开登录对话框的事件
+
+// 监听父组件期望打开登录对话框的事件，以及api期望打开登录对话框的事件
 watch(
-    () => basePageProps.showLoginEvent,
-    (newValue, oldValue) => {
-      showLoginDialog.value = true;
+    () => ({event: basePageProps.showLoginEvent, apiEvent: userStore.userContext.showLoginDialog}),
+    async ({event, apiEvent}) => {
+      showLoginDialog.value = apiEvent || event;
     },
     {deep: true}
 )

@@ -20,6 +20,7 @@ import cn.fangcai.blog.mapstruct.PaperConverter;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -167,4 +168,18 @@ public class PaperServiceImpl implements IPaperService {
         return PaperConverter.INSTANCE.toQuestionRes(question);
     }
 
+    @Override
+    public void incrPaperReadCt(Integer id) {
+        paperMapper.update(new LambdaUpdateWrapper<Paper>()
+                .setSql("read_ct = read_ct + 1")
+                .eq(Paper::getId, id));
+    }
+
+    @Override
+    public void incrQuestionReadCt(Integer questionId) {
+        questionMapper.update(new LambdaUpdateWrapper<Question>()
+                .setSql("read_ct = read_ct + 1")
+                .eq(Question::getId, questionId));
+
+    }
 }

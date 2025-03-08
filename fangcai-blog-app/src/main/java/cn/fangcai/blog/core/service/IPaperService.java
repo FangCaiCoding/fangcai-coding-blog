@@ -29,4 +29,8 @@ public interface IPaperService {
     QuestionRes getQuestionAnswer(Integer questionId);
 
     QuestionRes getQuestionAnalysis(Integer questionId);
+
+    void incrPaperReadCt(Integer id);
+
+    void incrQuestionReadCt(Integer questionId);
 }

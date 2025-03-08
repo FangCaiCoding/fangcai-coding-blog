@@ -120,10 +120,10 @@
     border-radius: 10px;
 }
 
-.right-sidebar-fixed {
+.right-sidebar-top {
     position: sticky;
     top: 65px;
-    max-height: 250px;
+
     background-color: #fff;
     margin-top: 10px;
     text-align: center;
@@ -132,7 +132,17 @@
     border-radius: 10px;
 }
 
-.right-sidebar-fixed h4 {
+.right-sidebar-dynamic {
+    margin: 10px auto;
+    padding: 0 10px;
+    position: sticky;
+    top: 320px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0; /* 添加边框进行块区分 */
+    border-radius: 10px;
+}
+
+.right-sidebar-top h4 {
     font-size: 16px;
     margin: 0;
 }
@@ -149,15 +159,7 @@
     border-radius: 10px;
 }
 
-.right-sidebar-dynamic {
-    margin: 10px auto;
-    padding: 0 10px;
-    position: sticky;
-    top: 320px;
-    background-color: #fff;
-    border: 1px solid #e0e0e0; /* 添加边框进行块区分 */
-    border-radius: 10px;
-}
+
 
 .advertising-class {
     background-color: #fff;
@@ -278,7 +280,7 @@
 
 /* 响应式调整 */
 @media (max-height: 879px) {
-    .right-sidebar-fixed {
+    .right-sidebar-top {
         position: relative;
         top: 0;
     }

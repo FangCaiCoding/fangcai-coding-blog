@@ -20,6 +20,18 @@ const routes = [
         component: () => import('@/views/FcWebsite.vue')
     },
     {
+        path: '/papers',
+        name: 'papers',
+        component: () => import('@/views/PaperList.vue')
+    },
+
+    {
+        path: '/paperDetail/:id/:questionId?',
+        name: 'paperDetail',
+        component: () => import('@/views/PaperDetail.vue')
+    },
+
+    {
         path: '/course/:id/:articleId?',
         name: 'course',
         component: () => import('@/views/Course.vue')

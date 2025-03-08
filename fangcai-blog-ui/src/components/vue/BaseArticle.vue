@@ -1,7 +1,8 @@
 <template>
 
   <!--  会和子组件 BasePage 通信，发起登录事件，并监听登录成功后的回调-->
-  <BasePage :showLeftSidebar="baseArticleProps.showLeftSidebar" :show-login-event="showLoginEvent"
+  <BasePage :showLeftSidebar="baseArticleProps.showLeftSidebar"
+            :show-login-event="showLoginEvent"
             @loginSuccess="getArticle(article.id)">
     <template v-slot:left-sidebar-dynamic>
       <slot name="left-sidebar-dynamic"></slot>
@@ -43,7 +44,6 @@
         <span style="color: goldenrod">文章目录：</span>
         <MdCatalog class="catalog" :editorId="id" :offsetTop="200" :scroll-element="scrollElement"/>
       </div>
-
     </template>
   </BasePage>
 </template>
