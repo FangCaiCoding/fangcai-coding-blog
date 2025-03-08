@@ -34,6 +34,24 @@
           <p>登录后，即可阅读全文</p>
           <el-button type="primary">去登录</el-button>
         </div>
+
+        <!-- 教程目录按钮（手机端） -->
+        <div v-if="isMobile" class="mobile-catalog-button" @click="showCatalogDrawer = true">
+          目录
+        </div>
+
+        <!-- 教程目录抽屉（手机端） -->
+        <el-drawer
+            v-model="showCatalogDrawer"
+            title="本文目录"
+            size="60%"
+            direction="btt"
+            :with-header="true"
+            :show-close="false"
+        >
+          <MdCatalog class="catalog" :editorId="id" :offsetTop="200" :scroll-element="scrollElement"
+                     @click="showCatalogDrawer = false"/>
+        </el-drawer>
       </el-card>
 
 
@@ -42,9 +60,13 @@
     <template v-slot:right-sidebar-dynamic>
       <div class="catalog-head">
         <span style="color: goldenrod">文章目录：</span>
-        <MdCatalog class="catalog" :editorId="id" :offsetTop="200" :scroll-element="scrollElement"/>
+        <MdCatalog class="catalog" :editorId="id" :offsetTop="200"
+                   :scroll-element="scrollElement"
+        />
       </div>
     </template>
+
+
   </BasePage>
 </template>
 
@@ -59,6 +81,7 @@ import {useUserStore} from "@/stores/UserContext.js";
 import useClipboard from 'vue-clipboard3'
 import {ElMessage} from "element-plus";
 import articleApi from "@/api/articleApi.js";
+import {useMobile} from "@/components/js/UseMobile.js";
 
 const userStore = useUserStore()
 const id = 'article-preview-only';
@@ -91,6 +114,9 @@ const article = ref({
   contendIsEnd: true,
 });
 
+// 判断是否为手机端
+const {isMobile} = useMobile();
+const showCatalogDrawer = ref(false); // 控制教程目录抽屉的显示
 
 // 计算文章字数
 const wordCount = computed(() => {
@@ -171,7 +197,25 @@ const handleKeydown = async (event) => {
 </script>
 
 <style scoped>
+/* 手机端教程目录按钮 */
+.mobile-catalog-button {
+  position: fixed;
+  bottom: 60px;
+  left: 10px;
+  font-size: 12px;
+  transform: translateX(-50%);
+  padding: 10px 10px;
+  background-color: #409eff;
+  color: white;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
 
+.mobile-catalog-button:hover {
+  background-color: #66b1ff;
+}
 
 .overlay {
   cursor: pointer;

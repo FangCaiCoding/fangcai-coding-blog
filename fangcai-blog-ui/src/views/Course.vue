@@ -23,7 +23,34 @@
 
 
     </template>
+
   </BaseArticle>
+
+  <!-- 教程目录按钮（手机端） -->
+  <div v-if="isMobile" class="mobile-catalog-button" @click="showCatalogDrawer = true">
+    教程
+  </div>
+
+  <!-- 教程目录抽屉（手机端） -->
+  <el-drawer
+      v-model="showCatalogDrawer"
+      title="教程目录"
+      size="60%"
+      direction="btt"
+      :with-header="true"
+      :show-close="false"
+  >
+    <div class="catalog_info">
+      <p
+          :class="['course-article', { 'selected-article': courseArticle.articleId === selectedArticleId }]"
+          v-for="(courseArticle, index) in courseDetail.details"
+          :key="courseArticle.id"
+          @click="getArticle(courseArticle.articleId)"
+      >
+        {{ index + 1 }}. {{ courseArticle.articleAlias }}
+      </p>
+    </div>
+  </el-drawer>
 </template>
 
 
@@ -33,6 +60,7 @@ import {useRoute} from "vue-router";
 import apiService from "@/api/apiService.js";
 import router from "@/router/index.js";
 import BaseArticle from "@/components/vue/BaseArticle.vue";
+import {useMobile} from "@/components/js/UseMobile.js";
 
 const route = useRoute();
 const selectedArticleId = ref(0);
@@ -56,8 +84,12 @@ const courseDetail = reactive({
     }
   ]
 });
+// 判断是否为手机端
+const {isMobile} = useMobile();
+const showCatalogDrawer = ref(false); // 控制教程目录抽屉的显示
 
 const getArticle = async (articleId) => {
+  showCatalogDrawer.value = false; // 关闭抽屉
   if (articleId === selectedArticleId.value) {
     return;
   }
@@ -136,6 +168,42 @@ watch(
   overflow-y: auto;
   scrollbar-width: thin; /* 设置滚动条样式为细一点 */
   scrollbar-color: #d4d4d4 transparent; /* Firefox 滚动条颜色 */
+}
+
+/* 手机端教程目录按钮 */
+.mobile-catalog-button {
+  position: fixed;
+  bottom: 20px;
+  left: 10px;
+  font-size: 12px;
+  transform: translateX(-50%);
+  padding: 10px 10px;
+  background-color: #409eff;
+  color: white;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.mobile-catalog-button:hover {
+  background-color: #66b1ff;
+}
+
+/* 手机端教程目录抽屉 */
+:deep(.el-drawer) {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+:deep(.el-drawer__header) {
+  margin-bottom: 10px;
+  padding: 16px;
+  border-bottom: 1px solid #ebeef5;
+}
+
+:deep(.el-drawer__body) {
+  padding: 16px;
 }
 
 /* 响应式调整 */

@@ -8,7 +8,9 @@
         <h1 class="header-title">方才coding</h1>
       </div>
 
+      <!-- 导航栏（桌面端） -->
       <el-menu
+          v-if="!isMobile"
           :default-active="activeIndex"
           mode="horizontal"
           :ellipsis="false"
@@ -20,6 +22,21 @@
         <el-menu-item index="/website">资源</el-menu-item>
         <el-menu-item index="/papers">软考真题</el-menu-item>
       </el-menu>
+
+      <!-- 导航栏（手机端） -->
+      <el-dropdown v-else class="mobile-nav">
+        <el-button text class="mobile-nav-button">
+          导航
+        </el-button>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item @click="selectNavigate('/')">首页</el-dropdown-item>
+            <el-dropdown-item @click="selectNavigate('/courses')">教程</el-dropdown-item>
+            <el-dropdown-item @click="selectNavigate('/website')">资源</el-dropdown-item>
+            <el-dropdown-item @click="selectNavigate('/papers')">软考真题</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
 
       <!-- 中央 副标题 -->
       <div class="header-center">
@@ -107,7 +124,7 @@
 
 
   <!--  搜索对话框-->
-  <el-dialog v-model="showSearchDialog" width="500px" top="10vh" :show-close="false" @opened="openSearch">
+  <el-dialog v-model="showSearchDialog" class="search-dialog-class" :show-close="false" @opened="openSearch">
     <!--     使用 ref 绑定 el-input -->
     <el-input
         ref="searchInput"
@@ -133,8 +150,8 @@
   </el-dialog>
 
   <!-- 登录弹窗 -->
-  <el-dialog v-model="showLoginDialog" title="登录享受更多权益" width="500px" :close-on-click-modal="false"
-  @close="userStore.switchLoginDialog(false)">
+  <el-dialog v-model="showLoginDialog" title="登录享受更多权益" class="login-dialog-class" :close-on-click-modal="false"
+             @close="userStore.switchLoginDialog(false)">
     <!-- Tab Navigation for Different Login Options -->
     <el-tabs type="card">
       <el-tab-pane label="微信登录">
@@ -182,7 +199,7 @@
   </el-dialog>
 
   <!-- 编辑用户昵称和头像弹窗 -->
-  <el-dialog v-model="showEditUserDialog" title="编辑个人信息" width="500px" :close-on-click-modal="false">
+  <el-dialog v-model="showEditUserDialog" title="编辑个人信息" class="login-dialog-class" :close-on-click-modal="false">
     <!-- 头像部分 -->
     <div style="text-align: center; margin-bottom: 20px;">
       <el-avatar
@@ -213,13 +230,14 @@
 </template>
 
 <script setup>
-import {computed, defineProps, nextTick, onMounted, reactive, ref, watch} from "vue";
+import {defineProps, nextTick, onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
 import {Search} from "@element-plus/icons-vue";
 import {useUserStore} from "@/stores/UserContext.js";
 import userApi from "@/api/userApi.js";
 import articleApi from "@/api/articleApi.js";
+import {useMobile} from "@/components/js/UseMobile.js";
 
 // 定义props
 const basePageProps = defineProps({
@@ -254,8 +272,9 @@ const activeIndex = ref(route.path);
 
 // 登录弹窗-业务控制的状态
 const showLoginDialog = ref(false);
-// 用户上下文的登录弹窗状态
-const userContextShowLogin = computed(() => userStore.userContext.showLoginDialog);
+
+// 判断是否为手机端
+const {isMobile} = useMobile();
 
 
 const loginForm = reactive({

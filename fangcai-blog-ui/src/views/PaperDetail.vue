@@ -59,13 +59,42 @@
             class="answer-content"
         />
       </el-card>
+
+
+      <!-- 答题卡悬浮按钮（手机端） -->
+      <div v-if="isMobile" class="mobile-answer-sheet-button" @click="showAnswerSheetDrawer = true">
+        答题卡
+      </div>
+
+      <!-- 答题卡抽屉（手机端） -->
+      <el-drawer
+          v-model="showAnswerSheetDrawer"
+          title="答题卡"
+          size="60%"
+          direction="btt"
+          :with-header="true"
+          :show-close="false"
+      >
+        <div class="question-list">
+          <div
+              v-for="question in paperDetail.questionList"
+              :key="question.id"
+              class="question-item"
+              :class="{ 'active': question.id === selectedQuestionId }"
+              @click="handleQuestionChange(question.id)"
+          >
+            {{ question.name }}
+          </div>
+        </div>
+      </el-drawer>
+
     </template>
 
     <template v-slot:right-top-sidebar-dynamic>
       <slot name="right-sidebar-dynamic">
         <!-- 第一板块：固定内容 -->
         <div class="advertising-class">
-          <h4 class="title-class">点击图片即可查看详情</h4>
+          <h4 class="flashing-text">点击图片即可查看详情</h4>
           <img src="https://fangcaicoding.cn/oss/rk-v.jpg" alt="QR Code" @click="commonApi.clickToRk()" class="qr-code"
                style="border-radius: 5px"/>
           <p>方才的微信号：fangcaicoding</p>
@@ -73,6 +102,8 @@
       </slot>
     </template>
 
+
+    <!-- 右侧边栏（桌面端） -->
     <template v-slot:right-sidebar-dynamic>
       <div class="catalog-head">
         <span style="color: blue">答题卡：</span>
@@ -89,6 +120,8 @@
         </div>
       </div>
     </template>
+
+
   </BasePage>
 </template>
 
@@ -99,6 +132,7 @@ import paperApi from "@/api/paperApi.js";
 import {MdPreview} from "md-editor-v3";
 import router from "@/router/index.js";
 import commonApi from "@/api/commonApi.js";
+import {useMobile} from "@/components/js/UseMobile.js";
 
 const route = useRoute();
 
@@ -146,6 +180,12 @@ const questionLoading = ref({
   analysis: ""
 });
 
+
+const showAnswerSheetDrawer = ref(false); // 控制答题卡抽屉的显示
+// 判断是否为手机端
+const {isMobile} = useMobile();
+
+
 const handleShowAnswer = async () => {
   if (!showAnswer.value) {
     // 首次点击时加载答案数据
@@ -176,6 +216,7 @@ const handleQuestionChange = async (questionId) => {
   questionDetail.value = questionLoading.value;
   selectedQuestionId.value = questionId;
   showAnswer.value = false; // 切换题目时隐藏答案
+  showAnswerSheetDrawer.value = false; // 切换题目时隐藏答题卡抽屉
   activeTab.value = 'answer'
   // 更新路由参数
   await router.replace({name: 'paperDetail', params: {id: route.params.id, questionId: questionId}});
@@ -245,8 +286,42 @@ watch(
   }
 }
 
-.answer-sheet {
-  margin-bottom: 16px;
+/* 手机端答题卡悬浮按钮 */
+.mobile-answer-sheet-button {
+  position: fixed;
+  bottom: 80px;
+  right: 10px;
+  z-index: 1000;
+  width: 50px;
+  padding: 5px 5px;
+  font-size: 14px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  background-color: #409eff;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-answer-sheet-button:hover {
+  background-color: #66b1ff;
+}
+
+/* 手机端答题卡抽屉 */
+:deep(.el-drawer) {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+:deep(.el-drawer__header) {
+  margin-bottom: 10px;
+  padding: 16px;
+  border-bottom: 1px solid #ebeef5;
+}
+
+:deep(.el-drawer__body) {
   padding: 16px;
 }
 

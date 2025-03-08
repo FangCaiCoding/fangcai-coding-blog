@@ -93,7 +93,11 @@
     animation: typing 2.5s steps(20, end), blink-caret 0.85s step-end infinite; /* 打字机动画 */
     animation-fill-mode: forwards; /* 动画完成后保持最终状态 */
 }
-
+.search-dialog-class{
+    width: 500px;
+    top: 5vh;
+    max-width: 90%;
+}
 /* 打字机效果 */
 @keyframes typing {
     from {
@@ -219,6 +223,11 @@
 .right-item {
     margin-left: 20px;
 }
+.login-dialog-class{
+    width: 500px;
+    top: 5vh;
+    max-width: 90%;
+}
 
 .user-avatar {
     align-items: center; /* 使用align-items代替align-content，因为align-content用于多行弹性盒模型 */
@@ -252,6 +261,14 @@
     color: #ff8721;
 }
 
+/* 手机端导航栏样式 */
+.mobile-nav {
+    margin-left: auto;
+}
+
+.mobile-nav-button {
+    border: none;
+}
 /* 响应式调整 */
 @media (max-width: 998px) {
     .header-center {
@@ -262,11 +279,20 @@
 /* 响应式调整 */
 @media (max-width: 768px) {
     .header-wrapper {
-        height: 60px;
-        background-color: white;
+        max-width: 85%;
+        height: 55px;
+        top: 0;
         display: flex;
-        justify-content: center; /* 或者使用 space-around, space-evenly，根据需求选择 */
+        justify-content: center; /* 水平居中 */
+        align-items: center; /* 垂直居中 */
+        margin: auto;
+        background-color: white;
     }
+    .header-title {
+        font-size: 12px;
+        margin: 0;
+    }
+
 
     .header-center {
         display: none;
