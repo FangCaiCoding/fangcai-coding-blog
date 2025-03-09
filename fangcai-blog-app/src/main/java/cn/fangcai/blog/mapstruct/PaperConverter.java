@@ -4,6 +4,7 @@ import cn.fangcai.blog.core.model.dto.PaperDto;
 import cn.fangcai.blog.core.model.entity.Paper;
 import cn.fangcai.blog.core.model.entity.PaperCate;
 import cn.fangcai.blog.core.model.entity.Question;
+import cn.fangcai.blog.core.model.req.paper.QuestionUptReq;
 import cn.fangcai.blog.core.model.res.paper.PaperCateRes;
 import cn.fangcai.blog.core.model.res.paper.PaperDetailRes;
 import cn.fangcai.blog.core.model.res.paper.PaperListRes;
@@ -32,4 +33,8 @@ public interface PaperConverter {
     QuestionRes toQuestionRes(Question question);
 
     PaperDto toPaperDto(Paper paper);
+
+    Question toQuestion(QuestionUptReq addReq);
+
+    List<QuestionRes> toQuestionResList(List<Question> records);
 }

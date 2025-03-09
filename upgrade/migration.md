@@ -63,6 +63,27 @@ CREATE TABLE `question` (
                             PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='题目表';
 
+
+-- 初始化角色权限
+INSERT INTO `menu` (`name`, `menu_type`, `order_num`, `route_key`, `menu_key`, `auth_code_list`, `is_enabled`, `operator`, `is_uk_deleted`) VALUES
+                                                                                                                                                ('题库列表查询', 3, 1, '/paper/list/all', 'paper:list', JSON_ARRAY('paper:query'), 1, 1, 0),
+                                                                                                                                                ('题库详情查询', 3, 2, '/paper/detail/{id}', 'paper:detail', JSON_ARRAY('paper:query'), 1, 1, 0);
+
+
+INSERT INTO `menu` (`name`, `menu_type`, `order_num`, `route_key`, `menu_key`, `auth_code_list`, `is_enabled`, `operator`, `is_uk_deleted`) VALUES
+                                                                                                                                                ('题目分页查询', 3, 3, '/paper/question/page', 'question:page', JSON_ARRAY('question:query'), 1, 1, 0),
+                                                                                                                                                ('新增题目', 3, 4, '/paper/question', 'question:add', JSON_ARRAY('question:add'), 1, 1, 0),
+                                                                                                                                                ('修改题目名称', 3, 5, '/paper/question/name', 'question:name', JSON_ARRAY('question:edit'), 1, 1, 0),
+                                                                                                                                                ('修改题目描述', 3, 6, '/paper/question/intro', 'question:intro', JSON_ARRAY('question:edit'), 1, 1, 0),
+                                                                                                                                                ('修改题目答案', 3, 7, '/paper/question/answer', 'question:answer', JSON_ARRAY('question:edit'), 1, 1, 0),
+                                                                                                                                                ('修改题目解析', 3, 8, '/paper/question/analysis', 'question:analysis', JSON_ARRAY('question:edit'), 1, 1, 0);
+
+
+INSERT INTO role_menu
+    (role_id, menu_id, operator)
+select 1,id,1 from menu  where id not in
+                               (select  menu_id from role_menu where role_menu.role_id in (select id from `role` where name = "超级管理员"));
+
 ```
 
 

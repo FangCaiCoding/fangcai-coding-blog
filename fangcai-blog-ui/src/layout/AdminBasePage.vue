@@ -37,6 +37,11 @@
             </el-icon>
             <span>用户日志</span>
           </el-menu-item>
+          <el-menu-item index="/admin/question">
+            <el-icon><Files /></el-icon>
+            <span>题库管理</span>
+          </el-menu-item>
+
           <el-menu-item index="/admin/setting">
             <el-icon>
               <Setting/>
@@ -77,7 +82,7 @@
 <script setup>
 import {computed, ref} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
-import {Connection, Document, Menu as IconMenu, Setting, User,} from '@element-plus/icons-vue'
+import {Connection, Document, Files, Menu as IconMenu, Setting, User,} from '@element-plus/icons-vue'
 
 const router = useRouter();
 const route = useRoute();

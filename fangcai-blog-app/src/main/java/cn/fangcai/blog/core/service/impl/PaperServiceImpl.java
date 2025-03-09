@@ -11,16 +11,20 @@ import cn.fangcai.blog.core.model.entity.Paper;
 import cn.fangcai.blog.core.model.entity.PaperCate;
 import cn.fangcai.blog.core.model.entity.PaperQuestion;
 import cn.fangcai.blog.core.model.entity.Question;
+import cn.fangcai.blog.core.model.req.paper.QuestionPageReq;
+import cn.fangcai.blog.core.model.req.paper.QuestionUptReq;
 import cn.fangcai.blog.core.model.res.paper.PaperCateRes;
 import cn.fangcai.blog.core.model.res.paper.PaperDetailRes;
 import cn.fangcai.blog.core.model.res.paper.PaperListRes;
 import cn.fangcai.blog.core.model.res.paper.QuestionRes;
 import cn.fangcai.blog.core.service.IPaperService;
 import cn.fangcai.blog.mapstruct.PaperConverter;
+import cn.fangcai.common.model.dto.FcPageRes;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -181,5 +185,52 @@ public class PaperServiceImpl implements IPaperService {
                 .setSql("read_ct = read_ct + 1")
                 .eq(Question::getId, questionId));
 
+    }
+
+    @Override
+    public FcPageRes<QuestionRes> pageQuestion(QuestionPageReq pageReq) {
+        Page<Question> selectPage = questionMapper.selectPage(new Page<>(pageReq.getPage(), pageReq.getPageSize()),
+                new LambdaQueryWrapper<Question>()
+                        .like(StrUtil.isNotBlank(pageReq.getName()), Question::getName, pageReq.getName())
+                        .orderByDesc(Question::getId));
+        List<QuestionRes> questionResList = PaperConverter.INSTANCE.toQuestionResList(selectPage.getRecords());
+        return new FcPageRes<QuestionRes>(pageReq)
+                .total(selectPage.getTotal())
+                .records(questionResList);
+    }
+
+    @Override
+    public Boolean uptQuestionName(QuestionUptReq uptReq) {
+        return questionMapper.update(new LambdaUpdateWrapper<Question>()
+                .set(Question::getName, uptReq.getName())
+                .eq(Question::getId, uptReq.getId())) > 0;
+    }
+
+    @Override
+    public Boolean uptQuestionIntro(QuestionUptReq uptReq) {
+        return questionMapper.update(new LambdaUpdateWrapper<Question>()
+                .set(Question::getIntro, uptReq.getIntro())
+                .eq(Question::getId, uptReq.getId())) > 0;
+    }
+
+    @Override
+    public Boolean uptQuestionAnswer(QuestionUptReq uptReq) {
+        return questionMapper.update(new LambdaUpdateWrapper<Question>()
+                .set(Question::getAnswer, uptReq.getAnswer())
+                .eq(Question::getId, uptReq.getId())) > 0;
+    }
+
+    @Override
+    public Boolean uptQuestionAnalysis(QuestionUptReq uptReq) {
+        return questionMapper.update(new LambdaUpdateWrapper<Question>()
+                .set(Question::getAnalysis, uptReq.getAnalysis())
+                .eq(Question::getId, uptReq.getId())) > 0;
+    }
+
+    @Override
+    public Integer addQuestion(QuestionUptReq addReq) {
+        Question question = PaperConverter.INSTANCE.toQuestion(addReq);
+        questionMapper.insert(question);
+        return addReq.getId();
     }
 }
