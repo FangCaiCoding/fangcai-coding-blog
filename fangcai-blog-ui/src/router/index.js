@@ -1,6 +1,8 @@
 import {createRouter, createWebHistory} from "vue-router"
 
+
 const routes = [
+
     /**
      * 前台路由
      */
@@ -73,18 +75,10 @@ const routes = [
     },
 
     {
-        path: '/admin/question',
-        name: 'adminQuestion',
-        component: () => import('@/views/admin/AdminQuestion.vue')
-    },
-
-    {
         path: '/admin/paperQue',
         name: 'adminQPaperQuestion',
-        component: () => import('@/views/admin/AdminPaperQue.vue')
+        component: () => import('@/views/admin/AdminPaperQuestion.vue')
     },
-
-
 
 
     // 添加以下配置来处理所有不存在的路径

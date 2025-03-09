@@ -49,6 +49,16 @@ app.use(router);
 // 每次应用实例初始化时，进行用户上下文初始化
 const userContext = useUserStore();
 userContext.initContext();
+router.onError((error, to) => {
+    if (error.message.includes('Failed to fetch dynamically imported module')) {
+
+        // 2. 展示友好错误提示
+        const confirmReload = confirm('资源加载失败，点击确定刷新页面')
+        if (confirmReload) {
+            window.location.href = to.fullPath
+        }
+    }
+})
 
 app.mount('#app')
 

@@ -16,7 +16,6 @@
         <div class="answer-header">
           <el-button
               type="primary"
-              size="small"
               @click="handleShowAnswer"
           >
             {{ showAnswer ? '隐藏答案' : '查看答案' }}
