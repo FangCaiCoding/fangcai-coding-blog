@@ -80,7 +80,7 @@
               :class="{ 'active': question.id === selectedQuestionId }"
               @click="handleQuestionChange(question.id)"
           >
-            {{ question.name }}
+            {{ question.nameAlias }}
           </div>
         </div>
       </el-drawer>
