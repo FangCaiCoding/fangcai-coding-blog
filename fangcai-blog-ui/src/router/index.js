@@ -78,6 +78,12 @@ const routes = [
         component: () => import('@/views/admin/AdminQuestion.vue')
     },
 
+    {
+        path: '/admin/paperQue',
+        name: 'adminQPaperQuestion',
+        component: () => import('@/views/admin/AdminPaperQue.vue')
+    },
+
 
 
 

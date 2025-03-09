@@ -37,10 +37,18 @@
             </el-icon>
             <span>用户日志</span>
           </el-menu-item>
-          <el-menu-item index="/admin/question">
-            <el-icon><Files /></el-icon>
+          <el-menu-item index="/admin/paperQue">
+            <el-icon>
+              <Files/>
+            </el-icon>
             <span>题库管理</span>
           </el-menu-item>
+          <!--          暂时先不放出来-->
+          <!--          <el-menu-item index="/admin/question">-->
+          <!--            <el-icon><Files /></el-icon>-->
+          <!--            <span>题目管理</span>-->
+          <!--          </el-menu-item>-->
+
 
           <el-menu-item index="/admin/setting">
             <el-icon>

@@ -2,9 +2,7 @@ import axiosInst from "./axiosInst.js";
 
 // 获取所有的题库-允许cateId为空
 const listAllByCate = (cateId = null) => {
-    return axiosInst.get("/paper/list/all", {
-        params: { cateId }
-    });
+    return axiosInst.get(`/paper/list/all?cateId=${cateId}`);
 };
 
 // 获取题库详情
@@ -20,6 +18,9 @@ const pageQuestion = (pageReq) => {
 // 新增题目
 const addQuestion = (addReq) => {
     return axiosInst.post("/paper/question", addReq);
+};
+const delQuestion = (id) => {
+    return axiosInst.del(`/paper/question/${id}`);
 };
 
 // 修改问题的名称
@@ -47,6 +48,7 @@ export default {
     getPaperDetail,
     pageQuestion,
     addQuestion,
+    delQuestion,
     uptQuestionName,
     uptQuestionIntro,
     uptQuestionAnswer,

@@ -24,6 +24,7 @@ public interface PaperConverter {
     PaperConverter INSTANCE = Mappers.getMapper(PaperConverter.class);
 
 
+
     List<PaperCateRes> toPaperCateResList(List<PaperCate> paperCateList);
 
     List<PaperListRes> toPaperResList(List<Paper> papers);

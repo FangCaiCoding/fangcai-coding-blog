@@ -116,7 +116,7 @@
             :class="{ 'active': question.id === selectedQuestionId }"
             @click="handleQuestionChange(question.id)"
         >
-          {{ question.name }}
+          {{ question.nameAlias }}
         </div>
       </div>
     </template>
@@ -157,7 +157,8 @@ const paperDetail = ref({
   questionList: [
     {
       id: 1,
-      name: "正在加载中",
+      name: "",
+      nameAlias: "",
       readCt: 0
     }
   ]

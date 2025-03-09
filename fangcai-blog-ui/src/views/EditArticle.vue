@@ -72,9 +72,8 @@ import articleApi from "@/api/articleApi.js";
 
 const route = useRoute();
 const dialogVisible = ref(false);
-const formLabelWidth = '100px';
 
-const mdDto = reactive({
+const mdDto = ref({
   theme: 'light',
   pageFullscreen: false,
   preview: true,

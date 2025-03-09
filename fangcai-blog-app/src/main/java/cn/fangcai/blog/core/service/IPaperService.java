@@ -40,6 +40,11 @@ public interface IPaperService {
 
     FcPageRes<QuestionRes> pageQuestion(QuestionPageReq pageReq);
 
+    Integer addQuestion(QuestionUptReq addReq);
+
+
+    Boolean delQuestion(Integer id);
+
     Boolean uptQuestionName(QuestionUptReq uptReq);
 
 
@@ -48,8 +53,6 @@ public interface IPaperService {
     Boolean uptQuestionAnswer(QuestionUptReq uptReq);
 
     Boolean uptQuestionAnalysis(QuestionUptReq uptReq);
-
-    Integer addQuestion(QuestionUptReq addReq);
 
 
 }

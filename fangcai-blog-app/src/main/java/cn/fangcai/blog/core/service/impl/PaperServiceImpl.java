@@ -137,10 +137,11 @@ public class PaperServiceImpl implements IPaperService {
                 continue;
             }
             // 题目别名优先于题目名称
-            String name = StrUtil.blankToDefault(paperQuestion.getQuestionAlias(), question.getName());
+            String nameAlias = StrUtil.blankToDefault(paperQuestion.getQuestionAlias(), question.getName());
             QuestionDto questionDto = new QuestionDto();
             questionDto.setId(paperQuestion.getQuestionId());
-            questionDto.setName(name);
+            questionDto.setName(question.getName());
+            questionDto.setNameAlias(nameAlias);
             questionDto.setReadCt(question.getReadCt());
             questionDtoList.add(questionDto);
         }
@@ -231,6 +232,11 @@ public class PaperServiceImpl implements IPaperService {
     public Integer addQuestion(QuestionUptReq addReq) {
         Question question = PaperConverter.INSTANCE.toQuestion(addReq);
         questionMapper.insert(question);
-        return addReq.getId();
+        return question.getId();
+    }
+
+    @Override
+    public Boolean delQuestion(Integer id) {
+        return questionMapper.deleteById(id) > 0;
     }
 }

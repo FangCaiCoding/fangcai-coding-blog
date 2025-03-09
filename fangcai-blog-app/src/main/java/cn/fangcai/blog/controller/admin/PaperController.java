@@ -29,7 +29,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/paper")
-@Tag(name = "题库相关的API，前端使用")
+@Tag(name = "题库相关的API，后台管理")
 public class PaperController {
 
     @Autowired
@@ -47,11 +47,11 @@ public class PaperController {
     @GetMapping("/detail/{id}")
     @FcCheckAuth(values = {"paper:query"})
     public FcResult<PaperDetailRes> getPaperDetail(@PathVariable Integer id) {
-        return FcResult.SUCCESS(paperService.getPaperDetail(id, StatusEnum.PUBLISHED));
+        return FcResult.SUCCESS(paperService.getPaperDetail(id, null));
     }
 
     @Operation(summary = "获取题目的列表")
-    @GetMapping("/question/page")
+    @PostMapping("/question/page")
     @FcCheckAuth(values = {"question:query"})
     public FcResult<FcPageRes<QuestionRes>> pageQuestion(@RequestBody @Validated QuestionPageReq pageReq) {
         return FcResult.SUCCESS(paperService.pageQuestion(pageReq));
@@ -62,6 +62,14 @@ public class PaperController {
     @FcCheckAuth(values = {"question:add"})
     public FcResult<Integer> addQuestion(@RequestBody @Validated QuestionUptReq addReq) {
         return FcResult.SUCCESS(paperService.addQuestion(addReq));
+    }
+
+
+    @Operation(summary = "删除题目")
+    @DeleteMapping("/question/{id}")
+    @FcCheckAuth(values = {"question:edit"})
+    public FcResult<Boolean> delQuestion(@PathVariable Integer id) {
+        return FcResult.SUCCESS(paperService.delQuestion(id));
     }
 
 

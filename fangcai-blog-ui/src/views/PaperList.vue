@@ -55,7 +55,7 @@
       <slot name="right-sidebar-dynamic">
         <!-- 第一板块：固定内容 -->
         <div class="advertising-class">
-          <h4 class="title-class">助你一次性拿下架构</h4>
+          <h4 class="flashing-text">助你一次性拿下架构</h4>
           <img src="https://fangcaicoding.cn/oss/rk-v.jpg" alt="QR Code" @click="commonApi.clickToRk()" class="qr-code"
                style="border-radius: 5px"/>
           <p>方才的微信号：fangcaicoding</p>

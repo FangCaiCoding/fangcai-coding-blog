@@ -14,7 +14,7 @@ import lombok.Setter;
 public class PaperCateRes {
 
     @Schema(description = "分类id")
-    private Integer cateId;
+    private Integer id;
 
     @Schema(description = "分类名称")
     private String name;

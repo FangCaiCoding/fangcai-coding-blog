@@ -5,7 +5,7 @@ const listAllCate = () => {
 }
 
 const listPublicAll = (cateId) => {
-    return axiosInst.get(`/paper/public/list/all`, { params: { cateId } });
+    return axiosInst.get(`/paper/public/list/all`, { cateId });
 }
 
 const getPaperDetail = (id) => {

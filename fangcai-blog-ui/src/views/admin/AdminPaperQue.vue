@@ -6,12 +6,47 @@
         <el-input
             style="width: 300px"
             size="large"
-            v-model="searchStr"
+            v-model="searchDto.uptQuestionName"
             clearable
             placeholder="根据题目搜索"
             :prefix-icon="Search"
             @input="loadQuestions(1)"
         />
+
+        <!-- 分类搜索框 -->
+        <el-select
+            v-model="searchDto.cateId"
+            placeholder="选择题库分类"
+            style="margin-left: 10px; width: 200px"
+            size="large"
+            @change="listPaperByCateId()"
+            :clearable="true"
+        >
+          <el-option
+              v-for="cate in cateList"
+              :key="cate.id"
+              :label="cate.name"
+              :value="cate.id"
+          />
+
+        </el-select>
+
+        <!-- 分类搜索框 -->
+        <el-select
+            v-model="searchDto.paperId"
+            placeholder="请先选择分类，再选择题库"
+            style="margin-left: 10px; width: 250px"
+            size="large"
+            @change="getPaperDetail()"
+            :clearable="true"
+        >
+          <el-option
+              v-for="paper in paperList"
+              :key="paper.id"
+              :label="paper.name"
+              :value="paper.id"
+          />
+        </el-select>
         <div class="button-group">
 
           <el-button type="primary" icon="Plus" @click="editQuestion({})">新增题目</el-button>
@@ -24,13 +59,14 @@
                 style="width: 100%"
                 :border="true"
                 size="large">
-        <el-table-column fixed align="center" prop="name" label="题目名" width="450">
+        <el-table-column fixed align="center" prop="name" label="题目名" width="350">
           <template #default="scope">
-            <el-link type="primary" :underline="false" @click="viewArticle(scope.row.id)" target="_blank">
+            <el-link type="primary" :underline="false" @click="viewPaperDetail(scope.row.id)" target="_blank">
               {{ scope.row.name }}
             </el-link>
           </template>
         </el-table-column>
+        <el-table-column align="center" prop="nameAlias" label="题目别名" width="150"/>
         <el-table-column align="center" prop="id" label="主键" width="80"/>
         <el-table-column align="center" prop="readCt" label="阅读数" width="80"/>
         <el-table-column align="center" prop="createTime" label="创建时间"/>
@@ -38,6 +74,7 @@
         <el-table-column align="center" fixed="right" label="操作" min-width="120">
           <template #default="scope">
             <el-button link type="primary" @click="editQuestion(scope.row)">编辑题目</el-button>
+            <el-button link type="primary" @click="editQuestionIntro(scope.row.id)">编辑问题</el-button>
             <el-button link type="success" @click="editAnswer(scope.row.id)">编辑答案</el-button>
             <el-button link type="success" @click="editAnalysis(scope.row.id)">编辑解析</el-button>
             <el-button link type="danger" @click="delQuestion(scope.row.id)">删除</el-button>
@@ -120,8 +157,37 @@ const mdDto = ref({
 
 const currentPage = ref(1);  // 当前加载的页码
 const totalQuestion = ref(0);
-const pageSize = 10;  // 每页加载的文章数量
-const searchStr = ref('');
+const pageSize = 20;  // 每页加载的文章数量
+
+const searchDto = ref({
+  cateId: null,
+  paperId: null,
+  uptQuestionName: ''
+});
+
+const cateList = ref([{
+  id: null,
+  name: ''
+}]);
+const paperList = ref([]);
+
+const listAllCate = async () => {
+  cateList.value = await paperApi.listAllCate();
+}
+const listPaperByCateId = async () => {
+  const res = await paperAdminApi.listAllByCate(searchDto.value.cateId);
+  if (res.length > 0) {
+    paperList.value = res[0].paperList;
+  }
+}
+
+const getPaperDetail = async () => {
+  const res = await paperAdminApi.getPaperDetail(searchDto.value.paperId);
+  if (res) {
+    questionList.value = res.questionList;
+    totalQuestion.value = res.questionTotal;
+  }
+}
 
 // 题目内容编辑器
 const showMdEditDialog = ref(false);
@@ -159,6 +225,9 @@ const saveQuestionMdEdit = async () => {
   } else if (editType === 'analysis') {
     questionEditReq.value.analysis = contentMd;
     isSuccess = await paperAdminApi.uptQuestionAnalysis(questionEditReq.value);
+  } else if (editType === 'intro') {
+    questionEditReq.value.intro = contentMd;
+    isSuccess = await paperAdminApi.uptQuestionIntro(questionEditReq.value);
   }
   if (isSuccess) {
     ElMessage.success('编辑成功！');
@@ -171,21 +240,31 @@ const saveQuestionMdEdit = async () => {
 
 const loadQuestions = async (page = 1) => {
   currentPage.value = page;
-  const trimmedQuery = searchStr.value.trim();
+  const trimmedQuery = searchDto.value.uptQuestionName.trim();
   const pageResult = await paperAdminApi.pageQuestion({
     page: currentPage.value,
     pageSize: pageSize,
     name: trimmedQuery
   });
-  if (pageResult && pageResult.records.length > 0) {
-    questionList.value = [];
-    totalQuestion.value = pageResult.total;
-    questionList.value.push(...pageResult.records);
-  }
+  questionList.value = [];
+  totalQuestion.value = pageResult.total;
+  questionList.value.push(...pageResult.records);
 }
 
-const viewArticle = (id) => {
 
+const viewPaperDetail = (questionId) => {
+  if (!searchDto.value.paperId) {
+    ElMessage.error('请先选择题库！');
+    return;
+  }
+    // 生成完整路由地址
+    const routeData = router.resolve({
+      name: 'paperDetail',
+      params: {id: searchDto.value.paperId, questionId: questionId}
+    });
+
+    // 新标签页打开
+    window.open(routeData.href, '_blank');
 }
 
 
@@ -211,11 +290,17 @@ const uptQuestionName = async () => {
   }
 }
 
-
+const editQuestionIntro = async (id) => {
+  const res = await paperApi.getQuestion(id);
+  questionMdEditor.value.id = res.id;
+  questionMdEditor.value.contentMd = res.intro;
+  questionMdEditor.value.editType = 'intro';
+  showMdEditDialog.value = true;
+};
 const editAnswer = async (id) => {
-  const answer = await paperApi.getQuestionAnswer(id);
-  questionMdEditor.value.id = answer.id;
-  questionMdEditor.value.contentMd = answer.answer;
+  const res = await paperApi.getQuestionAnswer(id);
+  questionMdEditor.value.id = res.id;
+  questionMdEditor.value.contentMd = res.answer;
   questionMdEditor.value.editType = 'answer';
   showMdEditDialog.value = true;
 };
@@ -258,6 +343,7 @@ const delQuestion = async (id) => {
 
 
 onMounted(() => {
+  listAllCate();
   loadQuestions();
 });
 
