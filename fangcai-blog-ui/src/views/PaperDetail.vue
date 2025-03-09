@@ -2,26 +2,25 @@
   <BasePage :showRightSidebar="true">
     <template v-slot:main-content>
       <!-- 题目区域 -->
-      <el-card class="exam-section">
-        <div class="question-area">
-          <div class="paper-info">
-            <h3>{{ paperDetail.name }}->{{ questionDetail.name }}</h3>
-          </div>
+      <el-card class="exam-section" style="position: sticky">
+        <div class="paper-info">
+          <h3>{{ paperDetail.name }}->{{ questionDetail.name }}</h3>
+        </div>
+        <div class="exam-intro">
           <MdPreview
               :editorId="questionDetailMdId"
               :modelValue="questionDetail.intro"
               :codeFoldable="false"
-              class="question-content"
           />
-          <div class="answer-header">
-            <el-button
-                type="primary"
-                size="small"
-                @click="handleShowAnswer"
-            >
-              {{ showAnswer ? '隐藏答案' : '查看答案' }}
-            </el-button>
-          </div>
+        </div>
+        <div class="answer-header">
+          <el-button
+              type="primary"
+              size="small"
+              @click="handleShowAnswer"
+          >
+            {{ showAnswer ? '隐藏答案' : '查看答案' }}
+          </el-button>
         </div>
 
       </el-card>
@@ -49,14 +48,12 @@
             :editorId="questionAnswerMdId"
             :modelValue="questionDetail.answer"
             :codeFoldable="false"
-            class="answer-content"
         />
         <MdPreview
             v-if="activeTab === 'analysis'"
             :editorId="questionAnalysisMdId"
             :modelValue="questionDetail.analysis"
             :codeFoldable="false"
-            class="answer-content"
         />
       </el-card>
 
@@ -133,6 +130,7 @@ import {MdPreview} from "md-editor-v3";
 import router from "@/router/index.js";
 import commonApi from "@/api/commonApi.js";
 import {useMobile} from "@/components/js/UseMobile.js";
+import 'md-editor-v3/lib/preview.css';
 
 const route = useRoute();
 
@@ -326,11 +324,7 @@ watch(
   padding: 16px;
 }
 
-.question-content,
-.answer-content {
-  padding: 16px;
-  background: #f8f9fa;
-  border-radius: 4px;
-  margin-top: 16px;
+.exam-intro {
+  min-height: 480px;
 }
 </style>

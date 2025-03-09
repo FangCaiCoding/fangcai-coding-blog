@@ -26,7 +26,7 @@
             <strong>转载</strong></span>
         </div>
         <!-- 文章内容 -->
-        <div class="article-content">
+        <div class="md-content">
           <MdPreview :editorId="id" :modelValue="article.contentMd" :codeFoldable="false"/>
         </div>
         <!-- 遮罩层 -->

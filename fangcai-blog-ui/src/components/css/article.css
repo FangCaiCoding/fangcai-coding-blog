@@ -15,7 +15,7 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* 下边框使用半透明颜色 */
 }
 
-.article-content{
+.md-content{
     min-height: 600px;
 }
 

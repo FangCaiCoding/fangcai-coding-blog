@@ -293,21 +293,21 @@ const uptQuestionName = async () => {
 const editQuestionIntro = async (id) => {
   const res = await paperApi.getQuestion(id);
   questionMdEditor.value.id = res.id;
-  questionMdEditor.value.contentMd = res.intro;
+  questionMdEditor.value.contentMd = res.intro? res.intro : ' ';
   questionMdEditor.value.editType = 'intro';
   showMdEditDialog.value = true;
 };
 const editAnswer = async (id) => {
   const res = await paperApi.getQuestionAnswer(id);
   questionMdEditor.value.id = res.id;
-  questionMdEditor.value.contentMd = res.answer;
+  questionMdEditor.value.contentMd = res.answer? res.answer : ' ';
   questionMdEditor.value.editType = 'answer';
   showMdEditDialog.value = true;
 };
 const editAnalysis = async (id) => {
   const res = await paperApi.getQuestionAnalysis(id);
   questionMdEditor.value.id = res.id;
-  questionMdEditor.value.contentMd = res.analysis;
+  questionMdEditor.value.contentMd = res.analysis? res.analysis : ' ';
   questionMdEditor.value.editType = 'analysis';
   showMdEditDialog.value = true;
 };
