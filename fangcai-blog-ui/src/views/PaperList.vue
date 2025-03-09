@@ -50,7 +50,16 @@
         </el-col>
       </el-row>
     </template>
-
+    <template v-slot:right-top-sidebar-dynamic>
+      <slot name="right-sidebar-dynamic">
+        <!-- 第一板块：固定内容 -->
+        <div class="advertising-class">
+          <h4 class="">扫码即可联系方才</h4>
+          <img src="https://fangcaicoding.cn/oss/fc_private.jpg" alt="QR Code"  class="qr-code"
+               style="border-radius: 5px"/>
+        </div>
+      </slot>
+    </template>
     <template v-slot:right-sidebar-dynamic>
       <slot name="right-sidebar-dynamic">
         <!-- 第一板块：固定内容 -->
