@@ -18,7 +18,7 @@ import AdminBasePage from "@/layout/AdminBasePage.vue";
 
 import {config} from 'md-editor-v3';
 import MdTargetBlankConfig from '@/components/js/MdTargetBlankConfig.js';
-import {useUserStore} from "@/stores/UserContext.js";
+import {userContextStore} from "@/stores/UserContextStore.js";
 
 // 注册 md-editor-v3 插件,所有的 url 都会增加 target="_blank"
 config({
@@ -47,18 +47,20 @@ app.use(baiduAnalytics, {router});
 app.use(router);
 
 // 每次应用实例初始化时，进行用户上下文初始化
-const userContext = useUserStore();
+const userContext = userContextStore();
 userContext.initContext();
-router.onError((error, to) => {
-    if (error.message.includes('Failed to fetch dynamically imported module')) {
 
-        // 2. 展示友好错误提示
-        const confirmReload = confirm('资源加载失败，点击确定刷新页面')
-        if (confirmReload) {
-            window.location.href = to.fullPath
-        }
-    }
-})
+// 路由全局拦截器，捕获动态加载模块加载失败的错误，并提示用户刷新页面-暂时注释掉
+// router.onError((error, to) => {
+//     if (error.message.includes('Failed to fetch dynamically imported module')) {
+//
+//         // 2. 展示友好错误提示
+//         const confirmReload = confirm('资源加载失败，点击确定刷新页面')
+//         if (confirmReload) {
+//             window.location.href = to.fullPath
+//         }
+//     }
+// })
 
 app.mount('#app')
 

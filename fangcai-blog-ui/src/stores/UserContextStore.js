@@ -7,7 +7,7 @@ import userApi from "@/api/userApi.js";
   第1个参数 web 是 useWebStore 在应用中的唯一标识符(ID)
   第2个参数是 Setup函数 或 Option对象
 */
-export const useUserStore = defineStore('userContext', () => {
+export const userContextStore = defineStore('userContext', () => {
         //定义一个响应式对象，存储用户信息
         const userContext = reactive({
             id: 0,
@@ -15,6 +15,7 @@ export const useUserStore = defineStore('userContext', () => {
             nickName: "",
             avatar: "",
             avatarStr: "",
+            authCodeSet: [],
             showLoginDialog: false,
         })
 
@@ -24,9 +25,17 @@ export const useUserStore = defineStore('userContext', () => {
             userContext.nickName = user.nickName;
             userContext.avatar = user.avatar;
             userContext.avatarStr = user.avatarStr;
+            userContext.authCodeSet = user.authCodeSet;
         }
         const isLogin = () => {
             return userContext.id > 0;
+        }
+        // 判断是否有指定权限
+        const hasAuthCode = (authCode) => {
+            if (! userContext.authCodeSet ||userContext.authCodeSet.length === 0) {
+                return false;
+            }
+            return userContext.authCodeSet.includes(authCode);
         }
 
         const switchLoginDialog = (show) => {
@@ -55,7 +64,8 @@ export const useUserStore = defineStore('userContext', () => {
             initContext,
             isLogin,
             $reset,
-            switchLoginDialog
+            switchLoginDialog,
+            hasAuthCode
         }
     },
     {

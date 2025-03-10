@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 /**
  * @author MouFangCai
@@ -35,6 +36,10 @@ public class UserRes {
 
     @Schema(description = "头像文字（显示优先级低于头像）")
     private String avatarStr;
+
+    @Schema(description = "权限列表")
+    private Set<String> authCodeSet;
+
 
     @Schema(description = "是否启用")
     private Boolean enabled;

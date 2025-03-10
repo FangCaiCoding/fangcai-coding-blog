@@ -9,6 +9,7 @@ import cn.fangcai.common.model.dto.FcResult;
 import cn.fangcai.starter.auth.FcAuthContext;
 import cn.fangcai.starter.auth.FcAuthUtil;
 import cn.fangcai.starter.auth.ano.FcNotCheckLogin;
+import cn.fangcai.starter.auth.service.IAuthService;
 import cn.fangcai.starter.log.ano.FcLog;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,6 +34,8 @@ public class LoginController {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private IAuthService authService;
 
     @ApiOperationSupport(order = 10)
     @Operation(summary = "登录-通过账号")
@@ -66,6 +69,7 @@ public class LoginController {
         UserRes userInfo = null;
         if (FcAuthUtil.isLogin()) {
             userInfo = userService.getById(FcAuthContext.getUserIdAsInt());
+            userInfo.setAuthCodeSet(authService.listAuthCodeById(FcAuthContext.getUserId()));
         }
         return FcResult.SUCCESS(userInfo);
     }

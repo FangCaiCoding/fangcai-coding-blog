@@ -234,7 +234,7 @@ import {defineProps, nextTick, onMounted, onUnmounted, reactive, ref, watch} fro
 import {useRoute, useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
 import {Search} from "@element-plus/icons-vue";
-import {useUserStore} from "@/stores/UserContext.js";
+import {userContextStore} from "@/stores/UserContextStore.js";
 import userApi from "@/api/userApi.js";
 import articleApi from "@/api/articleApi.js";
 import {useMobile} from "@/components/js/UseMobile.js";
@@ -263,7 +263,7 @@ const basePageProps = defineProps({
   }
 });
 
-const userStore = useUserStore();
+const userStore = userContextStore();
 
 // 路由相关逻辑
 const router = useRouter();

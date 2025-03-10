@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {ElMessage} from 'element-plus';
 import router from "../router/index.js";
-import {useUserStore} from '@/stores/UserContext.js';
+import {userContextStore} from '@/stores/UserContextStore.js';
 
 const url = import.meta.env.VITE_API_URL;
 const api = import.meta.env.VITE_API_PATH;
@@ -89,7 +89,7 @@ axiosInst.interceptors.response.use(
             switch (error.response.status) {
                 case 401:
                     // 访问共享的 userStore 实例
-                    const userStore = useUserStore();
+                    const userStore = userContextStore();
                     userStore.$reset()
                     userStore.switchLoginDialog(true);
                     break;

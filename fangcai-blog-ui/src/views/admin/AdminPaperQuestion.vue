@@ -74,9 +74,9 @@
         <el-table-column align="center" fixed="right" label="操作" min-width="120">
           <template #default="scope">
             <el-button link type="primary" @click="editQuestion(scope.row)">编辑题目</el-button>
-            <el-button link type="primary" @click="editQuestionIntro(scope.row.id)">编辑问题</el-button>
-            <el-button link type="success" @click="editAnswer(scope.row.id)">编辑答案</el-button>
-            <el-button link type="success" @click="editAnalysis(scope.row.id)">编辑解析</el-button>
+            <el-button link type="primary" @click="editQuestionCallSon(scope.row.id, 'intro')">编辑问题</el-button>
+            <el-button link type="success" @click="editQuestionCallSon(scope.row.id, 'answer')">编辑答案</el-button>
+            <el-button link type="success" @click="editQuestionCallSon(scope.row.id, 'analysis')">编辑解析</el-button>
             <el-button link type="danger" @click="delQuestion(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -124,19 +124,9 @@
   </el-drawer>
 
 
-  <!-- 登录弹窗 -->
-  <el-dialog v-model="showMdEditDialog" title="编辑题目内容" class="md-editor-dialog-class">
-    <!-- 显式声明 default 插槽（element-ui 默认已包含，此处为强调结构） -->
-    <!-- 关键：添加具有明确高度的容器 -->
-    <MdEditor
-        v-model="questionMdEditor.contentMd"
-        :theme="mdDto.theme"
-        :preview="mdDto.preview"
-        :page-fullscreen="mdDto.pageFullscreen"
-        @save="saveQuestionMdEdit"
-        style="height: 750px"
-    />
-  </el-dialog>
+  <!-- md内容编辑弹窗 -->
+  <question-edit ref="editQuestionSonRef"/>
+
 </template>
 
 <script setup>
@@ -146,8 +136,8 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import {Search} from "@element-plus/icons-vue";
 import paperAdminApi from "@/api/paperAdminApi.js";
 import paperApi from "@/api/paperApi.js";
-import {MdEditor} from "md-editor-v3";
 import 'md-editor-v3/lib/style.css';
+import QuestionEdit from "@/components/vue/QuestionEdit.vue";
 
 const mdDto = ref({
   theme: 'light',
@@ -214,27 +204,13 @@ const questionMdEditor = ref({
   contentMd: ' ',
   editType: 'answer'
 });
+// 创建一个 ref 变量，用于引用子组件
+const editQuestionSonRef = ref(null);
 
-const saveQuestionMdEdit = async () => {
-  const {id, contentMd, editType} = questionMdEditor.value;
-  questionEditReq.value.id = id;
-  let isSuccess;
-  if (editType === 'answer') {
-    questionEditReq.value.answer = contentMd;
-    isSuccess = await paperAdminApi.uptQuestionAnswer(questionEditReq.value);
-  } else if (editType === 'analysis') {
-    questionEditReq.value.analysis = contentMd;
-    isSuccess = await paperAdminApi.uptQuestionAnalysis(questionEditReq.value);
-  } else if (editType === 'intro') {
-    questionEditReq.value.intro = contentMd;
-    isSuccess = await paperAdminApi.uptQuestionIntro(questionEditReq.value);
-  }
-  if (isSuccess) {
-    ElMessage.success('编辑成功！');
-    showMdEditDialog.value = false;
-  } else {
-    ElMessage.error('编辑失败！');
-  }
+// 定义调用子组件方法的函数
+const editQuestionCallSon = async (id, editType) => {
+  // 调用子组件的 addReadCount 方法
+  editQuestionSonRef.value.editQuestion(id, editType);
 }
 
 
@@ -257,14 +233,14 @@ const viewPaperDetail = (questionId) => {
     ElMessage.error('请先选择题库！');
     return;
   }
-    // 生成完整路由地址
-    const routeData = router.resolve({
-      name: 'paperDetail',
-      params: {id: searchDto.value.paperId, questionId: questionId}
-    });
+  // 生成完整路由地址
+  const routeData = router.resolve({
+    name: 'paperDetail',
+    params: {id: searchDto.value.paperId, questionId: questionId}
+  });
 
-    // 新标签页打开
-    window.open(routeData.href, '_blank');
+  // 新标签页打开
+  window.open(routeData.href, '_blank');
 }
 
 
@@ -289,28 +265,6 @@ const uptQuestionName = async () => {
     await loadQuestions();
   }
 }
-
-const editQuestionIntro = async (id) => {
-  const res = await paperApi.getQuestion(id);
-  questionMdEditor.value.id = res.id;
-  questionMdEditor.value.contentMd = res.intro? res.intro : ' ';
-  questionMdEditor.value.editType = 'intro';
-  showMdEditDialog.value = true;
-};
-const editAnswer = async (id) => {
-  const res = await paperApi.getQuestionAnswer(id);
-  questionMdEditor.value.id = res.id;
-  questionMdEditor.value.contentMd = res.answer? res.answer : ' ';
-  questionMdEditor.value.editType = 'answer';
-  showMdEditDialog.value = true;
-};
-const editAnalysis = async (id) => {
-  const res = await paperApi.getQuestionAnalysis(id);
-  questionMdEditor.value.id = res.id;
-  questionMdEditor.value.contentMd = res.analysis? res.analysis : ' ';
-  questionMdEditor.value.editType = 'analysis';
-  showMdEditDialog.value = true;
-};
 
 const delQuestion = async (id) => {
   ElMessageBox.confirm(

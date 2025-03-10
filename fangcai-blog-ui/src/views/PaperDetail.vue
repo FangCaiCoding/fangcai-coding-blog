@@ -4,7 +4,12 @@
       <!-- 题目区域 -->
       <el-card class="exam-section" style="position: sticky">
         <div class="paper-info">
-          <h3>{{ paperDetail.name }}->{{ questionDetail.name }}</h3>
+          <h3>{{ paperDetail.name }}->{{ questionDetail.name }}
+            <el-button v-if="userCtx.hasAuthCode('question:edit')" type="text"
+                       style="float: right"
+                       @click="editQuestionCallSon(selectedQuestionId,'intro')">编辑问题</el-button>
+          </h3>
+
         </div>
         <div class="exam-intro">
           <MdPreview
@@ -26,6 +31,9 @@
 
       <!-- 答案/解析区域 -->
       <el-card v-if="showAnswer" class="exam-section answer-section">
+        <el-button v-if="userCtx.hasAuthCode('question:edit')" type="text"
+                   style="float: right" @click="editQuestionCallSon(selectedQuestionId,activeTab)">编辑内容</el-button>
+
         <div class="tab-switch">
           <el-tag
               :type="activeTab === 'answer' ? 'primary' : 'info'"
@@ -56,6 +64,7 @@
         />
       </el-card>
 
+      <question-edit ref="editQuestionSonRef"/>
 
       <!-- 答题卡悬浮按钮（手机端） -->
       <div v-if="isMobile" class="mobile-answer-sheet-button" @click="showAnswerSheetDrawer = true">
@@ -130,7 +139,9 @@ import router from "@/router/index.js";
 import commonApi from "@/api/commonApi.js";
 import {useMobile} from "@/components/js/UseMobile.js";
 import 'md-editor-v3/lib/preview.css';
-
+import QuestionEdit from "@/components/vue/QuestionEdit.vue";
+import {userContextStore} from "@/stores/UserContextStore.js";
+const userCtx = userContextStore()
 const route = useRoute();
 
 const selectedQuestionId = ref(0);
@@ -191,6 +202,15 @@ const handleShowAnswer = async () => {
   }
   showAnswer.value = !showAnswer.value;
 };
+// 创建一个 ref 变量，用于引用子组件
+const editQuestionSonRef= ref(null);
+
+// 定义调用子组件方法的函数
+const editQuestionCallSon = (id,editType) => {
+  console.debug("editQuestionCallSon",id,editType)
+  // 调用子组件的 addReadCount 方法
+  editQuestionSonRef.value.editQuestion(id,editType);
+}
 
 const loadAnswerData = async () => {
   if (!questionDetail.value.answer) {

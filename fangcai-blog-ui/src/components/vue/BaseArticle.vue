@@ -20,9 +20,11 @@
           <span class="meta-item">
             <strong> 预计阅读：</strong>{{ readingTime }} 分钟
           </span>
-          <span class="edit-button" @click="editArticle(article.id)" v-if="userStore.isLogin()">
+          <span class="edit-button" @click="editArticle(article.id)"
+                v-if="userStore.hasAuthCode('article:edit')">
             <strong>编辑</strong></span>
-          <span class="edit-button" style="color: blue" @click="copy" v-if="userStore.isLogin()">
+          <span class="edit-button" style="color: blue" @click="copy"
+                v-if="userStore.hasAuthCode('article:edit')">
             <strong>转载</strong></span>
         </div>
         <!-- 文章内容 -->
@@ -73,21 +75,19 @@
 
 <script setup>
 import {computed, onMounted, ref, watch} from 'vue';
-import {useRoute} from "vue-router";
 import router from "@/router/index.js";
 import {MdCatalog, MdPreview} from 'md-editor-v3';
 import 'md-editor-v3/lib/preview.css';
-import {useUserStore} from "@/stores/UserContext.js";
+import {userContextStore} from "@/stores/UserContextStore.js";
 import useClipboard from 'vue-clipboard3'
 import {ElMessage} from "element-plus";
 import articleApi from "@/api/articleApi.js";
 import {useMobile} from "@/components/js/UseMobile.js";
 
-const userStore = useUserStore()
+const userStore = userContextStore()
 const id = 'article-preview-only';
 const scrollElement = document.documentElement;
 const showLoginEvent = ref(false)
-const route = useRoute();
 
 
 // 定义props
@@ -164,7 +164,7 @@ const copy = async () => {
   const currentUrl = window.location.href;
 
   // 定义要在复制内容前添加的转载信息
-  const sourceText = `> 本文转载自：[${currentUrl}](${currentUrl})\n\n`;
+  const sourceText = `本文转载自-方才coding的博客，原文链接：[${currentUrl}](${currentUrl})\n\n`;
   const contentToCopy = sourceText + article.value.contentMd;
   try {
     await toClipboard(contentToCopy)
