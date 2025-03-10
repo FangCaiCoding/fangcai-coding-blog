@@ -1,14 +1,10 @@
-> 本文转载自：[https://fangcaicoding.cn/course/11/3](https://fangcaicoding.cn/course/11/3)
+本文转载自-方才coding的博客，原文链接：[https://fangcaicoding.cn/course/11/3](https://fangcaicoding.cn/course/11/3)
 
->大家好！我是方才，目前是8人后端研发团队的负责人，**拥有6年后端经验&3年团队管理经验**。
+>Hello 我是方才，8人后端研发leader、7年后端经验、4年团队管理&架构经验。
 >
-> <font color="red">系统学习践行者！</font>**近期在系统化输出前端入门相关技术文章，期望能帮大家构建一个完整的知识体系。**
+> <font color="red">专注于分享成体系的编程知识、职场经验、个人成长历程等！</font>
 >
-> <font color="red">如果对你有所帮助，记得一键三连！</font>
->
-> 我创建了一个编程学习交流群（**扫码关注后即可加入**），秉持“一群人可以走得更远”的理念，期待与你一起 From Zero To Hero！
->
-> 茫茫人海，遇见即是缘分！<font color="red">方才兄送你ElasticSearch系列知识图谱、前端入门系列知识图谱、系统架构师备考资料！</font>
+> <font color="red">文末，方才送你一份优质的技术资料，记得领取哟！</font>
 
 
 ## 关于本站
@@ -49,7 +45,7 @@
 
 ## 关于“我”
 
-From Zero To Hero！是我写博客一来，一直坚信的铭言。
+From Zero To Hero！是我写博客以来，一直坚信的铭言。
 
 只要我在走，哪怕很慢，也终将能积跬步以至千里！
 
@@ -57,7 +53,8 @@ From Zero To Hero！是我写博客一来，一直坚信的铭言。
 
 - 欢迎添加作者好友，一起From Zero To Hero！
 
-  <img src="https://fangcaicoding.cn/oss/assets/01-关于本站/image-20241027212832534.png" alt="image-20241027212832534" style="zoom:33%;" />
+  <p><img src="https://fangcaicoding.cn/oss/assets/01-关于本站/image-20241027212832534.png" alt="image-20241027212832534" style="zoom:33%;" /></p>
+
 
 - b站主页
 
@@ -67,8 +64,59 @@ From Zero To Hero！是我写博客一来，一直坚信的铭言。
 
 ### todo
 
-- 用户个人信息管理页；
-- 评论系统；
+- vip机制实现；
+- 文章限制功能优化，增加vip阅读限制功能；
+- 实现内容收藏功能，支持 文章 + 题目；
+- 题库模块支持选择题类型的题目；
+- 评论系统-低优先级；
+
+### 20250309
+
+- 实现题库功能，包括前台刷题功能+后台的基础管理功能；
+
+- 调整广告位的实现，改为插槽机制；
+
+- 前台文章编辑等按钮实现权限控制，动态控制按钮；
+
+- 移动端整体适配优化，包括导航栏、专栏的目录、刷题模块的适配等；
+
+- 日志starter组件优化，日志内容增加动态变量，增加可读性；
+
+- 版本截图：
+
+  - 刷题模块
+
+  ![image-20250310210309139](https://fangcaicoding.cn/oss/assets/01-%E5%85%B3%E4%BA%8E%E6%9C%AC%E7%AB%99/image-20250310210309139.png)
+
+  ![image-20250310210344962](https://fangcaicoding.cn/oss/assets/01-%E5%85%B3%E4%BA%8E%E6%9C%AC%E7%AB%99/image-20250310210344962-174161184949214.png)
+
+  - 题库管理功能：
+
+    ![image-20250310210914597](https://fangcaicoding.cn/oss/assets/01-%E5%85%B3%E4%BA%8E%E6%9C%AC%E7%AB%99/image-20250310210914597.png)
+
+  - 前端的动态权限控制：
+
+  ![image-20250310210743747](https://fangcaicoding.cn/oss/assets/01-%E5%85%B3%E4%BA%8E%E6%9C%AC%E7%AB%99/image-20250310210743747.png)
+
+  - 日志组件完善：
+
+    ![image-20250310211115226](https://fangcaicoding.cn/oss/assets/01-%E5%85%B3%E4%BA%8E%E6%9C%AC%E7%AB%99/image-20250310211115226.png)
+
+  - 移动端适配结果：
+
+    ![image-20250310211424003](https://fangcaicoding.cn/oss/assets/01-%E5%85%B3%E4%BA%8E%E6%9C%AC%E7%AB%99/image-20250310211424003.png)
+
+### 20250118
+
+- 增加用户基础信息编辑功能：头像和昵称；
+
+- 后台管理：教程管理批量添加文章时，增加搜索功能；
+
+- 版本截图：
+
+  ![image-20250310205606923](https://fangcaicoding.cn/oss/assets/01-%E5%85%B3%E4%BA%8E%E6%9C%AC%E7%AB%99/image-20250310205606923.png)
+
+  ![image-20250310205657832](https://fangcaicoding.cn/oss/assets/01-%E5%85%B3%E4%BA%8E%E6%9C%AC%E7%AB%99/image-20250310205657832.png)
 
 ### 20241129
 
@@ -235,10 +283,23 @@ From Zero To Hero！是我写博客一来，一直坚信的铭言。
 
 ![image-20240913125434184](https://fangcaicoding.cn/oss/assets/01-关于本站/image-20240913125434184.png)
 
----
-## 近期更新计划
-> 近期更新计划（有需要的小伙伴，记得**点赞关注**哟！）
-> 1. 输出`vue、router、elementplus`等前端框架技术文章，期望能帮助大家快速建立相关的知识体系；
-> 2. 基于vue3+springboot3的前后端分离的博客系统已经开源啦，欢迎大家star！https://gitee.com/fangcaicoding/fangcai-coding-blog
 
-**“学编程，一定要系统化”**——若你也是系统学习的践行者，记得点赞关注，期待与你一起 From Zero To Hero！
+
+---
+
+## 交流群
+
+相遇即是缘分，方才送你一份**优质的资料（包括方才自己输出的ES、前端、Mysql系列的知识图谱，软考架构师资料，方才阅读过的优质书籍等等资料）**。
+
+也可备注加群，方才拉你进入**优质的技术交流群（<font color="red">日常分享高质量的技术文章、优质的资料、实时资讯共享等</font>）**。
+
+![技术资料](https://fangcaicoding.cn/oss/wechat-share.png)
+
+
+## 知识星球
+
+**“学编程，一定要系统化”**——若你也是系统学习的践行者，或不知道该如何系统学习，欢迎加入方才兄的知识星球，期待与你一起 From Zero To Hero！
+
+(ps：方才兄的知识星球开始试运营啦！后续会持续输出完整的编程技术系列（详情见知识图谱）**目前试运营阶段，只要38！！一杯奶茶钱，不仅可以学到知识，还可以围观方才兄的自媒体之路！**)
+
+![星球优惠卷](https://fangcaicoding.cn/oss/xingqiu.png)
