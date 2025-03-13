@@ -153,7 +153,7 @@ const questionAnalysisMdId = 'questionAnalysisMdId-preview-only';
 
 // 试卷详情数据
 const paperDetail = ref({
-  id: 3,
+  id: null,
   paperCateId: 2,
   paperCateName: null,
   name: "正在加载中",
@@ -164,7 +164,7 @@ const paperDetail = ref({
   updateTime: "2025-03-08 16:59:55",
   questionList: [
     {
-      id: 1,
+      id: null,
       name: "",
       nameAlias: "",
       readCt: 0
@@ -172,7 +172,7 @@ const paperDetail = ref({
   ]
 });
 const questionDetail = ref({
-  id: 1,
+  id: null,
   name: "加载中",
   readCt: 0,
   intro: "加载中....",
@@ -181,7 +181,7 @@ const questionDetail = ref({
 });
 
 const questionLoading = ref({
-  id: 0,
+  id: null,
   name: "加载中",
   readCt: 0,
   intro: "加载中.....",
