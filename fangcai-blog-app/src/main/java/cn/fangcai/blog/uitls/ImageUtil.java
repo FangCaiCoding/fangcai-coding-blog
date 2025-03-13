@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class ImageUtil {
 
     public static void main(String[] args) {
-        handleOne() ;
+        handleALl() ;
 
     }
     public static void handleOne(){
@@ -93,8 +93,7 @@ public class ImageUtil {
             );
             g.setComposite(alphaComposite);
             // 动态计算字体大小，根据图片宽度的1/15作为字体大小
-            fontSize = Math.min(fontSize, image.getWidth() / 15);
-            fontSize = Math.min(fontSize, image.getHeight() / 5);
+            fontSize = Math.min(image.getWidth() / 15, image.getHeight() / 5);
 
             // 设置字体样式
             Font font = new Font("Microsoft YaHei", Font.PLAIN, fontSize);
