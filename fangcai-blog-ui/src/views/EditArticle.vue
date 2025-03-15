@@ -120,7 +120,7 @@ const extractSummary = () => {
 const saveArticle = async () => {
   article.editContent = true;
   if (!article.openLimit) {
-    article.readLimitRatio = null;
+    article.readLimitRatio = 100;
   }
   if (article.id > 0) {
     article.id = await articleApi.editArticle(article);

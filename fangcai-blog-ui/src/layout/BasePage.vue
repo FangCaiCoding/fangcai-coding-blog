@@ -151,7 +151,7 @@
 
   <!-- 登录弹窗 -->
   <el-dialog v-model="showLoginDialog" title="登录享受更多权益" class="login-dialog-class" :close-on-click-modal="false"
-             @close="userStore.switchLoginDialog(false)">
+            >
     <!-- Tab Navigation for Different Login Options -->
     <el-tabs type="card">
       <el-tab-pane label="微信登录">
@@ -346,7 +346,7 @@ const viewArticle = (article) => {
 watch(
     () => ({event: basePageProps.showLoginEvent, apiEvent: userStore.userContext.showLoginDialog}),
     async ({event, apiEvent}) => {
-      showLoginDialog.value = apiEvent || event;
+      showLoginDialog.value = true;
     },
     {deep: true}
 )

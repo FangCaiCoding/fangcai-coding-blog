@@ -91,7 +91,7 @@ axiosInst.interceptors.response.use(
                     // 访问共享的 userStore 实例
                     const userStore = userContextStore();
                     userStore.$reset()
-                    userStore.switchLoginDialog(true);
+                    userStore.switchLoginDialog();
                     break;
                 case  403:
                     message = '你还没有当前操作的权限哟！系统将在2秒后跳转至首页！'

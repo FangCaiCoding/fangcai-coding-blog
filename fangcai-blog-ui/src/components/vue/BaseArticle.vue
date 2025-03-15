@@ -51,8 +51,13 @@
             :with-header="true"
             :show-close="false"
         >
-          <MdCatalog class="catalog" :editorId="id" :offsetTop="200" :scroll-element="scrollElement"
+          <MdCatalog class="catalog" style="margin-top: 0" :editorId="id" :offsetTop="200"
+                     :scroll-element="scrollElement"
                      @click="showCatalogDrawer = false"/>
+          <!-- 添加登录目录项 -->
+          <div v-if="!article.contendIsEnd" style="margin-bottom: 15px; margin-left: 20px;cursor: pointer" @click="toLogin">
+            <span style="color:cornflowerblue">未完，登录后阅读全文</span>
+          </div>
         </el-drawer>
       </el-card>
 
@@ -61,10 +66,17 @@
 
     <template v-slot:right-sidebar-dynamic>
       <div class="catalog-head">
+
         <span style="color: goldenrod">文章目录：</span>
-        <MdCatalog class="catalog" :editorId="id" :offsetTop="200"
-                   :scroll-element="scrollElement"
-        />
+        <div>
+          <MdCatalog class="catalog" :editorId="id" :offsetTop="200"
+                     :scroll-element="scrollElement"
+          />
+          <!-- 添加登录目录项 -->
+          <div v-if="!article.contendIsEnd" style="margin-bottom: 15px; margin-left: 20px;cursor: pointer" @click="toLogin">
+            <span style="color:cornflowerblue">未完，登录后阅读全文</span>
+          </div>
+        </div>
       </div>
     </template>
 
@@ -197,6 +209,7 @@ const handleKeydown = async (event) => {
 </script>
 
 <style scoped>
+
 /* 手机端教程目录按钮 */
 .mobile-catalog-button {
   position: fixed;

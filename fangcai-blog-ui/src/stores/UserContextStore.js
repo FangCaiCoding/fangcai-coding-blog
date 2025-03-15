@@ -38,8 +38,8 @@ export const userContextStore = defineStore('userContext', () => {
             return userContext.authCodeSet.includes(authCode);
         }
 
-        const switchLoginDialog = (show) => {
-            userContext.showLoginDialog = show;
+        const switchLoginDialog = () => {
+            userContext.showLoginDialog = !userContext.showLoginDialog;
         }
 
         /**
