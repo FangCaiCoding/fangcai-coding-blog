@@ -27,8 +27,8 @@ public class ArticlePageReq extends PageReq {
     @Schema(description = "排序字段 ArticleOrderByFiledEnum 枚举值 0-默认排序 1-浏览量  2-发布时间")
     private Byte orderField;
 
-    @Schema(description = "升序排列 true-升序 false-降序（默认值） ")
-    private Boolean isAsc = false;
+    @Schema(description = "升序排列 true-升序（默认值） false-降序 ")
+    private Boolean isAsc = true;
 
     @Schema(description = "期望排除的文章教程ID")
     private Integer excludeCourseId;
