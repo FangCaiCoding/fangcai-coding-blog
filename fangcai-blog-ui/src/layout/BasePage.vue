@@ -226,7 +226,7 @@
     <el-form label-width="100px">
       <!-- 用户ID显示（只读） -->
       <el-form-item label="UID：">
-          <el-text style="min-width: 200px; margin-left: 12px">{{ userStore.userContext.id }}</el-text>
+        <el-text style="min-width: 200px; margin-left: 12px">{{ userStore.userContext.id }}</el-text>
       </el-form-item>
       <el-form-item label="昵称：">
         <el-input v-model="uptUser.nickName" placeholder="请输入昵称" style="max-width: 300px;"></el-input>
@@ -243,6 +243,15 @@
           <span v-if="userStore.userContext.vipEndTime" style="margin-left: 50px; font-size: 13px; color: #909399;">
             到期时间: {{ formatVipEndTime(userStore.userContext.vipEndTime) }}
           </span>
+        </div>
+      </el-form-item>
+
+      <!-- VIP兑换 -->
+      <el-form-item label="VIP兑换：">
+        <div style="display: flex; align-items: center;">
+          <el-input v-model="vipToken" placeholder="请输入兑换码"
+                    style="max-width: 200px; margin-right: 10px;"></el-input>
+          <el-button type="warning" @click="exchangeVipToken">兑换</el-button>
         </div>
       </el-form-item>
     </el-form>
@@ -316,6 +325,8 @@ const uptUser = ref({
   avatarStr: ""
 });
 
+const vipToken = ref("");
+
 const toEditUser = async () => {
   const isOk = await userApi.editUser(uptUser.value);
   if (isOk) {
@@ -323,6 +334,23 @@ const toEditUser = async () => {
     showEditUserDialog.value = false;
     userStore.initContext();
   }
+}
+
+const exchangeVipToken = async () => {
+  if (!vipToken.value) {
+    ElMessage.warning("请输入兑换码");
+    return;
+  }
+  try {
+    const isOk = await userApi.exchangeVip(vipToken.value);
+    if (isOk) {
+      ElMessage.success("VIP兑换成功！");
+      userStore.initContext();
+    }
+  } finally {
+    vipToken.value = "";
+  }
+
 }
 
 // 格式化VIP到期时间

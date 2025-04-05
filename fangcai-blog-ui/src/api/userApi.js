@@ -15,9 +15,14 @@ const editUser =(editUserReq = {})=>{
     return axiosInst.put("/user/editUser",editUserReq)
 
 }
+const exchangeVip = (token) => {
+    return axiosInst.put(`/user/exchangeVip/${token}`)
+}
+
 export default {
     loginByName,
     loginByWxCode,
     getUserInfo,
-    editUser
+    editUser,
+    exchangeVip
 }

@@ -97,4 +97,8 @@ public class FcResult<T> {
         this.setTraceInfo(traceInfo);
         return this;
     }
+
+    public Boolean isSuccess() {
+        return this.code == 200;
+    }
 }

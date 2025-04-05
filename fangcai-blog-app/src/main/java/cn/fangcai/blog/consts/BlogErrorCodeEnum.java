@@ -23,6 +23,12 @@ public enum BlogErrorCodeEnum implements IError {
 
     USER_UN_ENABLED(HttpStatus.UNAUTHORIZED.value(), "220", "用户已被禁用！请联系站长解封！"),
 
+    INVALID_VIP_TOKEN(HttpStatus.BAD_REQUEST.value(), "230", "兑换码无效！请校对后再试！如有疑问请联系站长！"),
+
+
+    VIP_EXCHANGE_LIMIT(HttpStatus.BAD_REQUEST.value(), "231", "你已经兑换过了！请勿重复兑换！"),
+
+
 
     /**
      * 3xx 系列：文章相关
@@ -39,13 +45,17 @@ public enum BlogErrorCodeEnum implements IError {
     WEB_SITE_CATE_NOT_FOUND(HttpStatus.BAD_REQUEST.value(), "400", "非法请求，不存在的站点分类！"),
 
 
+
+
     /**
      * 5xx 系列：微信相关
      */
     WX_SIGNATURE_ERROR(HttpStatus.BAD_REQUEST.value(), "500", "微信签名验证失败！"),
     WX_CODE_EXPIRED(HttpStatus.BAD_REQUEST.value(), "501", "验证码已过期，请重新获取！"),
 
-    ;
+  ;
+
+
 
     BlogErrorCodeEnum(Integer statusCode, String errorCode, String msg) {
         this.httpStatus = statusCode;
