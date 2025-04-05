@@ -10,7 +10,7 @@
     <template v-slot:main-content>
       <!-- 标题栏和文章内容 -->
       <!-- 它的位置只是为了遮罩层的  position: absolute; 定位 -->
-      <el-card style="position: sticky">
+      <el-card style="position: sticky;" body-style="padding: 0px;">
         <!-- 标题栏 -->
         <h1 class="article-title">{{ article.title }}</h1>
         <div class="article-meta">
