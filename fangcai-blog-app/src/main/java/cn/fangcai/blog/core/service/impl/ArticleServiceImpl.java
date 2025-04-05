@@ -1,21 +1,22 @@
 package cn.fangcai.blog.core.service.impl;
 
+import cn.fangcai.blog.consts.ArticleOrderByFiledEnum;
+import cn.fangcai.blog.core.mapper.ArticleDetailMapper;
+import cn.fangcai.blog.core.mapper.ArticleMapper;
+import cn.fangcai.blog.core.mapper.ArticleTemplateMapper;
 import cn.fangcai.blog.core.model.entity.Article;
 import cn.fangcai.blog.core.model.entity.ArticleDetail;
 import cn.fangcai.blog.core.model.entity.ArticleTemplate;
 import cn.fangcai.blog.core.model.entity.base.BaseEntityWithDel;
-import cn.fangcai.blog.core.model.res.ArticleDetailRes;
-import cn.fangcai.blog.core.model.res.ArticleRes;
-import cn.fangcai.blog.core.model.res.ArticleTemplateRes;
-import cn.fangcai.blog.core.mapper.ArticleDetailMapper;
-import cn.fangcai.blog.core.mapper.ArticleMapper;
-import cn.fangcai.blog.core.mapper.ArticleTemplateMapper;
-import cn.fangcai.blog.mapstruct.ArticleConverter;
 import cn.fangcai.blog.core.model.req.ArticlePageReq;
 import cn.fangcai.blog.core.model.req.ArticleSaveReq;
 import cn.fangcai.blog.core.model.req.ArticleTemplatePageReq;
+import cn.fangcai.blog.core.model.res.ArticleDetailRes;
+import cn.fangcai.blog.core.model.res.ArticleRes;
+import cn.fangcai.blog.core.model.res.ArticleTemplateRes;
 import cn.fangcai.blog.core.service.IArticleService;
 import cn.fangcai.blog.core.service.ICourseService;
+import cn.fangcai.blog.mapstruct.ArticleConverter;
 import cn.fangcai.common.model.dto.FcPageRes;
 import cn.fangcai.common.model.enums.FcErrorCodeEnum;
 import cn.fangcai.common.model.exception.FcBusinessException;
@@ -115,8 +116,9 @@ public class ArticleServiceImpl implements IArticleService {
         Page<Article> page = articleRepository.lambdaQuery()
                 .like(StrUtil.isNotBlank(pageReq.getTitle()), Article::getTitle, pageReq.getTitle())
                 .eq(!Objects.isNull(pageReq.getStatus()), Article::getStatus, pageReq.getStatus())
+                .eq(!Objects.isNull(pageReq.getLimitType()), Article::getLimitType, pageReq.getLimitType())
                 .notIn(CollUtil.isNotEmpty(excludeArticleIdList), Article::getId, excludeArticleIdList)
-                .orderByAsc(Article::getOrderNum)
+                .orderBy(true, pageReq.getIsAsc(), ArticleOrderByFiledEnum.getOrderByFiled(pageReq.getOrderField()))
                 .orderByDesc(Article::getId)
                 .page(new Page<>(pageReq.getPage(), pageReq.getPageSize()));
         List<ArticleRes> articleResList = ArticleConverter.INSTANCE.articleListToResList(page.getRecords());

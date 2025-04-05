@@ -3,15 +3,36 @@
     <template v-slot:main-content>
       <!-- 顶部工具栏 -->
       <div class="toolbar">
+        <div class="filter-group">
         <el-input
             style="width: 300px"
             size="large"
-            v-model="searchStr"
+            v-model="articleQueryReq.searchStr"
             clearable
             placeholder="根据标题搜索"
             :prefix-icon="Search"
-            @input="loadArticles(1)"
         />
+        <el-select v-model="articleQueryReq.limitType" placeholder="限制类型" clearable  style="width: 120px">
+          <el-option label="不限制" :value="0" />
+          <el-option label="需登录" :value="1" />
+          <el-option label="需VIP" :value="2" />
+        </el-select>
+        <el-select v-model="articleQueryReq.status" placeholder="发布状态" clearable  style="width: 120px">
+          <el-option label="未发布" :value="0" />
+          <el-option label="已发布" :value="1" />
+        </el-select>
+        <el-select v-model="articleQueryReq.orderField" placeholder="排序字段" style="width: 120px">
+          <el-option label="顺序号" :value="0" />
+          <el-option label="阅读数" :value="1" />
+          <el-option label="创建时间" :value="2" />
+        </el-select>
+        <el-select v-model="articleQueryReq.isAsc" placeholder="排序方式" style="width: 120px">
+          <el-option label="升序" :value="true" />
+          <el-option label="降序" :value="false" />
+        </el-select>
+          <el-button type="primary" icon="Search" @click="loadArticles(1)">搜索</el-button>
+          <el-button type="warning" @click="resetSearch">重置</el-button>
+      </div>
         <div class="button-group">
           <el-tooltip
               class="box-item"
@@ -74,8 +95,8 @@
           class="pagination-right"
           @current-change="loadArticles"
           size="large"
-          :current-page="currentPage.value"
-          :page-size="pageSize"
+          :current-page="articleQueryReq.currentPage"
+          :page-size="articleQueryReq.pageSize"
           layout="total,prev, pager, next"
           :total="totalArticles"
       />
@@ -135,16 +156,23 @@
 <script setup>
 import {onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
-import apiService from '@/api/apiService';
 import {ElMessage, ElMessageBox} from "element-plus";
 import {Hide, Search, View} from "@element-plus/icons-vue";
 import articleApi from "@/api/articleApi.js";
 
 
-const currentPage = ref(1);  // 当前加载的页码
+
 const totalArticles = ref(0);
-const pageSize = 10;  // 每页加载的文章数量
-const searchStr = ref('');
+
+const articleQueryReq = ref({
+  currentPage: 1,
+  pageSize: 10,
+  searchStr: '',
+  limitType: null,
+  status: null,
+  orderField: 0,
+  isAsc: true
+});
 
 const router = useRouter();
 // 定义响应式数据
@@ -163,14 +191,9 @@ const article = ref({
 })
 
 // 加载文章数据
-const loadArticles = async (page = 1) => {
-  currentPage.value = page;
-  const trimmedQuery = searchStr.value.trim();
-  const pagePublicArticle = await articleApi.pageArticle({
-    page: currentPage.value,
-    pageSize: pageSize,
-    title: trimmedQuery
-  });
+const loadArticles = async (currentPage = 1) => {
+articleQueryReq.value.currentPage = currentPage;
+  const pagePublicArticle = await articleApi.pageArticle(articleQueryReq.value);
   if (pagePublicArticle && pagePublicArticle.records.length > 0) {
     articles.value = [];
     totalArticles.value = pagePublicArticle.total;
@@ -178,6 +201,13 @@ const loadArticles = async (page = 1) => {
   }
 }
 
+const resetSearch = () => {
+  articleQueryReq.value = {
+    currentPage: 1,
+    pageSize: 10
+  }
+  loadArticles(1);
+};
 const viewArticle = (id) => {
   // 使用 vue-router 生成url，在新标签页打开文章详情页
   const routeUrl = router.resolve({name: 'article', params: {id}}).href;
@@ -267,6 +297,12 @@ const rowStyle = {
 <style>
 .toolbar {
   display: flex;
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  gap: 10px;
   align-items: center;
 }
 
