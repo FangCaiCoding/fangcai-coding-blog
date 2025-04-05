@@ -82,10 +82,16 @@ public class CourseServiceImpl implements ICourseService {
                 .map(CourseConverter.INSTANCE::toCourseDetailRes)
                 .collect(Collectors.toList());
         List<Integer> articleIdList = details.stream().map(CourseDetailRes::getArticleId).toList();
-        Map<Integer, String> articleMap = articleService.listByIds(articleIdList)
-                .stream()
-                .collect(Collectors.toMap(ArticleRes::getId, ArticleRes::getTitle));
-        details.forEach(detail -> detail.setArticleTitle(articleMap.get(detail.getArticleId())));
+        List<ArticleRes> articleList = articleService.listByIds(articleIdList);
+        Map<Integer, ArticleRes> articleMap = articleList.stream()
+                .collect(Collectors.toMap(ArticleRes::getId, article -> article));
+        details.forEach(detail -> {
+            ArticleRes article = articleMap.get(detail.getArticleId());
+            if (article != null) {
+                detail.setArticleTitle(article.getTitle());
+                detail.setLimitType(article.getLimitType());
+            }
+        });
         courseRes.setDetails(details);
         return courseRes;
     }

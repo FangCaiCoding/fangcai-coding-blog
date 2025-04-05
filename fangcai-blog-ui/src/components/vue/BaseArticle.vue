@@ -32,9 +32,17 @@
           <MdPreview :editorId="id" :modelValue="article.contentMd" :codeFoldable="false"/>
         </div>
         <!-- 遮罩层 -->
-        <div v-if="!article.contendIsEnd" class="overlay" @click="toLogin">
-          <p>登录后，即可阅读全文</p>
-          <el-button type="primary">去登录</el-button>
+        <div v-if="!article.contendIsEnd" class="overlay" @click="handleContentRestriction">
+          <template v-if="article.limitType === 2">
+            <p v-if="!userStore.isLogin()">登录后，查看VIP权限</p>
+            <p v-else>开通VIP，即可阅读全文</p>
+            <el-button v-if="!userStore.isLogin()" type="primary">去登录</el-button>
+            <el-button v-else type="warning" @click.stop="toVip">开通VIP</el-button>
+          </template>
+          <template v-else>
+            <p>登录后，即可阅读全文</p>
+            <el-button type="primary">去登录</el-button>
+          </template>
         </div>
 
         <!-- 教程目录按钮（手机端） -->
@@ -54,9 +62,15 @@
           <MdCatalog class="catalog" style="margin-top: 0" :editorId="id" :offsetTop="200"
                      :scroll-element="scrollElement"
                      @click="showCatalogDrawer = false"/>
-          <!-- 添加登录目录项 -->
-          <div v-if="!article.contendIsEnd" style="margin-bottom: 15px; margin-left: 20px;cursor: pointer" @click="toLogin">
-            <span style="color:cornflowerblue">未完，登录后阅读全文</span>
+          <!-- 添加登录/VIP目录项 -->
+          <div v-if="!article.contendIsEnd" style="margin-bottom: 15px; margin-left: 20px;cursor: pointer" @click="handleContentRestriction">
+            <template v-if="article.limitType === 2">
+              <span v-if="!userStore.isLogin()" style="color:cornflowerblue">未完，登录后查看VIP权限</span>
+              <span v-else style="color:orange">未完，开通VIP后阅读全文</span>
+            </template>
+            <template v-else>
+              <span style="color:cornflowerblue">未完，登录后阅读全文</span>
+            </template>
           </div>
         </el-drawer>
       </el-card>
@@ -72,9 +86,15 @@
           <MdCatalog class="catalog" :editorId="id" :offsetTop="200"
                      :scroll-element="scrollElement"
           />
-          <!-- 添加登录目录项 -->
-          <div v-if="!article.contendIsEnd" style="margin-bottom: 15px; margin-left: 20px;cursor: pointer" @click="toLogin">
-            <span style="color:cornflowerblue">未完，登录后阅读全文</span>
+          <!-- 添加登录/VIP目录项 -->
+          <div v-if="!article.contendIsEnd" style="margin-bottom: 15px; margin-left: 20px;cursor: pointer" @click="handleContentRestriction">
+            <template v-if="article.limitType === 2">
+              <span v-if="!userStore.isLogin()" style="color:cornflowerblue">未完，登录后查看VIP权限</span>
+              <span v-else style="color:orange">未完，开通VIP后阅读全文</span>
+            </template>
+            <template v-else>
+              <span style="color:cornflowerblue">未完，登录后阅读全文</span>
+            </template>
           </div>
         </div>
       </div>
@@ -82,6 +102,20 @@
 
 
   </BasePage>
+  
+  <!-- VIP二维码弹窗 -->
+  <el-dialog
+    v-model="showVipQrDialog"
+    title="开通VIP"
+    width="300px"
+    center
+  >
+    <div style="text-align: center;">
+      <img src="https://fangcaicoding.cn/oss/fagncai_vip.png" alt="个人二维码" style="height: 200px;" />
+      <p style="margin-top: 15px; font-size: 16px; color: #606266;">请扫码添加微信，备注<span style="font-weight: bold; color: #409EFF;">VIP</span>付费开通</p>
+      <p style="margin-top: 5px; font-size: 14px; color: #909399;">开通VIP后可享受全站文章无限制阅读</p>
+    </div>
+  </el-dialog>
 </template>
 
 
@@ -124,6 +158,7 @@ const article = ref({
   content: '',
   contentMd: '',
   contendIsEnd: true,
+  limitType: 0, // 阅读限制类型：0-不限制 1-需登录 2-需VIP
 });
 
 // 判断是否为手机端
@@ -167,6 +202,28 @@ const editArticle = (id) => {
 
 const toLogin = () => {
   showLoginEvent.value = !showLoginEvent.value;
+}
+
+// 控制VIP二维码弹窗显示
+const showVipQrDialog = ref(false);
+
+// 处理VIP开通
+const toVip = () => {
+  // 显示二维码弹窗
+  showVipQrDialog.value = true;
+  // 这里可以添加跳转到VIP购买页面的逻辑
+  // router.push({name: 'vipSubscription'});
+}
+
+// 处理内容限制点击
+const handleContentRestriction = () => {
+  if (article.value.limitType === 2 && userStore.isLogin()) {
+    // 已登录但需要VIP
+    toVip();
+  } else {
+    // 需要登录或其他情况
+    toLogin();
+  }
 }
 
 // 使用插件

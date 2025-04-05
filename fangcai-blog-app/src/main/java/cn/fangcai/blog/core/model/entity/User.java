@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
+
 /**
  * <p>
  * 用户表
@@ -51,5 +53,9 @@ public class User extends BaseEntityWithDel {
     @Schema(description = "是否启用 1-启用 0-停用")
     private Boolean enabled;
 
+
+    @Schema(description = "vip 到期时间")
+    @TableField(value = "vip_end_time")
+    private LocalDateTime vipEndTime;
 
 }

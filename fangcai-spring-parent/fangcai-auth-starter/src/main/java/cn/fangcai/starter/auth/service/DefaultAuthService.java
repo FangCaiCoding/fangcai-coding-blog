@@ -18,7 +18,7 @@ public class DefaultAuthService implements IAuthService {
     @Override
     public UserAuthInfo getById(Object userId) {
         log.warn("DefaultAuthService is enable!");
-        return new UserAuthInfo(userId);
+        return new UserAuthInfo(true,userId);
     }
 
     @Override

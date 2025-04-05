@@ -8,6 +8,8 @@ import cn.fangcai.starter.auth.utils.LoginHttpUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 
+import java.util.Objects;
+
 /**
  * @author MouFangCai
  * @date 2024/8/19 22:16
@@ -28,23 +30,20 @@ public class FcAuthContext {
     public static <T extends UserAuthInfo> T getAuthInfo() {
         Object authInfo = USER_INFO.get();
         if (authInfo == null) {
-            return null;
+            return (T)new UserAuthInfo(false, null);
         }
         return (T) authInfo;
     }
 
     public static Object getUserId() {
         UserAuthInfo authInfo = getAuthInfo();
-        if (authInfo == null) {
-            return null;
-        }
         return authInfo.getId();
     }
 
     public static String getUserIdAsStr() {
         UserAuthInfo authInfo = getAuthInfo();
-        if (authInfo == null) {
-            return null;
+        if (Objects.isNull(authInfo.getId())) {
+            return "";
         }
         return String.valueOf(authInfo.getId());
     }

@@ -321,3 +321,36 @@ CREATE TABLE `question` (
                             `read_ct` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '阅读数',
                             PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='题目表';
+
+
+
+-- VIP兑换Token表
+CREATE TABLE `vip_token` (
+                             `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+                             `token_value` varchar(64) NOT NULL COMMENT 'Token值',
+                             `expire_time` datetime DEFAULT NULL COMMENT '有效期',
+                             `exchange_limit` int(11) unsigned NOT NULL DEFAULT '1' COMMENT '可兑换次数',
+                             `exchange_count` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '已兑换次数',
+                             `vip_days` int(11) unsigned NOT NULL DEFAULT '30' COMMENT 'VIP有效期(天)',
+                             `is_valid` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否有效 1-有效 0-无效',
+                             `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+                             `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                             `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                             `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除状态，0未删除，1删除',
+                             PRIMARY KEY (`id`),
+                             UNIQUE KEY `uk_token_value` (`token_value`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='VIP兑换Token表';
+
+-- VIP变更记录表
+CREATE TABLE `vip_exchange_record` (
+                                       `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+                                       `user_id` int(11) unsigned NOT NULL COMMENT '用户ID',
+                                       `token_id` int(11) unsigned default NULL COMMENT 'Token ID',
+                                       `old_vip_end_time` datetime DEFAULT NULL COMMENT '原VIP结束时间',
+                                       `vip_end_time` datetime NOT NULL COMMENT '新VIP结束时间',
+                                       `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+                                       `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                                       `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                                       PRIMARY KEY (`id`),
+                                       KEY `idx_user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='VIP变更记录表';

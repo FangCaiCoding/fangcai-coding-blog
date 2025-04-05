@@ -1,6 +1,7 @@
 package cn.fangcai.blog.controller;
 
 
+import cn.fangcai.blog.core.model.dto.UserAuthDto;
 import cn.fangcai.blog.core.model.req.UserLoginByWxReq;
 import cn.fangcai.blog.core.model.req.UserLoginReq;
 import cn.fangcai.blog.core.model.res.UserRes;
@@ -34,8 +35,6 @@ public class LoginController {
     @Autowired
     private IUserService userService;
 
-    @Autowired
-    private IAuthService authService;
 
     @ApiOperationSupport(order = 10)
     @Operation(summary = "登录-通过账号")
@@ -69,7 +68,6 @@ public class LoginController {
         UserRes userInfo = null;
         if (FcAuthUtil.isLogin()) {
             userInfo = userService.getById(FcAuthContext.getUserIdAsInt());
-            userInfo.setAuthCodeSet(authService.listAuthCodeById(FcAuthContext.getUserId()));
         }
         return FcResult.SUCCESS(userInfo);
     }

@@ -19,7 +19,7 @@ public class UserEditReq {
 
     @Schema(description = "头像文字")
     @NotEmpty(message = "头像文字不能为空")
-    @Length(max = 7,message = "头像文字 不能超过 7 个字符")
+    @Length(max = 32,message = "头像文字 不能超过 32 个字符")
     private String avatarStr;
 
     @Schema(description = "昵称")

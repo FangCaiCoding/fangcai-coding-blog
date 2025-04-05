@@ -39,6 +39,9 @@ public class CourseDetailRes {
     @Schema(description = "顺序号,升序排序")
     private Integer orderNum;
 
+    @Schema(description = "阅读限制类型：0-不限制 1-需登录 2-需VIP")
+    private Byte limitType;
+
     @Schema(description = "添加时间")
     private LocalDateTime createTime;
 

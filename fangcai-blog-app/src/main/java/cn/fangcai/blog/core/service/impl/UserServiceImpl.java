@@ -4,6 +4,7 @@ import cn.fangcai.blog.config.BlogAppProperties;
 import cn.fangcai.blog.consts.BlogErrorCodeEnum;
 import cn.fangcai.blog.core.mapper.UserMapper;
 import cn.fangcai.blog.core.mapper.UserRoleMapper;
+import cn.fangcai.blog.core.model.dto.UserAuthDto;
 import cn.fangcai.blog.core.model.entity.User;
 import cn.fangcai.blog.core.model.entity.UserRole;
 import cn.fangcai.blog.core.model.req.UserEditReq;
@@ -15,17 +16,20 @@ import cn.fangcai.blog.core.service.IUserService;
 import cn.fangcai.blog.mapstruct.UserConverter;
 import cn.fangcai.blog.uitls.CacheKeyFactory;
 import cn.fangcai.common.model.exception.FcBusinessException;
+import cn.fangcai.starter.auth.FcAuthContext;
 import cn.fangcai.starter.auth.dto.UserAuthInfo;
 import cn.fangcai.starter.auth.service.IAuthService;
 import cn.fangcai.starter.auth.utils.FcPWDUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,7 +60,10 @@ public class UserServiceImpl implements IUserService, IAuthService {
     @Override
     public UserRes getById(Integer userId) {
         User user = userRepository.getById(userId);
-        return UserConverter.INSTANCE.userToRes(user);
+        UserRes userRes = UserConverter.INSTANCE.userToRes(user);
+        userRes.setAuthCodeSet(this.listAuthCodeById(userId));
+        userRes.initVip();
+        return userRes;
     }
 
     @Override
@@ -68,6 +75,7 @@ public class UserServiceImpl implements IUserService, IAuthService {
     @Override
     public UserRes loginByName(UserLoginReq loginReq) {
         User user = userRepository.lambdaQuery()
+                .select(User::getId, User::getEnabled, User::getPassword)
                 .eq(User::getLoginName, loginReq.getLoginName())
                 .one();
         if (user == null) {
@@ -80,7 +88,7 @@ public class UserServiceImpl implements IUserService, IAuthService {
         if (!user.getEnabled()) {
             throw new FcBusinessException(BlogErrorCodeEnum.USER_UN_ENABLED);
         }
-        return UserConverter.INSTANCE.userToRes(user);
+        return this.getById(user.getId());
     }
 
     @Override
@@ -90,6 +98,7 @@ public class UserServiceImpl implements IUserService, IAuthService {
             throw new FcBusinessException(BlogErrorCodeEnum.WX_CODE_EXPIRED);
         }
         User user = userRepository.lambdaQuery()
+                .select(User::getId,User::getEnabled)
                 .eq(User::getWxOpenId, wxOpenId)
                 .one();
         if (user == null) {
@@ -98,7 +107,7 @@ public class UserServiceImpl implements IUserService, IAuthService {
         if (!user.getEnabled()) {
             throw new FcBusinessException(BlogErrorCodeEnum.USER_UN_ENABLED);
         }
-        return UserConverter.INSTANCE.userToRes(user);
+        return this.getById(user.getId());
     }
 
     @Override
@@ -108,9 +117,11 @@ public class UserServiceImpl implements IUserService, IAuthService {
         }
         User user = userRepository.getById((Integer) userId);
         if (user != null && user.getEnabled()) {
-            return (T) new UserAuthInfo(userId);
+            LocalDateTime vipEndTime = user.getVipEndTime();
+            Boolean isVip = vipEndTime != null && vipEndTime.isAfter(LocalDateTime.now());
+            return (T) new UserAuthDto(true,userId,isVip);
         }
-        return null;
+        return (T) new UserAuthDto(false,null,false);
     }
 
     @Override
@@ -155,7 +166,7 @@ public class UserServiceImpl implements IUserService, IAuthService {
         userRole.setRoleId(blogAppProperties.getDefaultRoleId());
         userRole.setOperator(newUser.getId());
         userRoleRepository.save(userRole);
-        return UserConverter.INSTANCE.userToRes(newUser);
+        return this.getById(newUser.getId());
     }
 
     @Override

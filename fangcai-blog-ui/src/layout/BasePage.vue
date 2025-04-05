@@ -55,14 +55,21 @@
         </div>
         <el-button class="right-item " v-if="!userStore.isLogin()" type="primary" @click="handleAvatarClick">登录
         </el-button>
-        <el-avatar
-            v-if="userStore.isLogin()"
-            :src="userStore.userContext.avatar"
-            class="right-item user-avatar"
-            @click="handleAvatarClick"
-        >
-          {{ userStore.userContext.avatarStr }}
-        </el-avatar>
+        <div class="avatar-container right-item" v-if="userStore.isLogin()" @click="handleAvatarClick">
+          <div class="avatar-nickname-container">
+            <div class="avatar-nickname-container">
+              <el-avatar
+                  :src="userStore.userContext.avatar"
+                  class="user-avatar"
+              >
+                {{ userStore.userContext.avatarStr }}
+              </el-avatar>
+              <span v-if="userStore.userContext.isVip" class="vip-badge">VIP</span>
+            </div>
+            <span class="user-nickname">{{ userStore.userContext.nickName }}</span>
+          </div>
+
+        </div>
       </div>
     </div>
   </header>
@@ -94,7 +101,7 @@
           <!-- 第二板块：动态内容 -->
           <div class="right-sidebar-dynamic">
             <slot name="right-sidebar-dynamic">
-              <!-- 第一板块：固定内容 -->
+              <!-- 第二板块：默认内容 -->
               <div class="advertising-class">
                 <h4 class="title-class">开源啦！点击图片即可直达</h4>
                 <img src="/blog_msg.png" alt="QR Code" @click="clickAdvertise" class="qr-code"
@@ -151,7 +158,7 @@
 
   <!-- 登录弹窗 -->
   <el-dialog v-model="showLoginDialog" title="登录享受更多权益" class="login-dialog-class" :close-on-click-modal="false"
-            >
+  >
     <!-- Tab Navigation for Different Login Options -->
     <el-tabs type="card">
       <el-tab-pane label="微信登录">
@@ -199,24 +206,44 @@
   </el-dialog>
 
   <!-- 编辑用户昵称和头像弹窗 -->
-  <el-dialog v-model="showEditUserDialog" title="编辑个人信息" class="login-dialog-class" :close-on-click-modal="false">
+  <el-dialog v-model="showEditUserDialog" title="个人信息" class="login-dialog-class" :close-on-click-modal="false">
+
     <!-- 头像部分 -->
     <div style="text-align: center; margin-bottom: 20px;">
-      <el-avatar
-          :src="uptUser.avatar"
-          class="right-item user-avatar"
-      >
-        {{ uptUser.avatarStr }}
-      </el-avatar>
+      <!-- 头像预览 -->
+      <div class="avatar-container" style="margin: 0 auto;">
+        <el-avatar
+            :src="uptUser.avatar"
+            class="user-avatar"
+        >
+          {{ uptUser.avatarStr }}
+        </el-avatar>
+        <span v-if="userStore.userContext.isVip" class="vip-badge">VIP</span>
+      </div>
     </div>
 
     <!-- 昵称部分 -->
     <el-form label-width="100px">
+      <!-- 用户ID显示（只读） -->
+      <el-form-item label="UID：">
+          <el-text style="min-width: 200px; margin-left: 12px">{{ userStore.userContext.id }}</el-text>
+      </el-form-item>
       <el-form-item label="昵称：">
-        <el-input v-model="uptUser.nickName" placeholder="请输入昵称"></el-input>
+        <el-input v-model="uptUser.nickName" placeholder="请输入昵称" style="max-width: 300px;"></el-input>
       </el-form-item>
       <el-form-item label="头像文字：">
-        <el-input v-model="uptUser.avatarStr" placeholder="请输入头像文字"></el-input>
+        <el-input v-model="uptUser.avatarStr" placeholder="请输入头像文字" style="max-width: 300px;"></el-input>
+      </el-form-item>
+
+      <!-- VIP信息显示（只读） -->
+      <el-form-item label="会员状态：">
+        <div style="display: flex; align-items: center;">
+          <el-tag v-if="userStore.userContext.isVip" type="warning" effect="plain">VIP会员</el-tag>
+          <el-tag v-else type="info" effect="plain">普通用户</el-tag>
+          <span v-if="userStore.userContext.vipEndTime" style="margin-left: 50px; font-size: 13px; color: #909399;">
+            到期时间: {{ formatVipEndTime(userStore.userContext.vipEndTime) }}
+          </span>
+        </div>
       </el-form-item>
     </el-form>
 
@@ -230,7 +257,7 @@
 </template>
 
 <script setup>
-import {defineProps, nextTick, onMounted, onUnmounted, reactive, ref, watch} from "vue";
+import {defineProps, nextTick, onMounted, reactive, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
 import {Search} from "@element-plus/icons-vue";
@@ -298,6 +325,17 @@ const toEditUser = async () => {
   }
 }
 
+// 格式化VIP到期时间
+const formatVipEndTime = (timeStr) => {
+  if (!timeStr) return '未设置';
+  try {
+    const date = new Date(timeStr);
+    return date.toLocaleDateString('zh-CN', {year: 'numeric', month: '2-digit', day: '2-digit'});
+  } catch (e) {
+    return timeStr;
+  }
+}
+
 
 const clickAdvertise = () => {
   window.open("https://gitee.com/fangcaicoding/fangcai-coding-blog", '_blank');
@@ -357,8 +395,12 @@ const handleAvatarClick = () => {
   if (!userStore.isLogin()) {
     showLoginDialog.value = true;
   } else {
-    uptUser.value.avatarStr = userStore.userContext.avatarStr;
-    uptUser.value.nickName = userStore.userContext.nickName;
+    // 初始化编辑用户信息
+    uptUser.value = {
+      avatarStr: userStore.userContext.avatarStr,
+      nickName: userStore.userContext.nickName,
+      avatar: userStore.userContext.avatar
+    };
     showEditUserDialog.value = true;
   }
 };
@@ -415,7 +457,41 @@ const handleKeydown = (event) => {
 
 </script>
 
+
 <style scoped>
+.avatar-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
 
+.avatar-nickname-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
 
+.user-nickname {
+  margin-left: 8px;
+  max-width: 80px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  font-weight: lighter;
+}
+
+.vip-badge {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  background-color: black;
+  color: goldenrod;
+  font-size: 8px;
+  font-weight: bold;
+  padding: 2px 4px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
 </style>

@@ -28,7 +28,7 @@ public class FcAuthUtil {
 
     public static Boolean isLogin() {
         UserAuthInfo authInfo = FcAuthContext.getAuthInfo();
-        return authInfo != null;
+        return authInfo.getIsLogin();
     }
 
     /**

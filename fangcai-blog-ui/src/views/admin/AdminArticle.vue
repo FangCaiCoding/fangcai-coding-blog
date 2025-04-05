@@ -42,6 +42,13 @@
         <el-table-column align="center" prop="readCt" label="阅读数" width="80"/>
         <el-table-column align="center" prop="createTime" label="创建时间"/>
         <el-table-column align="center" prop="orderNum" label="顺序号" width="80"/>
+        <el-table-column align="center" label="限制类型" width="100">
+          <template #default="scope">
+            <el-tag :type="scope.row.limitType === 0 ? 'success' : scope.row.limitType === 1 ? 'warning' : 'danger'">
+              {{ scope.row.limitType === 0 ? '不限制' : scope.row.limitType === 1 ? '需登录' : '需VIP' }}
+            </el-tag>
+          </template>
+        </el-table-column>
         <el-table-column align="center" prop="readLimitRatio" label="免限制比例 %" width="80"/>
         <el-table-column align="center" label="发布状态" width="100">
           <template #default="scope">
@@ -100,6 +107,17 @@
       <el-form-item label="顺序号">
         <el-input-number v-model="article.orderNum" :min="1"></el-input-number>
       </el-form-item>
+      <el-form-item label="限制类型">
+        <el-select v-model="article.limitType" placeholder="请选择限制类型">
+          <el-option label="不限制" :value="0"></el-option>
+          <el-option label="需登录" :value="1"></el-option>
+          <el-option label="需VIP" :value="2"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="免限比例">
+        <el-input-number v-model="article.readLimitRatio" :min="0" :max="99" :step="5"></el-input-number>
+        <span style="margin-left: 10px; color: #909399; font-size: 12px;">%（仅对需限制的文章有效）</span>
+      </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker v-model="article.createTime" type="datetime" disabled></el-date-picker>
       </el-form-item>
@@ -138,6 +156,7 @@ const article = ref({
   summary: '',
   status: 0,
   orderNum: 999,
+  limitType: 0,
   readLimitRatio: null,
   createTime: '',
   readCt: 0

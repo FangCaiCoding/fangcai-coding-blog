@@ -18,6 +18,7 @@
            :key="courseArticle.id"
            @click="getArticle(courseArticle.articleId)">
           {{ index + 1 }}. {{ courseArticle.articleAlias }}
+          <el-tag v-if="courseArticle.limitType === 2" size="small" type="danger" effect="dark" class="vip-tag">VIP</el-tag>
         </p>
       </div>
 
@@ -48,6 +49,7 @@
           @click="getArticle(courseArticle.articleId)"
       >
         {{ index + 1 }}. {{ courseArticle.articleAlias }}
+        <el-tag v-if="courseArticle.limitType === 2" size="small" type="danger" effect="dark" class="vip-tag">VIP</el-tag>
       </p>
     </div>
   </el-drawer>
@@ -80,7 +82,8 @@ const courseDetail = reactive({
       courseId: 0,
       articleId: 0,
       articleAlias: "",
-      orderNum: 0
+      orderNum: 0,
+      limitType: 0 // 阅读限制类型：0-不限制 1-需登录 2-需VIP
     }
   ]
 });
@@ -204,6 +207,16 @@ watch(
 
 :deep(.el-drawer__body) {
   padding: 16px;
+}
+
+/* VIP标签样式 */
+.vip-tag {
+  margin-left: 5px;
+  font-size: 10px;
+  padding: 0 4px;
+  height: 18px;
+  line-height: 16px;
+  vertical-align: middle;
 }
 
 /* 响应式调整 */

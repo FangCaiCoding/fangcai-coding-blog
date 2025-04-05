@@ -17,6 +17,8 @@ export const userContextStore = defineStore('userContext', () => {
             avatarStr: "",
             authCodeSet: [],
             showLoginDialog: false,
+            isVip: false,
+            vipEndTime: "",
         })
 
         const login = (user) => {
@@ -26,6 +28,8 @@ export const userContextStore = defineStore('userContext', () => {
             userContext.avatar = user.avatar;
             userContext.avatarStr = user.avatarStr;
             userContext.authCodeSet = user.authCodeSet;
+            userContext.isVip = user.isVip;
+            userContext.vipEndTime = user.vipEndTime;
         }
         const isLogin = () => {
             return userContext.id > 0;

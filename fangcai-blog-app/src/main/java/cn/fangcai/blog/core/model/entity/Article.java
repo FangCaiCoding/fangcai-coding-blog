@@ -51,6 +51,10 @@ public class Article extends BaseEntityWithDel {
     @TableField(value = "read_limit_ratio")
     private Byte readLimitRatio;
 
+    @Schema(description = "阅读限制类型：0-不限制 1-需登录 2-需VIP")
+    @TableField(value = "limit_type")
+    private Byte limitType;
+
 
     @Schema(description = "阅读数")
     @TableField("read_ct")

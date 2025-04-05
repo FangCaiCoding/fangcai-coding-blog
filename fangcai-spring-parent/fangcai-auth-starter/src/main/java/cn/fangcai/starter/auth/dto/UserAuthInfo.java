@@ -18,8 +18,10 @@ import java.util.List;
 @Schema(description = "用户上下文信息")
 public class UserAuthInfo {
 
-    @Schema(description = "用户ID")
-    private Object id;
+    @Schema(description = "是否登录")
+    private Boolean isLogin;
 
+    @Schema(description = "用户ID，仅在登录状态下有效")
+    private Object id;
 
 }

@@ -35,6 +35,9 @@ public class ArticleRes {
     @Schema(description = "可直接阅读的限制比例 百分制，按行数计算")
     private Byte readLimitRatio;
 
+    @Schema(description = "阅读限制类型：0-不限制 1-需登录 2-需VIP")
+    private Byte limitType;
+
     @Schema(description = "状态：0-未发布，1-已发布")
     private Byte status;
 

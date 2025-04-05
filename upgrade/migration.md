@@ -1,4 +1,15 @@
 # 升级记录
+## 1.2.20250405
+1. 实现VIP机制；
+
+```sql
+
+alter table user add   `vip_end_time` datetime DEFAULT null COMMENT 'vip 到期时间'  after is_enabled;
+
+alter table article add     `limit_type` tinyint(1) unsigned NOT null default '0' COMMENT '阅读限制类型 0-不限制 1-需登录 2-需vip'  after read_limit_ratio;
+```
+
+
 ## 1.2.20250308
 1. 增加刷题模块；
 

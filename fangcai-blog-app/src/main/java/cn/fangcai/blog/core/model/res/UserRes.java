@@ -40,13 +40,24 @@ public class UserRes {
     @Schema(description = "权限列表")
     private Set<String> authCodeSet;
 
-
     @Schema(description = "是否启用")
     private Boolean enabled;
+
+    @Schema(description = "是否VIP")
+    private Boolean isVip;
+
+    @Schema(description = "VIP 到期时间")
+    private  LocalDateTime vipEndTime;
 
     @Schema(description = "创建时间")
     private LocalDateTime createTime;
 
     @Schema(description = "更新时间")
     private LocalDateTime updateTime;
+
+    public void initVip(){
+        LocalDateTime vipEndTime = this.getVipEndTime();
+        Boolean isVip = vipEndTime != null && vipEndTime.isAfter(LocalDateTime.now());
+        this.setIsVip(isVip);
+    }
 }

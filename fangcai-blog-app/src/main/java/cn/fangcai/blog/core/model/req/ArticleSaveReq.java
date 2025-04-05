@@ -55,6 +55,8 @@ public class ArticleSaveReq {
     @Min(value = 0, message = "可直接阅读的限制比例 应大于0")
     private Byte readLimitRatio;
 
+    @Schema(description = "阅读限制类型：0-不限制 1-需登录 2-需VIP")
+    private Byte limitType;
 
     @Schema(description = "文章内容")
     @Length(max = 100000, message = "文章内容不能超过100000个字符")

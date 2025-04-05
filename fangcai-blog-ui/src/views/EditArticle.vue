@@ -35,13 +35,18 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="阅读限制">
-        <el-switch v-model="article.openLimit"/>
+      <el-form-item label="限制类型">
+        <el-select v-model="article.limitType" placeholder="请选择限制类型">
+          <el-option label="不限制" :value="0"></el-option>
+          <el-option label="需登录" :value="1"></el-option>
+          <el-option label="需VIP" :value="2"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="免限比例">
+        <el-input-number v-model="article.readLimitRatio" :min="0" :max="99" :step="5"></el-input-number>
+        <span style="margin-left: 10px; color: #909399; font-size: 12px;">%（仅对需限制的文章有效）</span>
       </el-form-item>
 
-      <el-form-item label="阅读限制比例" v-if="article.openLimit">
-        <el-input-number v-model="article.readLimitRatio" :min="1" :max="99"></el-input-number>
-      </el-form-item>
       <el-form-item label="是否发布">
         <el-select v-model="article.status" placeholder="请选择状态">
           <el-option label="不发布" :value="0"></el-option>
@@ -88,7 +93,7 @@ const article = reactive({
   orderNum: 999,
   templateId: null,
   readLimitRatio: null,
-  openLimit: false,
+  limitType: 0, // 阅读限制类型：0-不限制 1-需登录 2-需VIP
   contentMd: '',
   createTime: '',
   updateTime: '',
@@ -119,9 +124,6 @@ const extractSummary = () => {
 // 保存文章
 const saveArticle = async () => {
   article.editContent = true;
-  if (!article.openLimit) {
-    article.readLimitRatio = 100;
-  }
   if (article.id > 0) {
     article.id = await articleApi.editArticle(article);
   } else {
@@ -145,7 +147,6 @@ onMounted(async () => {
   // 这里可以进行数据请求，加载文章详情
   const newArticle = await articleApi.getArticle(route.query.id);
   Object.assign(article, newArticle);  // 逐个更新 article 对象的属性
-  article.openLimit = article.readLimitRatio > 0 && article.readLimitRatio < 100;
 });
 
 </script>
