@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 /**
  * <p>
  * 文章教程 服务实现类
@@ -80,19 +81,20 @@ public class CourseServiceImpl implements ICourseService {
                 .list()
                 .stream()
                 .map(CourseConverter.INSTANCE::toCourseDetailRes)
-                .collect(Collectors.toList());
+                .toList();
         List<Integer> articleIdList = details.stream().map(CourseDetailRes::getArticleId).toList();
         List<ArticleRes> articleList = articleService.listByIds(articleIdList);
         Map<Integer, ArticleRes> articleMap = articleList.stream()
                 .collect(Collectors.toMap(ArticleRes::getId, article -> article));
-        details.forEach(detail -> {
-            ArticleRes article = articleMap.get(detail.getArticleId());
-            if (article != null) {
-                detail.setArticleTitle(article.getTitle());
-                detail.setLimitType(article.getLimitType());
-            }
-        });
-        courseRes.setDetails(details);
+        List<CourseDetailRes> detailResList = details.stream()
+                .filter(detail -> articleMap.containsKey(detail.getArticleId()))
+                .peek(detail -> {
+                    ArticleRes article = articleMap.get(detail.getArticleId());
+                    detail.setArticleTitle(article.getTitle());
+                    detail.setLimitType(article.getLimitType());
+                })
+                .collect(Collectors.toList());
+        courseRes.setDetails(detailResList);
         return courseRes;
     }
 

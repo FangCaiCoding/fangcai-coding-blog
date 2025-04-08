@@ -67,7 +67,7 @@ public class ArticlePublicController {
     @Operation(summary = "获取文章教程")
     @GetMapping("/course/{id}")
     @FcLog(desc = "阅读教程：%s", respEl = "data.title", actionType = FcLog.ActionType.SELECT)
-    public FcResult<CourseRes> getById(@PathVariable Integer id) {
+    public FcResult<CourseRes> getCourseDetail(@PathVariable Integer id) {
         CourseRes courseRes = courseService.getById(id);
         if (courseRes == null || !StatusEnum.PUBLISHED.getCode().equals(courseRes.getStatus())) {
             throw new FcBusinessException(BlogErrorCodeEnum.COURSE_UN_PUBLISHED);

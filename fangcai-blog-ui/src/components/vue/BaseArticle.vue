@@ -26,6 +26,10 @@
           <span class="edit-button" style="color: blue" @click="copy"
                 v-if="userStore.hasAuthCode('article:edit')">
             <strong>转载</strong></span>
+          <!-- 添加删除按钮 -->
+          <span class="edit-button" style="color: red" @click="confirmDeleteArticle(article.id)"
+                v-if="userStore.hasAuthCode('article:del')">
+            <strong>删除</strong></span>
         </div>
         <!-- 文章内容 -->
         <div class="md-content">
@@ -63,13 +67,15 @@
                      :scroll-element="scrollElement"
                      @click="showCatalogDrawer = false"/>
           <!-- 添加登录/VIP目录项 -->
-          <div v-if="!article.contendIsEnd" style="margin-bottom: 15px; margin-left: 20px;cursor: pointer" @click="handleContentRestriction">
+          <div v-if="!article.contendIsEnd" style="margin-bottom: 15px; margin-left: 20px;cursor: pointer"
+               @click="handleContentRestriction">
             <template v-if="article.limitType === 2">
-              <span v-if="!userStore.isLogin()" style="color:cornflowerblue">未完，登录后查看VIP权限</span>
-              <span v-else style="color:orange">未完，开通VIP后阅读全文</span>
+              <span v-if="!userStore.isLogin()"
+                    class="not-login-span">未完，登录后查看VIP权限</span>
+              <span v-else style="color:orange;font-size:14px">未完，开通VIP后阅读全文</span>
             </template>
             <template v-else>
-              <span style="color:cornflowerblue">未完，登录后阅读全文</span>
+              <span  class="not-login-span">未完，登录后阅读全文</span>
             </template>
           </div>
         </el-drawer>
@@ -87,13 +93,14 @@
                      :scroll-element="scrollElement"
           />
           <!-- 添加登录/VIP目录项 -->
-          <div v-if="!article.contendIsEnd" style="margin-bottom: 15px; margin-left: 20px;cursor: pointer" @click="handleContentRestriction">
+          <div v-if="!article.contendIsEnd" style="margin-bottom: 15px; margin-left: 20px;cursor: pointer"
+               @click="handleContentRestriction">
             <template v-if="article.limitType === 2">
-              <span v-if="!userStore.isLogin()" style="color:cornflowerblue">未完，登录后查看VIP权限</span>
-              <span v-else style="color:orange">未完，开通VIP后阅读全文</span>
+              <span v-if="!userStore.isLogin()" class="not-login-span">未完，登录后查看VIP权限</span>
+              <span v-else style="color:orange;font-size:14px">未完，开通VIP后阅读全文</span>
             </template>
             <template v-else>
-              <span style="color:cornflowerblue">未完，登录后阅读全文</span>
+              <span  class="not-login-span">未完，登录后阅读全文</span>
             </template>
           </div>
         </div>
@@ -102,17 +109,18 @@
 
 
   </BasePage>
-  
+
   <!-- VIP二维码弹窗 -->
   <el-dialog
-    v-model="showVipQrDialog"
-    title="开通VIP"
-    width="300px"
-    center
+      v-model="showVipQrDialog"
+      title="开通VIP"
+      width="300px"
+      center
   >
     <div style="text-align: center;">
-      <img src="https://fangcaicoding.cn/oss/fagncai_vip.png" alt="个人二维码" style="height: 200px;" />
-      <p style="margin-top: 15px; font-size: 16px; color: #606266;">请扫码添加微信，备注<span style="font-weight: bold; color: #409EFF;">VIP</span>付费开通</p>
+      <img src="https://fangcaicoding.cn/oss/fagncai_vip.png" alt="个人二维码" style="height: 200px;"/>
+      <p style="margin-top: 15px; font-size: 16px; color: #606266;">请扫码添加微信，备注<span
+          style="font-weight: bold; color: #409EFF;">VIP</span>付费开通</p>
       <p style="margin-top: 5px; font-size: 14px; color: #909399;">开通VIP后可享受全站文章无限制阅读</p>
     </div>
   </el-dialog>
@@ -126,7 +134,7 @@ import {MdCatalog, MdPreview} from 'md-editor-v3';
 import 'md-editor-v3/lib/preview.css';
 import {userContextStore} from "@/stores/UserContextStore.js";
 import useClipboard from 'vue-clipboard3'
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus"; // 添加 ElMessageBox
 import articleApi from "@/api/articleApi.js";
 import {useMobile} from "@/components/js/UseMobile.js";
 
@@ -243,6 +251,43 @@ const copy = async () => {
   }
 }
 
+// 删除文章
+const confirmDeleteArticle = (id) => {
+  ElMessageBox.confirm(
+    '确定要删除该文章吗？',
+    '删除确认',
+    {
+      confirmButtonText: '删除',
+      cancelButtonText: '取消',
+      type: 'warning',
+      center: true,
+    }
+  ).then(() => {
+    // 用户确认删除，调用 API 删除文章
+    articleApi.deleteArticle(id).then((isSuccess) => {
+      if (isSuccess) {
+        ElMessage({
+          type: 'success',
+          message: '文章删除成功!',
+        });
+        // 删除成功后返回首页
+        router.push('/');
+      } else {
+        ElMessage({
+          type: 'error',
+          message: '文章删除失败!',
+        });
+      }
+    })
+  }).catch(() => {
+    // 用户取消删除
+    ElMessage({
+      type: 'info',
+      message: '已取消删除'
+    });
+  });
+}
+
 
 onMounted(() => {
   console.log("mounted")
@@ -283,6 +328,11 @@ const handleKeydown = async (event) => {
   z-index: 1000;
 }
 
+.not-login-span {
+  color: cornflowerblue;
+  font-size: 14px
+}
+
 .mobile-catalog-button:hover {
   background-color: #66b1ff;
 }
@@ -312,3 +362,4 @@ const handleKeydown = async (event) => {
 }
 
 </style>
+

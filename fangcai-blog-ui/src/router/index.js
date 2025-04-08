@@ -80,6 +80,16 @@ const routes = [
         component: () => import('@/views/admin/AdminPaperQuestion.vue')
     },
 
+    {
+        path: '/admin/user',
+        name: 'adminUser',
+        component: () => import('@/views/admin/AdminUser.vue'),
+        meta: {
+            title: '用户管理',
+            requiresAuth: true,
+            authCode: 'user:manage'
+        }
+    },
 
     {
         path: '/404',
