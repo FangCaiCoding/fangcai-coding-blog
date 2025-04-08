@@ -167,7 +167,7 @@ const totalArticles = ref(0);
 const articleQueryReq = ref({
   currentPage: 1,
   pageSize: 10,
-  searchStr: '',
+  title: '',
   limitType: null,
   status: null,
   orderField: 0,
