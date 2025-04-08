@@ -169,9 +169,49 @@ watch(
   margin-top: 5px;
   max-height: 650px;
   overflow-y: auto;
-  scrollbar-width: thin; /* 设置滚动条样式为细一点 */
-  scrollbar-color: #d4d4d4 transparent; /* Firefox 滚动条颜色 */
+  scrollbar-width: thin;
+  scrollbar-color: #d4d4d4 transparent;
 }
+
+.course-article {
+  cursor: pointer;
+  font-size: 14px;
+  padding: 8px 5px;
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  line-height: 1.4;
+}
+
+.selected-article {
+  color: #ff8721;
+  font-weight: 500;
+}
+
+.course-article:hover {
+  background-color: rgba(255, 135, 33, 0.05);
+  border-radius: 4px;
+  color: #ff8721;
+}
+
+/* VIP标签样式优化 */
+.vip-tag {
+  margin-left: 4px;
+  font-size: 8px;
+  padding: 0 4px;
+  height: 16px;
+  line-height: 16px;
+  border-radius: 2px;
+  font-weight: normal;
+  opacity: 0.8;
+  background-color: #ffd04b;
+  border-color: #ffd04b;
+  flex-shrink: 0;
+}
+
+
 
 /* 手机端教程目录按钮 */
 .mobile-catalog-button {
@@ -209,15 +249,6 @@ watch(
   padding: 16px;
 }
 
-/* VIP标签样式 */
-.vip-tag {
-  margin-left: 5px;
-  font-size: 10px;
-  padding: 0 4px;
-  height: 18px;
-  line-height: 16px;
-  vertical-align: middle;
-}
 
 /* 响应式调整 */
 @media (max-height: 879px) {

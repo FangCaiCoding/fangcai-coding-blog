@@ -30,7 +30,7 @@ public class FcJWTUtil {
 
 
     private final static String JWT_USER_CLAIM_NAME = "UserToken";
-    private static final JWTSigner jwtSigner = JWTSignerUtil.hs512(AuthProperties.JWT_SECRET_KEY.getBytes());
+
     private static final SM4 sm4 = SmUtil.sm4(AuthProperties.JWT_SM4_KEY.getBytes());
 
     /**
@@ -47,7 +47,7 @@ public class FcJWTUtil {
         String tokenStr = sm4.encryptHex(JSONUtil.toJsonStr(jwtClaim));
         LocalDateTime localDateTime = LocalDateTime.now().plusDays(AuthProperties.JWT_EXP_DAYS);
         Date expiresAt = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-
+        JWTSigner jwtSigner = JWTSignerUtil.hs512(AuthProperties.JWT_SECRET_KEY.getBytes());
         return JWT.create()
                 .setPayload(JWT_USER_CLAIM_NAME, tokenStr)
                 .setSigner(jwtSigner)
@@ -67,6 +67,7 @@ public class FcJWTUtil {
     public static <T> T parseToken(String token, Class<T> targetClass) throws FcBusinessException {
         boolean verify = false;
         try {
+            JWTSigner jwtSigner = JWTSignerUtil.hs512(AuthProperties.JWT_SECRET_KEY.getBytes());
             verify = JWTUtil.verify(token, jwtSigner);
 
         } catch (Exception e) {
@@ -80,7 +81,7 @@ public class FcJWTUtil {
         if (JSONUtil.isTypeJSON(tokenStr)) {
             return JSONUtil.toBean(tokenStr, targetClass);
         }
-        return (T)tokenStr;
+        return (T) tokenStr;
     }
 
 

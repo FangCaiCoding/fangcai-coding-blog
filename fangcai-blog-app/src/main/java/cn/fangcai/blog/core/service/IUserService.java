@@ -2,8 +2,10 @@ package cn.fangcai.blog.core.service;
 
 
 import cn.fangcai.blog.core.model.req.UserEditReq;
-import cn.fangcai.blog.core.model.res.UserRes;
 import cn.fangcai.blog.core.model.req.UserLoginReq;
+import cn.fangcai.blog.core.model.req.UserPageReq;
+import cn.fangcai.blog.core.model.res.UserRes;
+import cn.fangcai.common.model.dto.FcPageRes;
 
 /**
  * <p>
@@ -23,9 +25,13 @@ public interface IUserService {
 
     UserRes loginByWxCode(String wxCode);
 
-
     UserRes register(String loginName, String wxOpenId, String password);
 
     Boolean editUser(UserEditReq uptReq);
 
+    // 新增分页查询用户方法
+    FcPageRes<UserRes> pageUser(UserPageReq pageReq);
+
+    // 新增更新用户状态方法
+    Boolean uptUserStatus(Integer userId, Boolean enabled);
 }

@@ -9,12 +9,14 @@ import cn.fangcai.blog.core.model.entity.User;
 import cn.fangcai.blog.core.model.entity.UserRole;
 import cn.fangcai.blog.core.model.req.UserEditReq;
 import cn.fangcai.blog.core.model.req.UserLoginReq;
+import cn.fangcai.blog.core.model.req.UserPageReq;
 import cn.fangcai.blog.core.model.res.UserRes;
 import cn.fangcai.blog.core.service.ICacheService;
 import cn.fangcai.blog.core.service.IRoleService;
 import cn.fangcai.blog.core.service.IUserService;
 import cn.fangcai.blog.mapstruct.UserConverter;
 import cn.fangcai.blog.uitls.CacheKeyFactory;
+import cn.fangcai.common.model.dto.FcPageRes;
 import cn.fangcai.common.model.exception.FcBusinessException;
 import cn.fangcai.starter.auth.FcAuthContext;
 import cn.fangcai.starter.auth.dto.UserAuthInfo;
@@ -22,6 +24,8 @@ import cn.fangcai.starter.auth.service.IAuthService;
 import cn.fangcai.starter.auth.utils.FcPWDUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +36,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -98,7 +103,7 @@ public class UserServiceImpl implements IUserService, IAuthService {
             throw new FcBusinessException(BlogErrorCodeEnum.WX_CODE_EXPIRED);
         }
         User user = userRepository.lambdaQuery()
-                .select(User::getId,User::getEnabled)
+                .select(User::getId, User::getEnabled)
                 .eq(User::getWxOpenId, wxOpenId)
                 .one();
         if (user == null) {
@@ -119,9 +124,9 @@ public class UserServiceImpl implements IUserService, IAuthService {
         if (user != null && user.getEnabled()) {
             LocalDateTime vipEndTime = user.getVipEndTime();
             Boolean isVip = vipEndTime != null && vipEndTime.isAfter(LocalDateTime.now());
-            return (T) new UserAuthDto(true,userId,isVip);
+            return (T) new UserAuthDto(true, userId, isVip);
         }
-        return (T) new UserAuthDto(false,null,false);
+        return (T) new UserAuthDto(false, null, false);
     }
 
     @Override
@@ -177,6 +182,34 @@ public class UserServiceImpl implements IUserService, IAuthService {
                 .eq(User::getId, uptReq.getUserId())
                 .update();
     }
+
+    @Override
+    public FcPageRes<UserRes> pageUser(UserPageReq pageReq) {
+
+        Page<User> page = userRepository.lambdaQuery()
+                .eq(Objects.nonNull(pageReq.getEnabled()), User::getEnabled, pageReq.getEnabled())
+                .ge(Objects.equals(true, pageReq.getIsVip()), User::getVipEndTime, LocalDateTime.now())
+                .and(Objects.equals(false, pageReq.getIsVip()),
+                        lqw -> lqw.isNull(User::getVipEndTime).or().lt(User::getVipEndTime, LocalDateTime.now()))
+                .like(StrUtil.isNotBlank(pageReq.getUsername()), User::getLoginName, pageReq.getUsername())
+                .orderByDesc(User::getId)
+                .page(new Page<>(pageReq.getPage(), pageReq.getPageSize()));
+
+        List<UserRes> userResList = UserConverter.INSTANCE.userListToResList(page.getRecords());
+        userResList.forEach(UserRes::initVip);
+        return new FcPageRes<UserRes>(pageReq)
+                .total(page.getTotal())
+                .records(userResList);
+    }
+
+    @Override
+    public Boolean uptUserStatus(Integer userId, Boolean enabled) {
+        return userRepository.lambdaUpdate()
+                .set(User::getEnabled, enabled)
+                .eq(User::getId, userId)
+                .update();
+    }
+
 
     @Repository
     static class UserRepository extends ServiceImpl<UserMapper, User> {

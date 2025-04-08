@@ -19,10 +19,20 @@ const exchangeVip = (token) => {
     return axiosInst.put(`/user/exchangeVip/${token}`)
 }
 
+const pageUser = (pageReq = {}) => {
+    return axiosInst.post("/user/page", pageReq) 
+}
+
+const uptUserStatus = (userId, enabled) => {
+    return axiosInst.put(`/user/status/${userId}/${enabled}`)
+}
+
 export default {
     loginByName,
     loginByWxCode,
     getUserInfo,
     editUser,
-    exchangeVip
+    exchangeVip,
+    pageUser,
+    uptUserStatus
 }
